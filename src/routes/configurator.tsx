@@ -36,7 +36,8 @@ function Configurator() {
     walls: "rear",
   });
   const { add } = useCart();
-  const pick = (k: keyof ConfigState) => (id: string) => setS({ ...s, [k]: id });
+  const pick = (k: keyof ConfigState) => (id: string) =>
+    setS((current) => ({ ...current, [k]: id }));
 
   const finish = def.finishes.find((f) => f.id === s.finish)!;
   const felt = def.felts.find((f) => f.id === s.felt)!;

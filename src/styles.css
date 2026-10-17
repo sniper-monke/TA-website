@@ -356,26 +356,66 @@
   position: relative;
   container-type: inline-size;
   overflow: hidden;
+  isolation: isolate;
   background:
-    radial-gradient(circle at 50% 78%, rgba(200, 90, 39, 0.16), transparent 42%),
-    radial-gradient(circle at 22% 18%, rgba(212, 163, 115, 0.12), transparent 38%),
-    var(--background);
+    radial-gradient(ellipse at 52% 78%, rgba(187, 148, 94, 0.22), transparent 42%),
+    radial-gradient(ellipse at 50% 36%, rgba(77, 99, 83, 0.3), transparent 48%),
+    radial-gradient(ellipse at 76% 52%, rgba(163, 119, 71, 0.09), transparent 58%),
+    linear-gradient(145deg, #171b19 0%, #202622 48%, #141715 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(239, 225, 198, 0.18),
+    0 24px 70px rgba(28, 31, 27, 0.15);
 }
-
+.room-stage::before {
+  position: absolute;
+  inset: 1rem;
+  z-index: 2;
+  border: 1px solid rgba(239, 225, 198, 0.14);
+  content: "";
+  pointer-events: none;
+}
+.room-canvas {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+}
+.room-canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
 .room-scale {
   position: absolute;
+  z-index: 0;
   inset: 0;
   display: grid;
   place-items: center;
-  font-size: calc(100cqw / 46);
+  font-size: calc(100cqw / 52);
+  transition: opacity 0.35s ease;
+}
+.room-stage--rendered .room-scale {
+  visibility: hidden;
+  opacity: 0;
+}
+.room-scale::before {
+  position: absolute;
+  left: 16%;
+  bottom: 13%;
+  width: 68%;
+  height: 19%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.62), transparent 68%);
+  filter: blur(1.4rem);
+  content: "";
+  pointer-events: none;
 }
 
 .room-world {
   position: relative;
-  width: 27em;
-  height: 27em;
+  width: 32em;
+  height: 32em;
   transform-style: preserve-3d;
-  transform: perspective(96em) rotateX(75deg) rotateZ(45deg) translateZ(-9em);
+  transform: perspective(90em) rotateX(75deg) rotateZ(45deg) translateZ(-9em);
 }
 
 .room-world,
@@ -385,6 +425,53 @@
 
 .room-face {
   position: absolute;
+}
+.room-wall-panel {
+  position: absolute;
+  border-width: 0.1em;
+  border-style: solid;
+  box-shadow:
+    0.38em 0.46em 0.58em rgba(7, 10, 8, 0.52),
+    inset 0 0.12em 0 rgba(255, 239, 208, 0.36),
+    inset 0 -0.16em 0 rgba(14, 16, 13, 0.58);
+  transform: translateZ(0.08em);
+  transform-origin: left center;
+  transform-style: preserve-3d;
+}
+.room-wall-panel::after {
+  position: absolute;
+  top: 0.08em;
+  right: -0.26em;
+  width: 0.24em;
+  height: calc(100% - 0.08em);
+  border-top: 0.08em solid rgba(255, 239, 208, 0.28);
+  background: linear-gradient(90deg, rgba(20, 22, 18, 0.72), rgba(20, 22, 18, 0.95));
+  content: "";
+  transform: skewY(-8deg);
+  transform-origin: top left;
+}
+.room-panel-build {
+  animation: panel-build 1080ms cubic-bezier(0.18, 1.25, 0.32, 1) both;
+}
+@keyframes panel-build {
+  0% {
+    opacity: 0;
+    scale: 0.76;
+    rotate: y -17deg;
+    translate: 0 0 -2.2em;
+  }
+  70% {
+    opacity: 1;
+    scale: 1.055;
+    rotate: y 3deg;
+    translate: 0 0 0.28em;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+    rotate: y 0deg;
+    translate: 0 0 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
