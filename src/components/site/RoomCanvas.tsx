@@ -423,7 +423,7 @@ function createRoomEngine(host: HTMLDivElement, THREE: Three): RoomEngine {
     const mobileFit = Math.max(1, 0.96 / aspect);
     camera.position.copy(cameraTarget).addScaledVector(cameraDirection, 18 * mobileFit);
     camera.lookAt(cameraTarget);
-    if (scene.fog) {
+    if (scene.fog instanceof THREE.Fog) {
       scene.fog.near = 14 * mobileFit;
       scene.fog.far = 32 * mobileFit;
     }

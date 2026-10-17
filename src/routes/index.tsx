@@ -70,8 +70,70 @@ function TiltedGrid() {
 function Hero() {
   return (
     <section className="grain relative flex min-h-[100svh] flex-col justify-end overflow-hidden px-5 pb-10 pt-28 md:px-10">
-      <TiltedGrid />
-      <div className="relative mx-auto w-full max-w-[1600px]">
+      <div className="absolute inset-0 md:hidden">
+        <img
+          src={images.studio}
+          alt=""
+          className="h-full w-full object-cover object-[58%_center]"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,16,14,0.3)_0%,rgba(15,16,14,0.08)_35%,rgba(15,16,14,0.92)_100%)]"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_28%,rgba(200,90,39,0.24),transparent_48%)]"
+        />
+      </div>
+      <div className="relative z-10 mx-auto flex w-full max-w-[1600px] flex-1 flex-col justify-end md:hidden">
+        <div className="mb-6 flex items-center justify-between gap-3">
+          <span className="label-mono flex items-center gap-2 text-foreground/75">
+            <span className="text-signal">●</span> Designed in India
+          </span>
+          <span className="label-mono text-foreground/60">01 — 06</span>
+        </div>
+        <p className="label-mono mb-3 text-signal">Acoustics, made architectural</p>
+        <h1 className="font-display [font-stretch:85%] text-[clamp(3rem,13vw,3.8rem)] leading-[0.88] tracking-[-0.055em]">
+          Shape
+          <br />
+          <span className="pl-[6vw] text-foreground/70">the space.</span>
+          <br />
+          Control
+          <br />
+          <span className="pl-[6vw]">
+            the sound<span className="text-signal">.</span>
+          </span>
+        </h1>
+        <p className="mt-7 max-w-[29rem] text-sm leading-relaxed text-foreground/75">
+          Timber, felt and geometry. Acoustic surfaces designed to make a room feel as good as it
+          sounds.
+        </p>
+        <div className="mt-7 grid grid-cols-[1fr_auto] gap-3">
+          <Link
+            to="/products"
+            className="group flex min-h-14 items-center justify-between gap-4 bg-foreground px-5 text-background transition-colors hover:bg-signal"
+          >
+            <span className="label-mono">Explore products</span>
+            <span
+              aria-hidden="true"
+              className="text-lg transition-transform group-hover:translate-x-1"
+            >
+              →
+            </span>
+          </Link>
+          <Link
+            to="/configurator"
+            aria-label="Configure a room"
+            className="grid min-h-14 min-w-14 place-items-center border border-foreground/50 px-4 text-xl transition-colors hover:border-signal hover:text-signal"
+          >
+            ↗
+          </Link>
+        </div>
+      </div>
+      <div className="absolute inset-0 hidden md:block">
+        <TiltedGrid />
+      </div>
+      <div className="relative z-10 mx-auto hidden w-full max-w-[1600px] md:block">
         <div className="label-mono mb-8 flex flex-wrap gap-x-8 gap-y-2 text-muted-foreground">
           <span>
             <span className="text-signal">●</span> Wood acoustic treatment

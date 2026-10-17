@@ -185,7 +185,7 @@ function Projects() {
                     loading="lazy"
                     className="h-full w-full object-cover grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
                   />
-                  <div className="absolute inset-x-3 bottom-3 rounded-xl border border-foreground/10 bg-background/70 p-4 backdrop-blur-md translate-y-2 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+                  <div className="absolute inset-x-3 bottom-3 translate-y-0 rounded-xl border border-foreground/10 bg-background/75 p-4 opacity-100 backdrop-blur-md transition-all duration-500 md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">
                     <div className="flex items-baseline justify-between gap-3">
                       <span className="font-medium">{a.t}</span>
                       <span className="label-mono text-signal">{a.id}</span>

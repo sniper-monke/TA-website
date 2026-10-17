@@ -13,11 +13,13 @@ export function Journey({
   const sectionRef = useRef<HTMLElement>(null);
   const [progress, setProgress] = useState(0);
   const [displayIndex, setDisplayIndex] = useState(0);
+  const [mobileIndex, setMobileIndex] = useState(0);
   const [phase, setPhase] = useState<"in" | "out">("in");
   const pendingRef = useRef(0);
 
   const activeIndex = Math.min(chapters.length - 1, Math.floor(progress * chapters.length));
   const shown = chapters[displayIndex] ?? chapters[0]!;
+  const mobileShown = chapters[mobileIndex] ?? chapters[0]!;
 
   useEffect(() => {
     onChapterChange?.(activeIndex);
@@ -54,6 +56,10 @@ export function Journey({
     const update = () => {
       const section = sectionRef.current;
       if (!section) return;
+      if (window.matchMedia("(max-width: 767px)").matches) {
+        setProgress(0);
+        return;
+      }
       const bounds = section.getBoundingClientRect();
       const travel = Math.max(1, section.offsetHeight - window.innerHeight);
       setProgress(Math.min(1, Math.max(0, -bounds.top / travel)));
@@ -83,6 +89,11 @@ export function Journey({
     });
   };
 
+  const chooseMobileChapter = (index: number) => {
+    setMobileIndex(index);
+    onChapterChange?.(index);
+  };
+
   const panelAnimation = phase === "out" ? "animate-chapter-out" : "animate-chapter-in";
   const photoAnimation = phase === "out" ? "animate-chapter-photo-out" : "animate-chapter-photo-in";
 
@@ -90,10 +101,96 @@ export function Journey({
     <section
       id="journey"
       ref={sectionRef}
-      className="relative z-10 h-[560vh] md:h-[620vh]"
+      className="relative z-10 md:h-[620vh]"
       style={{ "--chapter-accent": shown.accent } as CSSProperties}
     >
-      <div className="sticky top-0 h-screen overflow-hidden">
+      <div
+        className="relative overflow-hidden border-y bg-[#111310] px-5 py-16 md:hidden"
+        style={{ "--chapter-accent": mobileShown.accent } as CSSProperties}
+      >
+        <div className="mx-auto max-w-xl">
+          <div className="mb-6 flex items-center justify-between label-mono text-muted-foreground">
+            <span>The five behaviours</span>
+            <span style={{ color: mobileShown.accent }}>{mobileShown.number} / 05</span>
+          </div>
+          <figure className="relative mb-7 aspect-[4/3] overflow-hidden [clip-path:polygon(0_5%,94%_0,100%_94%,6%_100%)]">
+            <img
+              key={mobileShown.id}
+              src={mobileShown.image}
+              alt={mobileShown.alt}
+              loading="lazy"
+              className="h-full w-full object-cover animate-in fade-in duration-500"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent"
+            />
+            <figcaption
+              className="label-mono absolute bottom-4 left-4"
+              style={{ color: mobileShown.accent }}
+            >
+              {mobileShown.number} / {mobileShown.word}
+            </figcaption>
+          </figure>
+          <p className="label-mono mb-3" style={{ color: mobileShown.accent }}>
+            {mobileShown.label}
+          </p>
+          <h2 className="font-display text-[clamp(3.2rem,15vw,5rem)]">
+            {mobileShown.word}
+            <span style={{ color: mobileShown.accent }}>.</span>
+          </h2>
+          <h3 className="mt-4 font-display text-2xl leading-tight">{mobileShown.title}</h3>
+          <p className="mt-3 text-sm leading-relaxed text-foreground/70">
+            {mobileShown.description}
+          </p>
+          <p
+            className="label-mono mt-5 border-l-2 pl-3 leading-relaxed text-muted-foreground"
+            style={{ borderColor: mobileShown.accent }}
+          >
+            {mobileShown.stat}
+          </p>
+          <div className="mt-7 flex items-center justify-between gap-4">
+            <button
+              type="button"
+              aria-label="Previous chapter"
+              onClick={() =>
+                chooseMobileChapter((mobileIndex - 1 + chapters.length) % chapters.length)
+              }
+              className="grid h-12 w-12 shrink-0 place-items-center rounded-full border text-xl transition-colors hover:border-signal"
+              style={{ borderColor: `${mobileShown.accent}80` }}
+            >
+              ←
+            </button>
+            <nav aria-label="Acoustic journey chapters" className="flex items-center gap-2">
+              {chapters.map((chapter, index) => (
+                <button
+                  key={chapter.id}
+                  type="button"
+                  onClick={() => chooseMobileChapter(index)}
+                  aria-label={`Go to ${chapter.word} chapter`}
+                  aria-current={index === mobileIndex ? "true" : undefined}
+                  className="h-2.5 rounded-full transition-all"
+                  style={{
+                    width: index === mobileIndex ? 28 : 10,
+                    backgroundColor:
+                      index === mobileIndex ? mobileShown.accent : "rgba(255,255,255,.28)",
+                  }}
+                />
+              ))}
+            </nav>
+            <button
+              type="button"
+              aria-label="Next chapter"
+              onClick={() => chooseMobileChapter((mobileIndex + 1) % chapters.length)}
+              className="grid h-12 w-12 shrink-0 place-items-center rounded-full border text-xl transition-colors hover:border-signal"
+              style={{ borderColor: `${mobileShown.accent}80` }}
+            >
+              →
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="sticky top-0 hidden h-screen overflow-hidden md:block">
         <div aria-hidden="true" className="absolute inset-0 bg-[rgba(10,10,10,0.74)] md:hidden" />
         <div
           aria-hidden="true"

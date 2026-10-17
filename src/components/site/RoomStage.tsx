@@ -203,7 +203,7 @@ export function RoomStage({ config, def }: { config: ConfigState; def: ConfigDef
 
   return (
     <div
-      className={`room-stage h-[70vh] min-h-[500px] w-full${webglReady ? " room-stage--rendered" : ""}`}
+      className={`room-stage h-[min(52svh,460px)] min-h-[300px] w-full md:h-[70vh] md:min-h-[500px]${webglReady ? " room-stage--rendered" : ""}`}
       role="img"
       aria-label={`Room preview: ${coverage} ${finish.label} acoustic ${coverage > 1 ? "panels" : "panel"} on the ${config.walls === "both" ? "rear and side walls" : config.walls} wall, ${felt.label} felt, ${config.layout} slats`}
       data-testid="room-stage"
