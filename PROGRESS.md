@@ -8,3 +8,7 @@
 - Refined homepage animations with the recovered components, corrected source-map text encoding and display typography, self-hosted the reference fonts and 23 catalogue/project photographs, and restored the two-handle price filter. Compared the catalogue screenshot and browser-checked filtering, both slider handles and image loading. Typecheck, targeted lint and existing tests pass.
 - Corrected the remaining catalogue text encoding after final review; targeted ESLint passed.
 - Final repository-wide lint reports 60 formatting errors and 15 warnings in the existing baseline and other untouched files; targeted lint for the new routes and adapted reference components passes with six Fast Refresh warnings. Existing user modifications to `StoryPanel.tsx` and `styles.css` remain untouched. Full page-by-page screenshot comparisons and a production backend for enquiry/authentication remain outstanding.
+
+## Brand-led redesign
+
+- Read the brand book (26 pages), client brief and its two embedded screenshots; studied Teenage Engineering, OP-XY and Alt Shift at desktop and mobile sizes. Recorded requirements and direction in `DESIGN_DIRECTION.md` and prepared original brand-book logo vectors. Next: implement the shared identity and material-led homepage.
