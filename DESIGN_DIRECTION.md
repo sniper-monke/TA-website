@@ -26,3 +26,7 @@
 ## Implementation
 
 Create a light material-led homepage with an interactive timber panel, an acoustic-principle study, a retained product collection, illustrative spaces and room presets. Introduce a shared brand-correct header/footer and carry the precise grid, smaller type, consistent controls and technical detail through existing routes. Use reduced-motion fallbacks and keep browser-only rendering outside SSR. Keep real sample content labelled.
+
+## Applied design and review
+
+The shipped pass uses the official brand-book wordmark, local Raleway and Quicksand, the specified navy/orange/beige palette, and a darker orange tint for small text and active states. Product geometry is built in CSS rather than borrowing the reference sites' product artwork. The acoustic sequence uses native sticky layout and Framer Motion with reduced-motion and smaller-screen fallbacks. Review images and the route/interaction audit are recorded in `docs/design-review/README.md`.
