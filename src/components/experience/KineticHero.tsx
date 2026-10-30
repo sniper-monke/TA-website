@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useReducedMotionPreference } from "@/hooks/use-reduced-motion";
 import {
   ArrowDown,
   ArrowRight,
@@ -25,16 +26,7 @@ export function KineticHero() {
   const [finish, setFinish] = useState<TimberFinish>("oak");
   const [exploded, setExploded] = useState(false);
   const [paused, setPaused] = useState(false);
-  const reducedPreference = useReducedMotion();
-  const [deviceReduced, setDeviceReduced] = useState<boolean | null>(null);
-  const reduced = deviceReduced ?? reducedPreference ?? false;
-  useEffect(() => {
-    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setDeviceReduced(preference.matches);
-    update();
-    preference.addEventListener("change", update);
-    return () => preference.removeEventListener("change", update);
-  }, []);
+  const reduced = useReducedMotionPreference();
   const active = !paused && !reduced;
   const selected = finishes.find((item) => item.id === finish)!;
   const ref = useRef<HTMLElement>(null);

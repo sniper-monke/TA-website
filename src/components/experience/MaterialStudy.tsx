@@ -1,5 +1,6 @@
 import { useRef, type CSSProperties } from "react";
-import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useReducedMotionPreference } from "@/hooks/use-reduced-motion";
 import { BrandContours } from "./BrandContours";
 
 export type TimberFinish = "oak" | "walnut" | "ebony";
@@ -21,7 +22,7 @@ export function MaterialStudy({
   motionPaused?: boolean;
 }) {
   const host = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionPreference();
   const pointer = useMotionValue(0);
   const pointerY = useMotionValue(0);
   const smooth = useSpring(pointer, { stiffness: 90, damping: 24 });

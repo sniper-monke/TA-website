@@ -1,13 +1,8 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
-import {
-  AnimatePresence,
-  motion,
-  useMotionValueEvent,
-  useReducedMotion,
-  useScroll,
-} from "framer-motion";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { ArrowRight, ArrowUpRight, Minus, Plus } from "lucide-react";
+import { useReducedMotionPreference } from "@/hooks/use-reduced-motion";
 import products from "@/data/reference-products.json";
 import projects from "@/data/reference-projects.json";
 import { BrandContours } from "./BrandContours";
@@ -84,7 +79,7 @@ function Reveal({
   className?: string;
   delay?: number;
 }) {
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionPreference();
   return (
     <motion.div
       className={className}
@@ -103,7 +98,7 @@ function SoundStudy() {
   const section = useRef<HTMLElement>(null);
   const scrollEnabled = useRef(false);
   const lastScrollChapter = useRef(0);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionPreference();
   const { scrollYProgress } = useScroll({ target: section, offset: ["start start", "end end"] });
   useEffect(() => {
     const query = window.matchMedia("(min-width: 1100px) and (min-height: 850px)");

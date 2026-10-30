@@ -751,6 +751,11 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .ta-kinetic-kicker,
+  .ta-kinetic-title > span > span {
+    opacity: 1 !important;
+    transform: none !important;
+  }
   .ta-hero-kinetic *,
   .ta-contour-line {
     animation: none !important;

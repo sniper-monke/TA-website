@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useReducedMotionPreference } from "@/hooks/use-reduced-motion";
 import { BrandContours } from "./BrandContours";
 
 export function PageIntro({
@@ -13,7 +14,7 @@ export function PageIntro({
   italic?: string;
   children?: ReactNode;
 }) {
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionPreference();
   return (
     <section className="ta-page-hero">
       <BrandContours className="ta-page-contours" />
