@@ -13,10 +13,10 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "@/lib/cart";
-import {
-  ReferenceHeader as Header,
-  ReferenceFooter as Footer,
-} from "@/components/site/ReferenceChrome";
+import { Header, Footer } from "@/reference/components/Chrome";
+import { BasketProvider } from "@/reference/context/BasketContext";
+import { Toaster } from "sonner";
+import referenceUtilities from "../reference-utilities.css?url";
 import referenceBase from "../reference-base.css?url";
 import referenceEditorial from "../reference-editorial.css?url";
 
@@ -95,6 +95,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "stylesheet", href: referenceUtilities },
       { rel: "stylesheet", href: referenceBase },
       { rel: "stylesheet", href: referenceEditorial },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -133,17 +134,20 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <CartProvider>
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:bg-foreground focus:p-3 focus:text-background"
-        >
-          Skip to content
-        </a>
-        <Header />
-        <main id="main">
-          <Outlet />
-        </main>
-        <Footer />
+        <BasketProvider>
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:bg-foreground focus:p-3 focus:text-background"
+          >
+            Skip to content
+          </a>
+          <Header />
+          <main id="main">
+            <Outlet />
+          </main>
+          <Footer />
+          <Toaster position="bottom-right" richColors closeButton />
+        </BasketProvider>
       </CartProvider>
     </QueryClientProvider>
   );

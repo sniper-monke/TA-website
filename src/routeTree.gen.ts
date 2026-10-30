@@ -10,17 +10,32 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BasketRouteImport } from './routes/basket'
+import { Route as BuildARoomRouteImport } from './routes/build-a-room'
 import { Route as ConfiguratorRouteImport } from './routes/configurator'
 import { Route as ContactRouteImport } from './routes/contact'
-import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as StoryRouteImport } from './routes/story'
 import { Route as CollectionsFamilyRouteImport } from './routes/collections.$family'
+import { Route as GuidesIndexRouteImport } from './routes/guides.index'
+import { Route as GuidesSlugRouteImport } from './routes/guides.$slug'
 import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
+import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
+import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BasketRoute = BasketRouteImport.update({
+  id: '/basket',
+  path: '/basket',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BuildARoomRoute = BuildARoomRouteImport.update({
+  id: '/build-a-room',
+  path: '/build-a-room',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConfiguratorRoute = ConfiguratorRouteImport.update({
@@ -33,11 +48,6 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProjectsRoute = ProjectsRouteImport.update({
-  id: '/projects',
-  path: '/projects',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const StoryRoute = StoryRouteImport.update({
   id: '/story',
   path: '/story',
@@ -46,6 +56,16 @@ const StoryRoute = StoryRouteImport.update({
 const CollectionsFamilyRoute = CollectionsFamilyRouteImport.update({
   id: '/collections/$family',
   path: '/collections/$family',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuidesIndexRoute = GuidesIndexRouteImport.update({
+  id: '/guides/',
+  path: '/guides/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuidesSlugRoute = GuidesSlugRouteImport.update({
+  id: '/guides/$slug',
+  path: '/guides/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsIndexRoute = ProductsIndexRouteImport.update({
@@ -58,80 +78,125 @@ const ProductsSlugRoute = ProductsSlugRouteImport.update({
   path: '/products/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
+  id: '/projects/',
+  path: '/projects/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
+  id: '/projects/$slug',
+  path: '/projects/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/basket': typeof BasketRoute
+  '/build-a-room': typeof BuildARoomRoute
   '/configurator': typeof ConfiguratorRoute
   '/contact': typeof ContactRoute
-  '/projects': typeof ProjectsRoute
   '/story': typeof StoryRoute
   '/collections/$family': typeof CollectionsFamilyRoute
+  '/guides/$slug': typeof GuidesSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/projects/$slug': typeof ProjectsSlugRoute
+  '/guides/': typeof GuidesIndexRoute
   '/products/': typeof ProductsIndexRoute
+  '/projects/': typeof ProjectsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/basket': typeof BasketRoute
+  '/build-a-room': typeof BuildARoomRoute
   '/configurator': typeof ConfiguratorRoute
   '/contact': typeof ContactRoute
-  '/projects': typeof ProjectsRoute
   '/story': typeof StoryRoute
   '/collections/$family': typeof CollectionsFamilyRoute
+  '/guides/$slug': typeof GuidesSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/projects/$slug': typeof ProjectsSlugRoute
+  '/guides': typeof GuidesIndexRoute
   '/products': typeof ProductsIndexRoute
+  '/projects': typeof ProjectsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/basket': typeof BasketRoute
+  '/build-a-room': typeof BuildARoomRoute
   '/configurator': typeof ConfiguratorRoute
   '/contact': typeof ContactRoute
-  '/projects': typeof ProjectsRoute
   '/story': typeof StoryRoute
   '/collections/$family': typeof CollectionsFamilyRoute
+  '/guides/$slug': typeof GuidesSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/projects/$slug': typeof ProjectsSlugRoute
+  '/guides/': typeof GuidesIndexRoute
   '/products/': typeof ProductsIndexRoute
+  '/projects/': typeof ProjectsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/basket'
+    | '/build-a-room'
     | '/configurator'
     | '/contact'
-    | '/projects'
     | '/story'
     | '/collections/$family'
+    | '/guides/$slug'
     | '/products/$slug'
+    | '/projects/$slug'
+    | '/guides/'
     | '/products/'
+    | '/projects/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/basket'
+    | '/build-a-room'
     | '/configurator'
     | '/contact'
-    | '/projects'
     | '/story'
     | '/collections/$family'
+    | '/guides/$slug'
     | '/products/$slug'
+    | '/projects/$slug'
+    | '/guides'
     | '/products'
+    | '/projects'
   id:
     | '__root__'
     | '/'
+    | '/basket'
+    | '/build-a-room'
     | '/configurator'
     | '/contact'
-    | '/projects'
     | '/story'
     | '/collections/$family'
+    | '/guides/$slug'
     | '/products/$slug'
+    | '/projects/$slug'
+    | '/guides/'
     | '/products/'
+    | '/projects/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BasketRoute: typeof BasketRoute
+  BuildARoomRoute: typeof BuildARoomRoute
   ConfiguratorRoute: typeof ConfiguratorRoute
   ContactRoute: typeof ContactRoute
-  ProjectsRoute: typeof ProjectsRoute
   StoryRoute: typeof StoryRoute
   CollectionsFamilyRoute: typeof CollectionsFamilyRoute
+  GuidesSlugRoute: typeof GuidesSlugRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
+  ProjectsSlugRoute: typeof ProjectsSlugRoute
+  GuidesIndexRoute: typeof GuidesIndexRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
+  ProjectsIndexRoute: typeof ProjectsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -141,6 +206,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/basket': {
+      id: '/basket'
+      path: '/basket'
+      fullPath: '/basket'
+      preLoaderRoute: typeof BasketRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/build-a-room': {
+      id: '/build-a-room'
+      path: '/build-a-room'
+      fullPath: '/build-a-room'
+      preLoaderRoute: typeof BuildARoomRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/configurator': {
@@ -157,13 +236,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/projects': {
-      id: '/projects'
-      path: '/projects'
-      fullPath: '/projects'
-      preLoaderRoute: typeof ProjectsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/story': {
       id: '/story'
       path: '/story'
@@ -176,6 +248,20 @@ declare module '@tanstack/react-router' {
       path: '/collections/$family'
       fullPath: '/collections/$family'
       preLoaderRoute: typeof CollectionsFamilyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guides/': {
+      id: '/guides/'
+      path: '/guides'
+      fullPath: '/guides/'
+      preLoaderRoute: typeof GuidesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guides/$slug': {
+      id: '/guides/$slug'
+      path: '/guides/$slug'
+      fullPath: '/guides/$slug'
+      preLoaderRoute: typeof GuidesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products/': {
@@ -192,18 +278,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/projects/': {
+      id: '/projects/'
+      path: '/projects'
+      fullPath: '/projects/'
+      preLoaderRoute: typeof ProjectsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects/$slug': {
+      id: '/projects/$slug'
+      path: '/projects/$slug'
+      fullPath: '/projects/$slug'
+      preLoaderRoute: typeof ProjectsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BasketRoute: BasketRoute,
+  BuildARoomRoute: BuildARoomRoute,
   ConfiguratorRoute: ConfiguratorRoute,
   ContactRoute: ContactRoute,
-  ProjectsRoute: ProjectsRoute,
   StoryRoute: StoryRoute,
   CollectionsFamilyRoute: CollectionsFamilyRoute,
+  GuidesSlugRoute: GuidesSlugRoute,
   ProductsSlugRoute: ProductsSlugRoute,
+  ProjectsSlugRoute: ProjectsSlugRoute,
+  GuidesIndexRoute: GuidesIndexRoute,
   ProductsIndexRoute: ProductsIndexRoute,
+  ProjectsIndexRoute: ProjectsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
