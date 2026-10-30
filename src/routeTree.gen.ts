@@ -15,6 +15,9 @@ import { Route as BuildARoomRouteImport } from './routes/build-a-room'
 import { Route as ConfiguratorRouteImport } from './routes/configurator'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as StoryRouteImport } from './routes/story'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminSplatRouteImport } from './routes/admin.$'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as CollectionsFamilyRouteImport } from './routes/collections.$family'
 import { Route as GuidesIndexRouteImport } from './routes/guides.index'
 import { Route as GuidesSlugRouteImport } from './routes/guides.$slug'
@@ -51,6 +54,21 @@ const ContactRoute = ContactRouteImport.update({
 const StoryRoute = StoryRouteImport.update({
   id: '/story',
   path: '/story',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSplatRoute = AdminSplatRouteImport.update({
+  id: '/admin/$',
+  path: '/admin/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CollectionsFamilyRoute = CollectionsFamilyRouteImport.update({
@@ -96,10 +114,13 @@ export interface FileRoutesByFullPath {
   '/configurator': typeof ConfiguratorRoute
   '/contact': typeof ContactRoute
   '/story': typeof StoryRoute
+  '/admin/$': typeof AdminSplatRoute
+  '/admin/login': typeof AdminLoginRoute
   '/collections/$family': typeof CollectionsFamilyRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/guides/': typeof GuidesIndexRoute
   '/products/': typeof ProductsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
@@ -111,10 +132,13 @@ export interface FileRoutesByTo {
   '/configurator': typeof ConfiguratorRoute
   '/contact': typeof ContactRoute
   '/story': typeof StoryRoute
+  '/admin/$': typeof AdminSplatRoute
+  '/admin/login': typeof AdminLoginRoute
   '/collections/$family': typeof CollectionsFamilyRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/admin': typeof AdminIndexRoute
   '/guides': typeof GuidesIndexRoute
   '/products': typeof ProductsIndexRoute
   '/projects': typeof ProjectsIndexRoute
@@ -127,10 +151,13 @@ export interface FileRoutesById {
   '/configurator': typeof ConfiguratorRoute
   '/contact': typeof ContactRoute
   '/story': typeof StoryRoute
+  '/admin/$': typeof AdminSplatRoute
+  '/admin/login': typeof AdminLoginRoute
   '/collections/$family': typeof CollectionsFamilyRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/guides/': typeof GuidesIndexRoute
   '/products/': typeof ProductsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
@@ -144,10 +171,13 @@ export interface FileRouteTypes {
     | '/configurator'
     | '/contact'
     | '/story'
+    | '/admin/$'
+    | '/admin/login'
     | '/collections/$family'
     | '/guides/$slug'
     | '/products/$slug'
     | '/projects/$slug'
+    | '/admin/'
     | '/guides/'
     | '/products/'
     | '/projects/'
@@ -159,10 +189,13 @@ export interface FileRouteTypes {
     | '/configurator'
     | '/contact'
     | '/story'
+    | '/admin/$'
+    | '/admin/login'
     | '/collections/$family'
     | '/guides/$slug'
     | '/products/$slug'
     | '/projects/$slug'
+    | '/admin'
     | '/guides'
     | '/products'
     | '/projects'
@@ -174,10 +207,13 @@ export interface FileRouteTypes {
     | '/configurator'
     | '/contact'
     | '/story'
+    | '/admin/$'
+    | '/admin/login'
     | '/collections/$family'
     | '/guides/$slug'
     | '/products/$slug'
     | '/projects/$slug'
+    | '/admin/'
     | '/guides/'
     | '/products/'
     | '/projects/'
@@ -190,10 +226,13 @@ export interface RootRouteChildren {
   ConfiguratorRoute: typeof ConfiguratorRoute
   ContactRoute: typeof ContactRoute
   StoryRoute: typeof StoryRoute
+  AdminSplatRoute: typeof AdminSplatRoute
+  AdminLoginRoute: typeof AdminLoginRoute
   CollectionsFamilyRoute: typeof CollectionsFamilyRoute
   GuidesSlugRoute: typeof GuidesSlugRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
+  AdminIndexRoute: typeof AdminIndexRoute
   GuidesIndexRoute: typeof GuidesIndexRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
@@ -241,6 +280,27 @@ declare module '@tanstack/react-router' {
       path: '/story'
       fullPath: '/story'
       preLoaderRoute: typeof StoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/$': {
+      id: '/admin/$'
+      path: '/admin/$'
+      fullPath: '/admin/$'
+      preLoaderRoute: typeof AdminSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/collections/$family': {
@@ -302,10 +362,13 @@ const rootRouteChildren: RootRouteChildren = {
   ConfiguratorRoute: ConfiguratorRoute,
   ContactRoute: ContactRoute,
   StoryRoute: StoryRoute,
+  AdminSplatRoute: AdminSplatRoute,
+  AdminLoginRoute: AdminLoginRoute,
   CollectionsFamilyRoute: CollectionsFamilyRoute,
   GuidesSlugRoute: GuidesSlugRoute,
   ProductsSlugRoute: ProductsSlugRoute,
   ProjectsSlugRoute: ProjectsSlugRoute,
+  AdminIndexRoute: AdminIndexRoute,
   GuidesIndexRoute: GuidesIndexRoute,
   ProductsIndexRoute: ProductsIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
