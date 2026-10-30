@@ -41,3 +41,9 @@
 
 - Created `design-v2` from `aa3bbba`, retaining all ten redesign commits after the existing remote `main` (`2def497`). Included the two remaining local UI edits: responsive StoryPanel sizing/layout and horizontal overflow clipping. Added explicit TanStack Start framework detection, npm installation/build commands for Vercel, and ignored generated `.vercel/` files.
 - Formatting, targeted ESLint, typecheck and all four tests passed. A production build with `NITRO_PRESET=vercel` passed and generated valid Vercel Build Output v3 with the Node.js 24 SSR handler. The npm lockfile matches package.json. Reviewed the diff and preserved the untracked brand documents and unrelated `tmp/` content. The new Vercel project should track `design-v2` as its Production Branch; the existing online site remains on remote `main`.
+
+## Vercel clean-install repair
+
+- Compared `origin/main`: its package manifest and lockfile were identical to design-v2's. The explicit frozen install exposed missing optional/WASM peer records that the older local npm accepted. Reproduced Vercel's exact `EUSAGE` failure for `@emnapi/core@1.11.3` and `@emnapi/runtime@1.11.3` with npm 11.21.1.
+- Regenerated the lockfile with npm 11.21.1. Added eight missing records, including bundled Tailwind WASM dependencies, and normalized peer metadata. No existing dependency versions or package.json requirements changed; retained `npm ci` for reproducible deployments.
+- Validated a full clean install with lifecycle scripts in a temporary checkout outside the existing dependency tree, then passed typecheck, all four tests and the Vercel-targeted production build using those freshly installed dependencies. Formatting and diff checks passed. The earlier direct-dependency comparison/build check did not catch the frozen-install failure; this verification covers it explicitly.
