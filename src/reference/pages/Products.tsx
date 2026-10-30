@@ -15,7 +15,7 @@ const SORTS = [
   { id: "featured", label: "Featured" },
   { id: "price-asc", label: "Price: low to high" },
   { id: "price-desc", label: "Price: high to low" },
-  { id: "name", label: "Name Aâ€“Z" },
+  { id: "name", label: "Name A–Z" },
 ];
 
 export default function Products() {
@@ -94,7 +94,7 @@ export default function Products() {
 
   return (
     <FadePage>
-      <PageHero eyebrow="Catalogue Â· Demo data" title="All products">
+      <PageHero eyebrow="Catalogue · Demo data" title="All products">
         Panels, slats, diffusers and more. Considered pieces for a room that sounds as good as it
         looks.
       </PageHero>
@@ -141,7 +141,7 @@ export default function Products() {
                 className="whitespace-nowrap text-xs font-normal text-timber-ink/60"
                 data-testid="price-range-label"
               >
-                {formatPrice(range[0])} â€” {formatPrice(range[1])}
+                {formatPrice(range[0])} — {formatPrice(range[1])}
               </p>
             </div>
           </div>
@@ -181,7 +181,7 @@ export default function Products() {
 
         <p className="label-quiet mt-10" data-testid="results-count">
           {loading
-            ? "Loadingâ€¦"
+            ? "Loading…"
             : error
               ? "Collection temporarily unavailable"
               : `${visible.length} of ${products.length} products`}
