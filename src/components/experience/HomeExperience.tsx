@@ -1,6 +1,13 @@
-import { useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
-import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { ArrowDown, ArrowRight, ArrowUpRight, Layers3, Minus, Plus } from "lucide-react";
 import products from "@/data/reference-products.json";
 import projects from "@/data/reference-projects.json";
@@ -206,81 +213,127 @@ function Hero() {
 
 function SoundStudy() {
   const [active, setActive] = useState(0);
+  const section = useRef<HTMLElement>(null);
+  const scrollEnabled = useRef(false);
+  const lastScrollChapter = useRef(0);
+  const reduced = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: section, offset: ["start start", "end end"] });
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 1100px) and (min-height: 850px)");
+    const update = () => {
+      scrollEnabled.current = query.matches && !reduced;
+    };
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, [reduced]);
+  useMotionValueEvent(scrollYProgress, "change", (progress) => {
+    if (!scrollEnabled.current) return;
+    const chapter = Math.min(2, Math.floor(progress * 3));
+    if (chapter !== lastScrollChapter.current) {
+      lastScrollChapter.current = chapter;
+      setActive(chapter);
+    }
+  });
   const principle = principles[active]!;
   return (
-    <section id="sound-study" className="ta-sound-study ta-shell" data-testid="sound-study">
-      <Reveal className="ta-section-heading">
-        <p className="ta-micro ta-rust">01 / A different way to hear</p>
-        <h2>
-          A room is more than
-          <br />
-          what you <em>see.</em>
-        </h2>
-        <p>
-          It’s the conversation that flows.
-          <br />
-          The quiet that lets you think.
-          <br />
-          The feeling when a record comes alive.
-        </p>
-      </Reveal>
-      <div className="ta-study-console">
-        <div className="ta-study-visual">
-          <div className="ta-study-readout ta-micro">
-            <span>Material behaviour</span>
-            <span>0{active + 1} / 03</span>
-          </div>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={principle.id}
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.03 }}
-              transition={{ duration: 0.35 }}
-            >
-              <MaterialStudy mode={principle.id} finish="walnut" />
-            </motion.div>
-          </AnimatePresence>
-          <p className="ta-study-detail ta-micro">
-            {principle.detail}
-            <span>Illustrative geometry</span>
+    <section
+      ref={section}
+      id="sound-study"
+      className="ta-sound-study ta-shell"
+      data-testid="sound-study"
+    >
+      <div className="ta-study-stick">
+        <Reveal className="ta-section-heading">
+          <p className="ta-micro ta-rust">01 / A different way to hear</p>
+          <h2>
+            A room is more than
+            <br />
+            what you <em>see.</em>
+          </h2>
+          <p>
+            It’s the conversation that flows.
+            <br />
+            The quiet that lets you think.
+            <br />
+            The feeling when a record comes alive.
           </p>
-        </div>
-        <div className="ta-study-content">
-          <div className="ta-principle-tabs" role="tablist" aria-label="Acoustic principles">
-            {principles.map((item, index) => (
-              <button
-                key={item.id}
-                id={`tab-${item.id}`}
-                role="tab"
-                aria-selected={active === index}
-                aria-controls="ta-principle-panel"
-                onClick={() => setActive(index)}
-                data-testid={`principle-${item.id}`}
+        </Reveal>
+        <div className="ta-study-console">
+          <div className="ta-study-visual">
+            <div className="ta-study-readout ta-micro">
+              <span>Material behaviour</span>
+              <span>0{active + 1} / 03</span>
+            </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={principle.id}
+                initial={{ opacity: 0, scale: 0.97 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.03 }}
+                transition={{ duration: 0.35 }}
               >
-                <span className="ta-micro">0{index + 1}</span>
-                {item.title}
-                <span>{active === index ? <Minus size={16} /> : <Plus size={16} />}</span>
-              </button>
-            ))}
+                <MaterialStudy mode={principle.id} finish="walnut" />
+              </motion.div>
+            </AnimatePresence>
+            <p className="ta-study-detail ta-micro">
+              {principle.detail}
+              <span>Illustrative geometry</span>
+            </p>
           </div>
-          <div
-            id="ta-principle-panel"
-            role="tabpanel"
-            aria-labelledby={`tab-${principle.id}`}
-            className="ta-principle-copy"
-            data-testid="principle-description"
-          >
-            <p className="ta-micro ta-rust">The idea / {principle.id}</p>
-            <h3>{principle.line}</h3>
-            <p>{principle.copy}</p>
-            <a href={`/products?family=${principle.family}`} className="ta-text-link">
-              Explore the treatment <ArrowUpRight size={16} />
-            </a>
+          <div className="ta-study-content">
+            <div className="ta-principle-tabs" role="tablist" aria-label="Acoustic principles">
+              {principles.map((item, index) => (
+                <button
+                  key={item.id}
+                  id={`tab-${item.id}`}
+                  role="tab"
+                  aria-selected={active === index}
+                  aria-controls="ta-principle-panel"
+                  tabIndex={active === index ? 0 : -1}
+                  onClick={() => setActive(index)}
+                  onKeyDown={(event) => {
+                    if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(event.key)) return;
+                    event.preventDefault();
+                    const next =
+                      event.key === "Home"
+                        ? 0
+                        : event.key === "End"
+                          ? principles.length - 1
+                          : (index + (event.key === "ArrowRight" ? 1 : -1) + principles.length) %
+                            principles.length;
+                    setActive(next);
+                    document.getElementById(`tab-${principles[next]!.id}`)?.focus();
+                  }}
+                  data-testid={`principle-${item.id}`}
+                >
+                  <span className="ta-micro">0{index + 1}</span>
+                  {item.title}
+                  <span>{active === index ? <Minus size={16} /> : <Plus size={16} />}</span>
+                </button>
+              ))}
+            </div>
+            <div
+              id="ta-principle-panel"
+              role="tabpanel"
+              aria-labelledby={`tab-${principle.id}`}
+              className="ta-principle-copy"
+              data-testid="principle-description"
+            >
+              <p className="ta-micro ta-rust">The idea / {principle.id}</p>
+              <h3>{principle.line}</h3>
+              <p>{principle.copy}</p>
+              <a href={`/products?family=${principle.family}`} className="ta-text-link">
+                Explore the treatment <ArrowUpRight size={16} />
+              </a>
+            </div>
+            <Link to="/story" className="ta-study-footnote ta-micro">
+              The Timber philosophy <ArrowUpRight size={14} />
+            </Link>
           </div>
-          <Link to="/story" className="ta-study-footnote ta-micro">
-            The Timber philosophy <ArrowUpRight size={14} />
-          </Link>
+        </div>
+        <div className="ta-study-scroll-track" aria-hidden="true">
+          <motion.div style={{ scaleX: scrollYProgress }} />
         </div>
       </div>
     </section>

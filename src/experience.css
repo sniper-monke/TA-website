@@ -21,15 +21,30 @@
 }
 
 .ta-experience {
+  overflow-x: clip;
+  overflow-y: visible;
   --ta-paper: #f5f2eb;
   --ta-white: #fcfaf6;
   --ta-beige: #e9dcc9;
   --ta-ink: #153a54;
   --ta-rust: #bf673b;
+  --ta-rust-strong: #a4532d;
   --ta-teal: #248082;
   --ta-rule: rgba(21, 58, 84, 0.2);
   --timber-paper: var(--ta-paper);
   --timber-rule: var(--ta-rule);
+  --background: var(--ta-paper);
+  --foreground: var(--ta-ink);
+  --card: var(--ta-white);
+  --card-foreground: var(--ta-ink);
+  --primary: var(--ta-ink);
+  --primary-foreground: var(--ta-paper);
+  --muted: var(--ta-beige);
+  --muted-foreground: #627580;
+  --border: #c4cecc;
+  --input: #c4cecc;
+  --ring: var(--ta-rust);
+  --signal: var(--ta-rust);
   background: var(--ta-paper);
   color: var(--ta-ink);
   font-family: Quicksand, Montserrat, sans-serif;
@@ -62,7 +77,7 @@
 .ta-experience select,
 .ta-experience input,
 .ta-experience textarea {
-  font: inherit;
+  font-family: inherit;
 }
 .ta-experience button {
   cursor: pointer;
@@ -96,10 +111,10 @@
   text-transform: uppercase;
 }
 .ta-rust {
-  color: var(--ta-rust);
+  color: var(--ta-rust-strong);
 }
 .ta-experience .label-eyebrow {
-  color: var(--ta-rust);
+  color: var(--ta-rust-strong);
 }
 .ta-experience .label-quiet {
   color: #627580;
@@ -576,16 +591,42 @@
   transform-style: preserve-3d;
 }
 .ta-diffuser-board > span {
+  position: relative;
+  transform-style: preserve-3d;
   background: var(--wood-colour);
   transform: translateZ(var(--depth));
-  box-shadow:
-    3px 3px var(--wood-shade),
-    6px 6px var(--wood-shade),
-    9px 9px var(--wood-shade),
-    12px 12px var(--wood-shade),
-    15px 15px 0 var(--wood-shade),
-    18px 18px 15px #14241e40;
   border: 1px solid #ffffff25;
+}
+.ta-diffuser-board > span::before,
+.ta-diffuser-board > span::after {
+  content: "";
+  position: absolute;
+  background: var(--wood-shade);
+}
+.ta-diffuser-board > span::before {
+  left: 100%;
+  top: -1px;
+  width: var(--depth);
+  height: calc(100% + 2px);
+  transform-origin: left;
+  transform: rotateY(90deg);
+  filter: brightness(0.82);
+}
+.ta-diffuser-board > span::after {
+  left: -1px;
+  top: 100%;
+  width: calc(100% + 2px);
+  height: var(--depth);
+  transform-origin: top;
+  transform: rotateX(-90deg);
+}
+.ta-diffuser-board::before {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  background: var(--wood-shade);
+  transform: translateZ(-1px);
+  box-shadow: 15px 20px 20px #14241e25;
 }
 .ta-diffuser-board > span:nth-child(3n) {
   filter: brightness(1.15);
@@ -687,6 +728,16 @@
   font-size: 8px;
   color: #6f838b;
 }
+.ta-study-scroll-track {
+  height: 2px;
+  background: var(--ta-rule);
+  margin-top: 16px;
+}
+.ta-study-scroll-track > div {
+  height: 100%;
+  background: var(--ta-rust);
+  transform-origin: left;
+}
 .ta-study-content {
   display: flex;
   flex-direction: column;
@@ -712,7 +763,7 @@
   margin-left: auto;
 }
 .ta-principle-tabs button[aria-selected="true"] {
-  background: var(--ta-rust);
+  background: var(--ta-rust-strong);
   color: var(--ta-paper);
 }
 .ta-principle-copy {
@@ -1113,6 +1164,7 @@
 /* Carry the same design system into the existing working catalogue and tools. */
 .ta-experience .ta-page-hero {
   position: relative;
+  overflow: hidden;
   padding: 155px 48px 60px;
   background: var(--ta-paper);
   border-bottom: 1px solid var(--ta-rule);
@@ -1120,6 +1172,39 @@
 }
 .ta-page-hero::after {
   display: none;
+}
+.ta-page-intro-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1504px;
+  margin-inline: auto;
+}
+.ta-page-contours {
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  right: 4%;
+  top: 20px;
+  opacity: 0.045;
+}
+.ta-intro-accent {
+  color: var(--ta-rust);
+}
+.ta-page-description {
+  margin-top: 24px;
+  max-width: 580px;
+  font-size: 13px;
+  line-height: 1.85;
+  color: #526c7c;
+}
+.ta-not-found {
+  padding-block: 180px 100px;
+}
+.ta-not-found h1 {
+  font-size: clamp(38px, 5vw, 64px);
+  line-height: 1.2;
+  margin: 24px 0 36px;
+  font-weight: 300;
 }
 .ta-experience .ta-page-hero h1 {
   font-size: clamp(38px, 4.4vw, 64px);
@@ -1322,7 +1407,93 @@
 .ta-experience .login-page {
   padding-top: 140px;
 }
+.ta-atelier-view-controls {
+  display: flex;
+  border-bottom: 1px solid var(--ta-rule);
+  padding-inline: 22px;
+  gap: 26px;
+}
+.ta-experience [data-testid="configurator"] .ta-atelier-view-controls button {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  padding: 13px 0;
+  font:
+    9px/1.6 ui-monospace,
+    monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6e8189;
+}
+.ta-experience [data-testid="configurator"] .ta-atelier-view-controls button[aria-pressed="true"] {
+  color: var(--ta-rust);
+  border-bottom-color: var(--ta-rust);
+}
+.ta-atelier-material > p {
+  text-align: center;
+  font-size: 9px;
+  margin-top: 10px;
+  color: #647b87;
+}
+.ta-atelier-material .ta-material-study {
+  height: 400px;
+}
+.ta-contact-form input,
+.ta-contact-form select,
+.ta-contact-form textarea {
+  background: var(--ta-white);
+  border: 1px solid var(--ta-rule);
+  border-radius: 2px;
+  font-size: 13px;
+}
+.ta-contact-form .label-mono {
+  font:
+    9px/1.7 ui-monospace,
+    monospace;
+  letter-spacing: 0.06em;
+  color: #647b87;
+}
+.ta-contact-form > button {
+  background: var(--ta-ink);
+  color: var(--ta-paper);
+  font:
+    11px/1.7 Quicksand,
+    sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.ta-contact-form > button:hover {
+  background: var(--ta-rust);
+}
 
+@media (min-width: 1100px) and (min-height: 850px) and (prefers-reduced-motion: no-preference) {
+  .ta-sound-study {
+    min-height: calc(210svh + 200px);
+    padding-top: 70px;
+    padding-bottom: 90px;
+  }
+  .ta-study-stick {
+    position: sticky;
+    top: 115px;
+  }
+  .ta-sound-study .ta-section-heading {
+    margin-bottom: 32px;
+  }
+  .ta-sound-study .ta-section-heading h2 {
+    font-size: 42px;
+  }
+  .ta-study-visual .ta-material-study {
+    height: 360px;
+  }
+  .ta-principle-copy {
+    padding-block: 30px;
+  }
+  .ta-principle-copy h3 {
+    margin-block: 20px;
+    font-size: 30px;
+  }
+}
 @media (min-width: 1600px) {
   .ta-hero-main {
     min-height: 660px;
@@ -1410,6 +1581,69 @@
   .ta-experience [data-testid="configurator"],
   .ta-experience [data-testid="product-detail"] {
     padding-inline: 32px;
+  }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .ta-section-heading {
+    grid-template-columns: 1fr 1fr;
+    gap: 22px 32px;
+  }
+  .ta-section-heading > .ta-micro {
+    grid-column: 1 / -1;
+    padding-top: 0;
+  }
+  .ta-section-heading h2 {
+    font-size: 38px;
+  }
+  .ta-section-heading > .ta-text-link {
+    align-self: end;
+  }
+  .ta-room-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+  .ta-footer-top {
+    grid-template-columns: 1fr 0.7fr;
+  }
+  .ta-footer-links {
+    grid-column: 2;
+  }
+  .ta-footer-base > p {
+    display: none;
+  }
+  .ta-hero-copy {
+    padding-right: 0;
+  }
+  .ta-hero-copy h1 {
+    font-size: 52px;
+  }
+  .ta-hero-product .ta-material-study {
+    height: 340px;
+  }
+  .ta-hero-product .ta-material-board {
+    width: 52%;
+    height: 86%;
+    left: 22%;
+    top: 8%;
+  }
+  .ta-hero-controls {
+    gap: 20px;
+  }
+  .ta-layer-control {
+    padding-inline: 12px;
+    white-space: nowrap;
+  }
+  .ta-scroll-link {
+    gap: 12px;
+    white-space: nowrap;
+    font-size: 8px;
+  }
+  .ta-finish-selector {
+    gap: 10px;
+  }
+  .ta-finish-name {
+    min-width: 74px;
+    font-size: 10px;
   }
 }
 @media (max-width: 767px) {
@@ -1815,12 +2049,17 @@
   .ta-experience [data-testid="family-chips"] {
     flex-wrap: nowrap;
     overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
     padding-top: 18px;
+  }
+  .ta-experience [data-testid="family-chips"]::-webkit-scrollbar {
+    display: none;
   }
   .ta-experience [data-testid="family-chips"] button {
     white-space: nowrap;
     padding: 13px;
-    font-size: 8px;
+    font-size: 10px;
   }
   .ta-experience [data-testid="product-grid"] {
     column-gap: 18px;
@@ -1843,6 +2082,15 @@
   }
   .ta-experience [data-testid="configurator"] .font-display {
     font-size: 16px;
+  }
+  .ta-atelier-material .ta-material-study {
+    height: 280px;
+  }
+  .ta-atelier-material .ta-material-board {
+    width: 55%;
+    height: 85%;
+    left: 23%;
+    top: 5%;
   }
   .ta-experience .login-page {
     padding-top: 110px;

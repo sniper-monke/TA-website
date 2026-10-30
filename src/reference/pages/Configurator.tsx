@@ -11,6 +11,7 @@ import { PageHero } from "@/reference/components/Chrome";
 import RoomPreview from "@/reference/components/RoomPreview";
 import { FadePage, Reveal } from "@/reference/components/Reveal";
 import { formatPrice } from "@/reference/lib/api";
+import { MaterialStudy } from "@/components/experience/MaterialStudy";
 
 function Group({ legend, opts, value, onPick, swatch, testPrefix }) {
   return (
@@ -52,6 +53,7 @@ function Group({ legend, opts, value, onPick, swatch, testPrefix }) {
 }
 
 export default function Configurator() {
+  const [preview, setPreview] = useState("room");
   const [params] = useSearchParams();
   const { add } = useBasket();
   const initialRoom = ROOM_TYPES.find((r) => r.id === params.get("room")) || ROOM_TYPES[0];
@@ -127,16 +129,39 @@ export default function Configurator() {
               </p>
               <p className="label-quiet">{rt.dims}</p>
             </div>
+            <div className="ta-atelier-view-controls" role="group" aria-label="Preview view">
+              <button
+                onClick={() => setPreview("room")}
+                aria-pressed={preview === "room"}
+                data-testid="cfg-view-room"
+              >
+                01 / Room layout
+              </button>
+              <button
+                onClick={() => setPreview("material")}
+                aria-pressed={preview === "material"}
+                data-testid="cfg-view-material"
+              >
+                02 / Finish study
+              </button>
+            </div>
             <div className="p-4 md:p-8">
-              <RoomPreview
-                roomType={roomType}
-                finish={s.finish}
-                felt={s.felt}
-                module={s.module}
-                coverage={s.coverage}
-                walls={s.walls}
-                layout={s.layout}
-              />
+              {preview === "material" ? (
+                <div className="ta-atelier-material">
+                  <MaterialStudy finish={s.finish} />
+                  <p className="ta-micro">{finish.label} / Illustrative finish preview</p>
+                </div>
+              ) : (
+                <RoomPreview
+                  roomType={roomType}
+                  finish={s.finish}
+                  felt={s.felt}
+                  module={s.module}
+                  coverage={s.coverage}
+                  walls={s.walls}
+                  layout={s.layout}
+                />
+              )}
             </div>
           </div>
           <p className="label-quiet mt-5" data-testid="cfg-caption">

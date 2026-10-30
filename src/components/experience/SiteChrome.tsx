@@ -163,6 +163,9 @@ export function SiteFooter() {
               <ArrowUpRight size={14} />
             </Link>
           ))}
+          <Link to="/contact">
+            Project enquiries <ArrowUpRight size={14} />
+          </Link>
         </div>
       </div>
       <div className="ta-footer-base ta-shell">
