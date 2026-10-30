@@ -13,7 +13,12 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "@/lib/cart";
-import { Header, Footer } from "@/components/site/Chrome";
+import {
+  ReferenceHeader as Header,
+  ReferenceFooter as Footer,
+} from "@/components/site/ReferenceChrome";
+import referenceBase from "../reference-base.css?url";
+import referenceEditorial from "../reference-editorial.css?url";
 
 function NotFoundComponent() {
   return (
@@ -90,11 +95,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "stylesheet", href: referenceBase },
+      { rel: "stylesheet", href: referenceEditorial },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,200;0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap",
       },
       { rel: "icon", href: "/favicon.ico?v=2", type: "image/x-icon" },
     ],

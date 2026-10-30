@@ -1,0 +1,201 @@
+body {
+  background: #f8f4ee;
+  color: #153a54;
+  font-family: Montserrat, sans-serif;
+  font-weight: 300;
+}
+.label-eyebrow {
+  color: #bf673b;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+.label-quiet {
+  color: rgba(21, 58, 84, 0.5);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.reference-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  background: rgba(248, 244, 238, 0.95);
+  color: #153a54;
+}
+.reference-header-inner {
+  height: 76px;
+  max-width: 1500px;
+  margin: auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.reference-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font:
+    500 13px/1.15 Raleway,
+    sans-serif;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+.reference-nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.reference-nav a {
+  color: rgba(21, 58, 84, 0.7);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.reference-nav a:hover,
+.reference-footer a:hover {
+  color: #bf673b;
+}
+.reference-menu-button {
+  display: none;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 1px solid rgba(21, 58, 84, 0.15);
+  border-radius: 50%;
+}
+.reference-mobile-nav {
+  max-height: calc(100dvh - 76px);
+  overflow: auto;
+  padding: 16px 24px 32px;
+  border-top: 1px solid rgba(21, 58, 84, 0.1);
+}
+.reference-mobile-nav a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(21, 58, 84, 0.08);
+  font:
+    300 24px Raleway,
+    sans-serif;
+}
+.reference-footer {
+  background: #153a54;
+  color: #f8f4ee;
+  padding: 80px 0 24px;
+}
+.reference-footer-grid {
+  display: grid;
+  grid-template-columns: 5fr 3fr 4fr;
+  gap: 48px;
+}
+.reference-footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font:
+    500 14px Raleway,
+    sans-serif;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+.reference-footer p {
+  max-width: 360px;
+  margin-top: 24px;
+  color: rgba(248, 244, 238, 0.6);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.reference-footer-grid a {
+  display: block;
+  margin-top: 12px;
+  font-size: 14px;
+  color: rgba(248, 244, 238, 0.75);
+}
+.reference-footer .reference-footer-label {
+  margin-top: 0;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(248, 244, 238, 0.4);
+}
+.reference-footer em {
+  display: block;
+  margin: 20px 0 32px;
+  font:
+    italic 24px "Playfair Display",
+    serif;
+}
+.reference-footer-bottom {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(248, 244, 238, 0.1);
+  display: flex;
+  justify-content: space-between;
+  color: rgba(248, 244, 238, 0.4);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+@media (max-width: 1199px) {
+  .reference-nav {
+    display: none;
+  }
+  .reference-menu-button {
+    display: grid;
+  }
+}
+@media (max-width: 767px) {
+  .reference-header-inner {
+    padding: 0 20px;
+  }
+  .reference-footer {
+    padding-top: 64px;
+  }
+  .reference-footer-grid {
+    grid-template-columns: 1fr;
+  }
+  .reference-footer-bottom {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+.reference-marquee {
+  overflow: hidden;
+  border-block: 1px solid rgba(21, 58, 84, 0.1);
+  padding: 40px 0;
+}
+.reference-marquee > div {
+  display: flex;
+  width: max-content;
+  animation: reference-marquee 35s linear infinite;
+}
+.reference-marquee:hover > div {
+  animation-play-state: paused;
+}
+.reference-marquee span {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin: 0 40px;
+  font:
+    200 60px Raleway,
+    sans-serif;
+}
+.reference-marquee .outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(21, 58, 84, 0.35);
+}
+@keyframes reference-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reference-marquee > div {
+    animation: none;
+  }
+}
