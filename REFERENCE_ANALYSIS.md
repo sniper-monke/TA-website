@@ -23,3 +23,7 @@ The supplied URL is accessible outside the network sandbox; the browsing service
 ## Comparison refinements
 
 Desktop, tablet and mobile homepage hero screenshots were compared with the reference. A desktop catalogue comparison identified a display-font conflict and encoding artifacts; both were corrected. The reference fonts and catalogue/project photographs are now served locally. The original catalogue slider uses two independently adjustable handles.
+
+## Current hero direction
+
+The subsequent brand-book redesign and latest user feedback supersede exact replication for the hero. The supplied screenshot shows the preceding thin “Sound, in better shape.” composition; the user requested a bolder futuristic treatment and live patterns. The revision keeps the book's Raleway, navy, burnt orange and wood-grain language while introducing uppercase poster-scale type, animated material geometry and a pointer-responsive contour canvas. It reuses the local studio photograph and existing finish/layer controls. Current screenshots, motion preview and browser findings are in `docs/design-review/README.md`; `DESIGN_DIRECTION.md` records the source hierarchy and decisions.
