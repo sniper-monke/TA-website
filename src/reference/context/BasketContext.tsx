@@ -1,15 +1,34 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment -- Adapted from the reference JavaScript. */
-// @ts-nocheck
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 
-const BasketContext = createContext(null);
+type BasketEntry = {
+  kind: "product" | "scheme";
+  name: string;
+  unit_price: number;
+  slug?: string;
+  finish?: string;
+  size?: string;
+  scheme?: Record<string, string>;
+  description?: string;
+  image?: string;
+};
+type BasketItem = BasketEntry & { id: string; quantity: number };
+type BasketState = {
+  items: BasketItem[];
+  count: number;
+  total: number;
+  add: (entry: BasketEntry) => void;
+  quantity: (id: string, value: number) => void;
+  remove: (id: string) => void;
+  clear: () => void;
+};
+const BasketContext = createContext<BasketState | null>(null);
 const KEY = "timber-enquiry-basket-v1";
-const identity = (item) =>
+const identity = (item: BasketEntry) =>
   JSON.stringify([item.kind, item.slug, item.finish, item.size, item.scheme]);
 
-export const BasketProvider = ({ children }) => {
-  const [items, setItems] = useState([]);
+export const BasketProvider = ({ children }: { children: ReactNode }) => {
+  const [items, setItems] = useState<BasketItem[]>([]);
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     try {
@@ -43,10 +62,10 @@ export const BasketProvider = ({ children }) => {
       }
     }
   }, [items, loaded]);
-  const add = (item) => {
+  const add = (item: BasketEntry) => {
     const key = identity(item);
     const existing = items.find((x) => identity(x) === key);
-    if ((!existing && items.length >= 30) || existing?.quantity >= 99) {
+    if ((!existing && items.length >= 30) || (existing?.quantity ?? 0) >= 99) {
       toast.error("Your basket has reached its limit.");
       return;
     }
@@ -60,13 +79,13 @@ export const BasketProvider = ({ children }) => {
     });
     toast.success(`${item.name} added to your enquiry`, { id: "basket-added" });
   };
-  const quantity = (id, value) =>
+  const quantity = (id: string, value: number) =>
     setItems((prev) =>
       prev.map((x) =>
         x.id === id ? { ...x, quantity: Math.max(1, Math.min(99, value || 1)) } : x,
       ),
     );
-  const remove = (id) => setItems((prev) => prev.filter((x) => x.id !== id));
+  const remove = (id: string) => setItems((prev) => prev.filter((x) => x.id !== id));
   const clear = () => setItems([]);
   return (
     <BasketContext.Provider
@@ -84,4 +103,8 @@ export const BasketProvider = ({ children }) => {
     </BasketContext.Provider>
   );
 };
-export const useBasket = () => useContext(BasketContext);
+export function useBasket() {
+  const basket = useContext(BasketContext);
+  if (!basket) throw new Error("useBasket must be used within BasketProvider");
+  return basket;
+}

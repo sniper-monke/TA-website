@@ -193,7 +193,7 @@ export const Footer = () => (
 );
 
 export const PageHero = ({ eyebrow, title, italic, children }) => (
-  <section className="grain relative overflow-hidden px-5 pb-14 pt-36 md:px-10 md:pb-20 md:pt-44">
+  <section className="ta-page-hero grain relative overflow-hidden px-5 pb-14 pt-36 md:px-10 md:pb-20 md:pt-44">
     <div className="relative z-10 mx-auto max-w-[1500px]">
       <motion.p
         initial={{ opacity: 0, y: 14 }}

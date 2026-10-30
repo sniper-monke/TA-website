@@ -9,17 +9,19 @@ import {
   type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { MotionConfig } from "framer-motion";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "@/lib/cart";
-import { Header, Footer } from "@/reference/components/Chrome";
+import { SiteHeader as Header, SiteFooter as Footer } from "@/components/experience/SiteChrome";
 import { BasketProvider } from "@/reference/context/BasketContext";
 import { Toaster } from "sonner";
 import referenceUtilities from "../reference-utilities.css?url";
 import referenceBase from "../reference-base.css?url";
 import referenceFonts from "../reference-fonts.css?url";
 import referenceEditorial from "../reference-editorial.css?url";
+import experienceCss from "../experience.css?url";
 
 function NotFoundComponent() {
   return (
@@ -100,6 +102,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "stylesheet", href: referenceUtilities },
       { rel: "stylesheet", href: referenceBase },
       { rel: "stylesheet", href: referenceEditorial },
+      { rel: "stylesheet", href: experienceCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "icon", href: "/favicon.ico?v=2", type: "image/x-icon" },
@@ -117,7 +120,7 @@ function RootShell({ children }: { children: ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="ta-experience">
         {children}
         <Scripts />
       </body>
@@ -130,23 +133,25 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <CartProvider>
-        <BasketProvider>
-          <a
-            href="#main"
-            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:bg-foreground focus:p-3 focus:text-background"
-          >
-            Skip to content
-          </a>
-          <Header />
-          <main id="main">
-            <Outlet />
-          </main>
-          <Footer />
-          <Toaster position="bottom-right" richColors closeButton />
-        </BasketProvider>
-      </CartProvider>
+      <MotionConfig reducedMotion="user">
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <CartProvider>
+          <BasketProvider>
+            <a
+              href="#main"
+              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:bg-foreground focus:p-3 focus:text-background"
+            >
+              Skip to content
+            </a>
+            <Header />
+            <main id="main">
+              <Outlet />
+            </main>
+            <Footer />
+            <Toaster position="bottom-right" richColors closeButton />
+          </BasketProvider>
+        </CartProvider>
+      </MotionConfig>
     </QueryClientProvider>
   );
 }
