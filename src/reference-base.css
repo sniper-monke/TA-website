@@ -199,3 +199,10 @@ body {
     animation: none;
   }
 }
+:where(.font-display) {
+  font-stretch: normal;
+  font-weight: inherit;
+  letter-spacing: normal;
+  line-height: normal;
+  text-transform: none;
+}

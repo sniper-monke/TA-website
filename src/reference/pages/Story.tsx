@@ -23,7 +23,7 @@ const CHAPTERS = [
   {
     n: "03",
     t: "Shaped by geometry",
-    d: "Diffusers and slat spacings are where acoustics becomes form â€” measured, repeatable, and free to curve.",
+    d: "Diffusers and slat spacings are where acoustics becomes form — measured, repeatable, and free to curve.",
     img: IMG.diffuser_geo,
   },
 ];
@@ -33,10 +33,7 @@ const VALUES = [
     "Material honesty",
     "Real timber, real felt, real cores. Nothing pretending to be something else.",
   ],
-  [
-    "Measured acoustics",
-    "Every product targets a behaviour â€” absorb, diffuse, trap, shape, tune.",
-  ],
+  ["Measured acoustics", "Every product targets a behaviour — absorb, diffuse, trap, shape, tune."],
   ["Craft in every joint", "Built by hand in India, finished like furniture, not fixtures."],
 ];
 
@@ -45,8 +42,8 @@ export default function Story() {
     <FadePage>
       <PageHero eyebrow="Our story" title="Designed in India." italic="Built for the world.">
         Timber Acoustics brings affordable soundproofing and acoustic treatment to recording
-        studios, home theatres, restaurants, offices and auditoriums â€” solutions that improve how
-        a room sounds and how it looks, together.
+        studios, home theatres, restaurants, offices and auditoriums — solutions that improve how a
+        room sounds and how it looks, together.
       </PageHero>
 
       <div className="mx-auto max-w-[1500px] px-5 md:px-10">
@@ -102,7 +99,7 @@ export default function Story() {
             <p className="mt-7 max-w-md text-base font-light leading-relaxed text-timber-ink/70">
               The first prototype was built from offcuts: a wall that looked calm because it was
               quietly doing the work. That is still the brief for everything that leaves the
-              workshop â€” a surface that earns its place twice, once for the ear and once for the
+              workshop — a surface that earns its place twice, once for the ear and once for the
               eye.
             </p>
           </Reveal>
@@ -148,7 +145,7 @@ export default function Story() {
         <Reveal delay={0.2}>
           <div className="mt-20 flex flex-wrap items-center gap-6">
             <p className="font-serif text-2xl italic text-timber-ink/70">
-              The final test is not a graph â€” it is the moment a listener stops noticing the
+              The final test is not a graph — it is the moment a listener stops noticing the
               treatment.
             </p>
             <Link

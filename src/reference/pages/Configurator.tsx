@@ -140,17 +140,17 @@ export default function Configurator() {
             </div>
           </div>
           <p className="label-quiet mt-5" data-testid="cfg-caption">
-            {panelCount} Ã— {mod.label} mm modules Â· {finish.label} slats Â· {felt.label} felt Â·{" "}
-            {layout.label.toLowerCase()} Â· {wallLabel.toLowerCase()}
+            {panelCount} × {mod.label} mm modules · {finish.label} slats · {felt.label} felt ·{" "}
+            {layout.label.toLowerCase()} · {wallLabel.toLowerCase()}
           </p>
           <p className="mt-2 text-xs font-light text-timber-ink/40">
-            Concept preview â€” not to scale.
+            Concept preview — not to scale.
           </p>
         </Reveal>
 
         <Reveal delay={0.12} className="space-y-9">
           <fieldset>
-            <legend className="label-quiet">01 â€” Room type</legend>
+            <legend className="label-quiet">01 — Room type</legend>
             <div className="mt-3.5 grid grid-cols-2 gap-3">
               {ROOM_TYPES.map((r) => {
                 const active = roomType === r.id;
@@ -182,7 +182,7 @@ export default function Configurator() {
           </fieldset>
 
           <Group
-            legend="02 â€” Timber finish"
+            legend="02 — Timber finish"
             opts={CONFIG.finishes}
             value={s.finish}
             onPick={pick("finish")}
@@ -190,7 +190,7 @@ export default function Configurator() {
             testPrefix="cfg-finish"
           />
           <Group
-            legend="03 â€” Felt backing"
+            legend="03 — Felt backing"
             opts={CONFIG.felts}
             value={s.felt}
             onPick={pick("felt")}
@@ -198,28 +198,28 @@ export default function Configurator() {
             testPrefix="cfg-felt"
           />
           <Group
-            legend="04 â€” Panel size"
+            legend="04 — Panel size"
             opts={CONFIG.modules}
             value={s.module}
             onPick={pick("module")}
             testPrefix="cfg-module"
           />
           <Group
-            legend="05 â€” Coverage"
+            legend="05 — Coverage"
             opts={CONFIG.coverages}
             value={s.coverage}
             onPick={pick("coverage")}
             testPrefix="cfg-coverage"
           />
           <Group
-            legend="06 â€” Walls"
+            legend="06 — Walls"
             opts={CONFIG.walls}
             value={s.walls}
             onPick={pick("walls")}
             testPrefix="cfg-walls"
           />
           <Group
-            legend="07 â€” Slat orientation"
+            legend="07 — Slat orientation"
             opts={CONFIG.layouts}
             value={s.layout}
             onPick={pick("layout")}
@@ -232,15 +232,15 @@ export default function Configurator() {
           >
             <p className="label-quiet">Summary</p>
             <p className="mt-3 text-sm font-light leading-relaxed text-timber-ink/75">
-              {panelCount} Ã— {mod.label} mm {finish.label} slat panel{panelCount > 1 ? "s" : ""}{" "}
-              over {felt.label} felt â€” {wallLabel.toLowerCase()}, {layout.label.toLowerCase()}, in
-              a {rt.label.toLowerCase()}.
+              {panelCount} × {mod.label} mm {finish.label} slat panel{panelCount > 1 ? "s" : ""}{" "}
+              over {felt.label} felt — {wallLabel.toLowerCase()}, {layout.label.toLowerCase()}, in a{" "}
+              {rt.label.toLowerCase()}.
             </p>
             <p
               className="mt-5 font-display text-4xl font-light text-timber-ink"
               data-testid="cfg-total-price"
             >
-              {basePrice === null ? "â€”" : formatPrice(total)}{" "}
+              {basePrice === null ? "—" : formatPrice(total)}{" "}
               <span className="label-eyebrow align-middle">Indicative price</span>
             </p>
             {error && (
@@ -265,7 +265,7 @@ export default function Configurator() {
                 add({
                   kind: "scheme",
                   name: `${rt.label} scheme`,
-                  description: `${panelCount} panels Â· ${finish.label} / ${felt.label} Â· ${mod.label} mm Â· ${wallLabel} Â· ${layout.label}`,
+                  description: `${panelCount} panels · ${finish.label} / ${felt.label} · ${mod.label} mm · ${wallLabel} · ${layout.label}`,
                   scheme: { roomType, ...s },
                   unit_price: total,
                 })

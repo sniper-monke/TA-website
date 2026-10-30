@@ -1,30 +1,18 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment -- Adapted from the reference JavaScript. */
 // @ts-nocheck
 export const IMG = {
-  hero_slat:
-    "https://images.unsplash.com/photo-1570993925319-591331f141e2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1ODh8MHwxfHNlYXJjaHw0fHxhY291c3RpYyUyMHdvb2QlMjBzbGF0JTIwd2FsbCUyMG1vZGVybnxlbnwwfHx8fDE3OTMyMTYyMzd8MA&ixlib=rb-4.1.0&q=85",
-  studio:
-    "https://images.unsplash.com/photo-1463421585849-6b0acf2c9257?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NjZ8MHwxfHNlYXJjaHwzfHxtdXNpYyUyMHJlY29yZGluZyUyMHN0dWRpbyUyMHdvb2QlMjBwYW5lbHN8ZW58MHx8fHwxNzkzMjE2MjM3fDA&ixlib=rb-4.1.0&q=85",
-  workshop:
-    "https://images.unsplash.com/photo-1631396326838-de37e5f8bcbc?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwzfHx3b29kd29ya2luZyUyMGNyYWZ0c21hbnNoaXAlMjBoYW5kc3xlbnwwfHx8fDE3OTMyMTYyMzd8MA&ixlib=rb-4.1.0&q=85",
-  home_theater:
-    "https://images.unsplash.com/photo-1759735218086-67f9f853ab8b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNzl8MHwxfHNlYXJjaHwzfHxob21lJTIwdGhlYXRlciUyMGxpdmluZyUyMHJvb20lMjB3b29kfGVufDB8fHx8MTc5MzIxNjIzN3ww&ixlib=rb-4.1.0&q=85",
-  diffuser_geo:
-    "https://images.unsplash.com/photo-1487266659293-c4762f375955?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzV8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBnZW9tZXRyaWMlMjB3b29kJTIwdGV4dHVyZXxlbnwwfHx8fDE3OTMyMTYyMzd8MA&ixlib=rb-4.1.0&q=85",
-  bass_corner:
-    "https://images.unsplash.com/photo-1781460846863-433b91bd93fb?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHwxfHx3YXJtJTIwbXVzaWMlMjBzdHVkaW8lMjBjb3JuZXJ8ZW58MHx8fHwxNzkzMjE2Mzc2fDA&ixlib=rb-4.1.0&q=85",
-  listening:
-    "https://images.unsplash.com/photo-1595432541891-a461100d3054?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxNTZ8MHwxfHNlYXJjaHwyfHxoaWZpJTIwbGlzdGVuaW5nJTIwcm9vbSUyMHNwZWFrZXJzJTIwd2FybXxlbnwwfHx8fDE3OTMyMTYzNzZ8MA&ixlib=rb-4.1.0&q=85",
-  office:
-    "https://images.unsplash.com/photo-1772475385529-92037713a057?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjB3YXJtJTIwb2ZmaWNlJTIwd29vZCUyMHBhbmVsaW5nfGVufDB8fHx8MTc5MzIxNjM3Nnww&ixlib=rb-4.1.0&q=85",
-  workshop_2:
-    "https://images.unsplash.com/photo-1561297331-a9c00b9c2c44?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzh8MHwxfHNlYXJjaHwxfHxjYXJwZW50ZXIlMjBzYW5kaW5nJTIwd29vZCUyMGhhbmRzJTIwZGV0YWlsfGVufDB8fHx8MTc5MzIxNjM3Nnww&ixlib=rb-4.1.0&q=85",
-  material:
-    "https://images.unsplash.com/photo-1621295693450-080546d2ec8e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHwyfHxtYWNybyUyMHdvb2QlMjBncmFpbiUyMHRleHR1cmUlMjB3YXJtfGVufDB8fHx8MTc5MzIxNjM3Nnww&ixlib=rb-4.1.0&q=85",
-  living:
-    "https://images.unsplash.com/photo-1777895868494-4e01af8487b6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxNzV8MHwxfHNlYXJjaHwzfHx3YXJtJTIwbWluaW1hbCUyMGxpdmluZyUyMHJvb20lMjB3b29kJTIwcGFuZWxsaW5nfGVufDB8fHx8MTc5MzIxNjM3Nnww&ixlib=rb-4.1.0&q=85",
-  slat_panel:
-    "https://images.unsplash.com/photo-1585773818428-b50bebdc2344?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHwxfHx3b29kJTIwc2xhdCUyMHdhbGwlMjBwYW5lbCUyMHRleHR1cmV8ZW58MHx8fHwxNzkzMjE2Mzc2fDA&ixlib=rb-4.1.0&q=85",
+  hero_slat: "/reference-photos/photo-18.jpg",
+  studio: "/reference-photos/photo-7.jpg",
+  workshop: "/reference-photos/photo-19.jpg",
+  home_theater: "/reference-photos/photo-20.jpg",
+  diffuser_geo: "/reference-photos/photo-6.jpg",
+  bass_corner: "/reference-photos/photo-9.jpg",
+  listening: "/reference-photos/photo-11.jpg",
+  office: "/reference-photos/photo-5.jpg",
+  workshop_2: "/reference-photos/photo-21.jpg",
+  material: "/reference-photos/photo-22.jpg",
+  living: "/reference-photos/photo-23.jpg",
+  slat_panel: "/reference-photos/photo-14.jpg",
 };
 
 export const CHAPTERS = [

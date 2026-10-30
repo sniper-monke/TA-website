@@ -183,7 +183,7 @@ export default function Basket() {
               <strong data-testid="basket-total">{formatPrice(total)}</strong>
             </div>
             <p className="fine-print" data-testid="basket-estimate-note">
-              INR Â· Indicative catalogue pricing, not a quotation. The team will confirm
+              INR · Indicative catalogue pricing, not a quotation. The team will confirm
               specifications, installation, delivery and taxes. Latest catalogue prices are applied
               on submission.
             </p>
@@ -252,7 +252,7 @@ export default function Basket() {
               </label>
               <ErrorNotice id="enquiry-error">{error}</ErrorNotice>
               <button className="action-button w-full" data-testid="enquiry-submit" disabled={busy}>
-                {busy ? "Saving your enquiryâ€¦" : "Send enquiry"}
+                {busy ? "Saving your enquiry…" : "Send enquiry"}
                 <ArrowRight size={16} />
               </button>
             </fieldset>

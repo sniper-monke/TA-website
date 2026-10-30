@@ -11,9 +11,9 @@
     "approach": "Start with the seating and speaker layout, then treat first reflections with broadband absorption. Use slatted treatment as a visual rhythm, while reserving space for deeper low-frequency control after measurement.",
     "outcome": "Concept only: a coordinated palette of natural oak and charcoal felt. No installation or measured acoustic result is claimed. Final placement would follow an on-site assessment.",
     "gallery": [
-      "https://images.unsplash.com/photo-1751806524629-910e570f1d94?auto=format&fit=crop&w=1600&q=85",
-      "https://images.unsplash.com/photo-1675528030415-dc82908eeb73?auto=format&fit=crop&w=1800&q=85",
-      "https://images.unsplash.com/photo-1675528030748-d463ab87e8d5?auto=format&fit=crop&w=1400&q=85"
+      "/reference-photos/photo-3.jpg",
+      "/reference-photos/photo-2.jpg",
+      "/reference-photos/photo-1.jpg"
     ],
     "products": ["slat-panel-2400", "corner-trap-pro"],
     "sample": true,
@@ -30,10 +30,7 @@
     "challenge": "In small studios, strong early reflections and low-frequency room modes can make mix decisions unreliable. The sample brief prioritises a symmetrical listening position.",
     "approach": "Place broadband panels at the side-wall reflection points and plan a safely supported ceiling cloud. Allocate corners for deep absorption. Check speaker and listener positions with measurements before choosing any tuned traps.",
     "outcome": "Concept only: a starting treatment plan, not a completed installation. Listen and measure again after installation before adding diffusion or committing to full coverage.",
-    "gallery": [
-      "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1600&q=85",
-      "https://images.unsplash.com/photo-1675528030748-d463ab87e8d5?auto=format&fit=crop&w=1400&q=85"
-    ],
+    "gallery": ["/reference-photos/photo-16.jpg", "/reference-photos/photo-1.jpg"],
     "products": ["felt-tile-600", "corner-trap-pro", "qrd-diffuser-7"],
     "sample": true,
     "published": true
@@ -49,10 +46,7 @@
     "challenge": "Glass, hard floors and large tables can prolong speech reverberation. This illustrative meeting-room brief aims for easier conversation and more intelligible video calls.",
     "approach": "Distribute absorption over available walls rather than concentrating it in one corner. A ceiling treatment can be useful where walls are mostly glazed. Keep ventilation, lighting and access clear.",
     "outcome": "Concept only: a calm material direction and a preliminary acoustic approach. Speech privacy between rooms would need separate consideration of doors, partitions and flanking paths.",
-    "gallery": [
-      "https://images.unsplash.com/photo-1552058461-dc1828d58bf6?auto=format&fit=crop&w=1600&q=85",
-      "https://images.unsplash.com/photo-1675528030748-d463ab87e8d5?auto=format&fit=crop&w=1400&q=85"
-    ],
+    "gallery": ["/reference-photos/photo-17.jpg", "/reference-photos/photo-1.jpg"],
     "products": ["edge-panel-1200", "slat-panel-2400"],
     "sample": true,
     "published": true

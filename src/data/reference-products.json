@@ -16,9 +16,9 @@
     ],
     "sizes": ["2400 mm", "1200 mm"],
     "gallery": [
-      "https://images.unsplash.com/photo-1675528030748-d463ab87e8d5?auto=format&fit=crop&w=1400&q=85",
-      "https://images.unsplash.com/photo-1675528030415-dc82908eeb73?auto=format&fit=crop&w=1800&q=85",
-      "https://images.unsplash.com/photo-1751806524629-910e570f1d94?auto=format&fit=crop&w=1600&q=85"
+      "/reference-photos/photo-1.jpg",
+      "/reference-photos/photo-2.jpg",
+      "/reference-photos/photo-3.jpg"
     ],
     "featured": true,
     "published": true,
@@ -40,10 +40,7 @@
       { "id": "bone", "name": "Bone Felt", "swatch": "#EDE4D3" }
     ],
     "sizes": ["600 × 600", "1200 × 600"],
-    "gallery": [
-      "https://images.unsplash.com/photo-1701421052582-9f6935aff566?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHwxfHxmYWJyaWMlMjBhY291c3RpYyUyMHBhbmVsJTIwaW50ZXJpb3J8ZW58MHx8fHwxNzkzMjE2Mzc2fDA&ixlib=rb-4.1.0&q=85",
-      "https://images.unsplash.com/photo-1772475385529-92037713a057?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjB3YXJtJTIwb2ZmaWNlJTIwd29vZCUyMHBhbmVsaW5nfGVufDB8fHx8MTc5MzIxNjM3Nnww&ixlib=rb-4.1.0&q=85"
-    ],
+    "gallery": ["/reference-photos/photo-4.jpg", "/reference-photos/photo-5.jpg"],
     "featured": true,
     "published": true,
     "sample": true
@@ -64,10 +61,7 @@
       { "id": "ebony", "name": "Smoked Ebony", "swatch": "#3B3A38" }
     ],
     "sizes": ["600 × 600"],
-    "gallery": [
-      "https://images.unsplash.com/photo-1487266659293-c4762f375955?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzV8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBnZW9tZXRyaWMlMjB3b29kJTIwdGV4dHVyZXxlbnwwfHx8fDE3OTMyMTYyMzd8MA&ixlib=rb-4.1.0&q=85",
-      "https://images.unsplash.com/photo-1463421585849-6b0acf2c9257?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NjZ8MHwxfHNlYXJjaHwzfHxtdXNpYyUyMHJlY29yZGluZyUyMHN0dWRpbyUyMHdvb2QlMjBwYW5lbHN8ZW58MHx8fHwxNzkzMjE2MjM3fDA&ixlib=rb-4.1.0&q=85"
-    ],
+    "gallery": ["/reference-photos/photo-6.jpg", "/reference-photos/photo-7.jpg"],
     "featured": true,
     "published": true,
     "sample": true
@@ -88,10 +82,7 @@
       { "id": "ebony", "name": "Smoked Ebony", "swatch": "#3B3A38" }
     ],
     "sizes": ["600 × 600"],
-    "gallery": [
-      "https://images.unsplash.com/photo-1636498342472-ed0e419fcaf7?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxNzV8MHwxfHNlYXJjaHwzfHxhYnN0cmFjdCUyMHdvb2QlMjBibG9jayUyMGdlb21ldHJ5JTIwc2t5bGluZXxlbnwwfHx8fDE3OTMyMTYzNzZ8MA&ixlib=rb-4.1.0&q=85",
-      "https://images.unsplash.com/photo-1487266659293-c4762f375955?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzV8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBnZW9tZXRyaWMlMjB3b29kJTIwdGV4dHVyZXxlbnwwfHx8fDE3OTMyMTYyMzd8MA&ixlib=rb-4.1.0&q=85"
-    ],
+    "gallery": ["/reference-photos/photo-8.jpg", "/reference-photos/photo-6.jpg"],
     "featured": false,
     "published": true,
     "sample": true
@@ -112,10 +103,7 @@
       { "id": "bone", "name": "Bone Felt", "swatch": "#EDE4D3" }
     ],
     "sizes": ["1200 mm", "1800 mm"],
-    "gallery": [
-      "https://images.unsplash.com/photo-1781460846863-433b91bd93fb?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHwxfHx3YXJtJTIwbXVzaWMlMjBzdHVkaW8lMjBjb3JuZXJ8ZW58MHx8fHwxNzkzMjE2Mzc2fDA&ixlib=rb-4.1.0&q=85",
-      "https://images.unsplash.com/photo-1463421585849-6b0acf2c9257?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NjZ8MHwxfHNlYXJjaHwzfHxtdXNpYyUyMHJlY29yZGluZyUyMHN0dWRpbyUyMHdvb2QlMjBwYW5lbHN8ZW58MHx8fHwxNzkzMjE2MjM3fDA&ixlib=rb-4.1.0&q=85"
-    ],
+    "gallery": ["/reference-photos/photo-9.jpg", "/reference-photos/photo-7.jpg"],
     "featured": true,
     "published": true,
     "sample": true
@@ -136,10 +124,7 @@
       { "id": "ebony", "name": "Smoked Ebony", "swatch": "#3B3A38" }
     ],
     "sizes": ["1200 × 600"],
-    "gallery": [
-      "https://images.unsplash.com/photo-1684846416931-dddf8cbfc2ad?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDF8MHwxfHNlYXJjaHwzfHxkYXJrJTIwd2FsbnV0JTIwd29vZCUyMGNhYmluZXQlMjBkZXRhaWx8ZW58MHx8fHwxNzkzMjE2Mzc2fDA&ixlib=rb-4.1.0&q=85",
-      "https://images.unsplash.com/photo-1595432541891-a461100d3054?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxNTZ8MHwxfHNlYXJjaHwyfHxoaWZpJTIwbGlzdGVuaW5nJTIwcm9vbSUyMHNwZWFrZXJzJTIwd2FybXxlbnwwfHx8fDE3OTMyMTYzNzZ8MA&ixlib=rb-4.1.0&q=85"
-    ],
+    "gallery": ["/reference-photos/photo-10.jpg", "/reference-photos/photo-11.jpg"],
     "featured": false,
     "published": true,
     "sample": true
@@ -160,10 +145,7 @@
       { "id": "bone", "name": "Bone Felt", "swatch": "#EDE4D3" }
     ],
     "sizes": ["1200 × 600"],
-    "gallery": [
-      "https://images.unsplash.com/photo-1765371513276-a74f1ecbcf7d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODl8MHwxfHNlYXJjaHwyfHxtaW5pbWFsJTIwbW9kZXJuJTIwb2ZmaWNlJTIwYWNvdXN0aWMlMjB3YWxsfGVufDB8fHx8MTc5MzIxNjM3Nnww&ixlib=rb-4.1.0&q=85",
-      "https://images.unsplash.com/photo-1772475385529-92037713a057?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjB3YXJtJTIwb2ZmaWNlJTIwd29vZCUyMHBhbmVsaW5nfGVufDB8fHx8MTc5MzIxNjM3Nnww&ixlib=rb-4.1.0&q=85"
-    ],
+    "gallery": ["/reference-photos/photo-12.jpg", "/reference-photos/photo-5.jpg"],
     "featured": false,
     "published": true,
     "sample": true
@@ -184,10 +166,7 @@
       { "id": "bone", "name": "Bone Felt", "swatch": "#EDE4D3" }
     ],
     "sizes": ["Up to 12 m²"],
-    "gallery": [
-      "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA4Mzl8MHwxfHNlYXJjaHwxfHxyZWNvcmRpbmclMjBzdHVkaW8lMjBjb250cm9sJTIwcm9vbSUyMHdpZGV8ZW58MHx8fHwxNzkzMjE2Mzc2fDA&ixlib=rb-4.1.0&q=85",
-      "https://images.unsplash.com/photo-1585773818428-b50bebdc2344?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHwxfHx3b29kJTIwc2xhdCUyMHdhbGwlMjBwYW5lbCUyMHRleHR1cmV8ZW58MHx8fHwxNzkzMjE2Mzc2fDA&ixlib=rb-4.1.0&q=85"
-    ],
+    "gallery": ["/reference-photos/photo-13.jpg", "/reference-photos/photo-14.jpg"],
     "featured": false,
     "published": true,
     "sample": true
@@ -208,10 +187,7 @@
       { "id": "bone", "name": "Bone Felt", "swatch": "#EDE4D3" }
     ],
     "sizes": ["12–20 m²"],
-    "gallery": [
-      "https://images.unsplash.com/photo-1463421585849-6b0acf2c9257?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NjZ8MHwxfHNlYXJjaHwzfHxtdXNpYyUyMHJlY29yZGluZyUyMHN0dWRpbyUyMHdvb2QlMjBwYW5lbHN8ZW58MHx8fHwxNzkzMjE2MjM3fDA&ixlib=rb-4.1.0&q=85",
-      "https://images.unsplash.com/photo-1487266659293-c4762f375955?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzV8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBnZW9tZXRyaWMlMjB3b29kJTIwdGV4dHVyZXxlbnwwfHx8fDE3OTMyMTYyMzd8MA&ixlib=rb-4.1.0&q=85"
-    ],
+    "gallery": ["/reference-photos/photo-7.jpg", "/reference-photos/photo-6.jpg"],
     "featured": false,
     "published": true,
     "sample": true
@@ -232,10 +208,7 @@
       { "id": "ebony", "name": "Smoked Ebony", "swatch": "#3B3A38" }
     ],
     "sizes": ["6U", "10U"],
-    "gallery": [
-      "https://images.unsplash.com/photo-1734303294320-68ec42ba771f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzh8MHwxfHNlYXJjaHwxfHxoaWZpJTIwYXVkaW8lMjByYWNrJTIwZnVybml0dXJlJTIwd29vZHxlbnwwfHx8fDE3OTMyMTYzNzZ8MA&ixlib=rb-4.1.0&q=85",
-      "https://images.unsplash.com/photo-1595432541891-a461100d3054?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxNTZ8MHwxfHNlYXJjaHwyfHxoaWZpJTIwbGlzdGVuaW5nJTIwcm9vbSUyMHNwZWFrZXJzJTIwd2FybXxlbnwwfHx8fDE3OTMyMTYzNzZ8MA&ixlib=rb-4.1.0&q=85"
-    ],
+    "gallery": ["/reference-photos/photo-15.jpg", "/reference-photos/photo-11.jpg"],
     "featured": false,
     "published": true,
     "sample": true

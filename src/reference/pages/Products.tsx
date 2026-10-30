@@ -7,7 +7,7 @@ import { fetchFamilies, fetchProducts, formatPrice } from "@/reference/lib/api";
 import { PageHero } from "@/reference/components/Chrome";
 import ProductCard from "@/reference/components/ProductCard";
 import { FadePage } from "@/reference/components/Reveal";
-import { Slider } from "@/components/ui/slider";
+import { ReferenceSlider as Slider } from "@/reference/components/ReferenceSlider";
 import { ErrorNotice } from "@/reference/components/Forms";
 import { errorMessage } from "@/reference/lib/api";
 

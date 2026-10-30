@@ -29,7 +29,7 @@ function Detail({ product: p, families, related }) {
     ["Dimensions", p.dims],
     ["Material", p.material],
     ...(p.nrc ? [["NRC (demo)", p.nrc.toFixed(2)]] : []),
-    ["Principle", fam?.principle || "â€”"],
+    ["Principle", fam?.principle || "—"],
   ];
 
   return (
@@ -55,7 +55,7 @@ function Detail({ product: p, families, related }) {
             <div className="relative overflow-hidden rounded-md bg-timber-sand shadow-[0_24px_70px_rgba(21,58,84,0.1)]">
               <img
                 src={mediaUrl(p.gallery[img])}
-                alt={`${p.name} â€” view ${img + 1}`}
+                alt={`${p.name} — view ${img + 1}`}
                 className="aspect-[4/3] w-full object-contain transition-[filter] duration-700"
                 style={{ filter }}
                 data-testid="product-main-image"
@@ -110,7 +110,7 @@ function Detail({ product: p, families, related }) {
             </p>
 
             <fieldset className="mt-10">
-              <legend className="label-quiet">Finish â€” {finish.name}</legend>
+              <legend className="label-quiet">Finish — {finish.name}</legend>
               <div className="mt-4 flex flex-wrap gap-3">
                 {p.finishes.map((f) => (
                   <button
@@ -162,7 +162,7 @@ function Detail({ product: p, families, related }) {
                   name: p.name,
                   finish: finish.id,
                   size,
-                  description: `${finish.name} Â· ${size}`,
+                  description: `${finish.name} · ${size}`,
                   unit_price: p.price,
                   image: p.gallery[0],
                 })
@@ -336,7 +336,7 @@ export default function ProductDetail() {
     return (
       <FadePage>
         <div className="grid min-h-[70vh] place-items-center pt-24" data-testid="product-loading">
-          <p className="label-quiet">Loading productâ€¦</p>
+          <p className="label-quiet">Loading product…</p>
         </div>
       </FadePage>
     );

@@ -18,6 +18,7 @@ import { BasketProvider } from "@/reference/context/BasketContext";
 import { Toaster } from "sonner";
 import referenceUtilities from "../reference-utilities.css?url";
 import referenceBase from "../reference-base.css?url";
+import referenceFonts from "../reference-fonts.css?url";
 import referenceEditorial from "../reference-editorial.css?url";
 
 function NotFoundComponent() {
@@ -95,15 +96,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "stylesheet", href: referenceFonts },
       { rel: "stylesheet", href: referenceUtilities },
       { rel: "stylesheet", href: referenceBase },
       { rel: "stylesheet", href: referenceEditorial },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,200;0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap",
-      },
       { rel: "icon", href: "/favicon.ico?v=2", type: "image/x-icon" },
     ],
   }),

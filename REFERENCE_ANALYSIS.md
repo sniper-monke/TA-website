@@ -19,3 +19,7 @@ The five editorial images are `/images/timber-hero.webp`, `/images/timber-detail
 ## Verification limitations
 
 The supplied URL is accessible outside the network sandbox; the browsing service could not open it. The reference source map was accessible. Screenshot and interactive inspection still need to be completed at desktop, tablet and mobile sizes.
+
+## Comparison refinements
+
+Desktop, tablet and mobile homepage hero screenshots were compared with the reference. A desktop catalogue comparison identified a display-font conflict and encoding artifacts; both were corrected. The reference fonts and catalogue/project photographs are now served locally. The original catalogue slider uses two independently adjustable handles.

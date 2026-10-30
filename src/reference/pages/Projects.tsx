@@ -20,7 +20,7 @@ export const ProjectTile = ({ project: p, index = 0 }) => (
     <div className="project-photo image-reveal">
       <img
         src={mediaUrl(p.gallery[0])}
-        alt={p.sample ? `${p.title} â€” illustrative room photography` : p.title}
+        alt={p.sample ? `${p.title} — illustrative room photography` : p.title}
         loading="lazy"
       />
       {p.sample && (
@@ -40,7 +40,7 @@ export const ProjectTile = ({ project: p, index = 0 }) => (
         <h2>{p.title}</h2>
       </div>
       <span className="project-area" data-testid={`project-area-${p.slug}`}>
-        {p.area} mÂ²
+        {p.area} m²
       </span>
     </div>
   </Link>
@@ -65,8 +65,8 @@ export default function Projects() {
       <section className="shell projects-index" data-testid="projects-index">
         {projects?.some((p) => p.sample) && (
           <p className="content-note" data-testid="projects-sample-notice">
-            A preview of whatâ€™s possible. Entries marked illustrative use sample room details and
-            reference photographyâ€”not completed Timber installations.
+            A preview of what’s possible. Entries marked illustrative use sample room details and
+            reference photography—not completed Timber installations.
           </p>
         )}
         <div className="filter-line">
@@ -83,7 +83,7 @@ export default function Projects() {
           ))}
         </div>
         <ErrorNotice id="projects-error">{error}</ErrorNotice>
-        {!projects && !error && <p data-testid="projects-loading">Gathering the spacesâ€¦</p>}
+        {!projects && !error && <p data-testid="projects-loading">Gathering the spaces…</p>}
         <div className="project-grid">
           {visible?.map((p, i) => (
             <Reveal key={p.slug} delay={i * 0.07}>
@@ -125,7 +125,7 @@ export function ProjectDetail() {
     return (
       <section className="shell pt-40 pb-32">
         <ErrorNotice>{error}</ErrorNotice>
-        {!error && <p data-testid="project-loading">Opening the spaceâ€¦</p>}
+        {!error && <p data-testid="project-loading">Opening the space…</p>}
       </section>
     );
   return (
@@ -135,7 +135,7 @@ export function ProjectDetail() {
         <div className="photo-shade" />
         <div className="shell">
           <Link to="/projects" className="light-link" data-testid="project-back">
-            â† All spaces
+            ← All spaces
           </Link>
           <p className="label-eyebrow">
             {ROOM_LABELS[p.room_type]} / {p.sample ? "Illustrative project" : p.location}
@@ -147,7 +147,7 @@ export function ProjectDetail() {
         <div className="project-facts" data-testid="project-facts">
           <div>
             <span>Room size</span>
-            <strong>{p.area} mÂ²</strong>
+            <strong>{p.area} m²</strong>
           </div>
           <div>
             <span>Dimensions</span>
@@ -160,7 +160,7 @@ export function ProjectDetail() {
         </div>
         {p.sample && (
           <p className="content-note" data-testid="project-detail-sample">
-            Illustrative project Â· Reference photos and sample dimensions. This is not a completed
+            Illustrative project · Reference photos and sample dimensions. This is not a completed
             installation or a claim of measured performance.
           </p>
         )}

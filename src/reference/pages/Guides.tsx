@@ -52,7 +52,7 @@ export function GuideDetail() {
         <div className="photo-shade" />
         <div className="shell guide-hero-copy">
           <Link to="/guides" className="light-link" data-testid="guide-back">
-            â† All room guides
+            ← All room guides
           </Link>
           <p className="label-eyebrow">
             Field notes {g.number} / {g.title}
@@ -93,7 +93,7 @@ export function GuideDetail() {
             <p className="label-eyebrow">A place to start</p>
             <h2>{g.schemeName}</h2>
             <p className="text-sm leading-relaxed">
-              {g.size}. A slatted visual scheme in the configuratorâ€”not a complete treatment
+              {g.size}. A slatted visual scheme in the configurator—not a complete treatment
               prescription. Add specialist absorbers or bass control after assessment.
             </p>
             <Link to={schemeLink(g)} className="action-button" data-testid="guide-configure">

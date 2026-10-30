@@ -178,14 +178,14 @@ export const Footer = () => (
             Built for the world.
           </p>
           <p className="mt-8 text-[11px] uppercase tracking-[0.2em] text-timber-cream/35">
-            Sample catalogue â€” prices &amp; specs are indicative
+            Sample catalogue — prices &amp; specs are indicative
           </p>
         </div>
       </div>
       <div className="relative z-10 mt-16 flex flex-col gap-3 border-t border-timber-cream/10 pt-6 text-[11px] uppercase tracking-[0.2em] text-timber-cream/40 md:flex-row md:items-center md:justify-between">
-        <span>Â© {new Date().getFullYear()} Timber Acoustics</span>
+        <span>© {new Date().getFullYear()} Timber Acoustics</span>
         <Link to="/admin" data-testid="footer-admin" className="hover:text-timber-cream">
-          Team workspace â†—
+          Team workspace ↗
         </Link>
       </div>
     </div>

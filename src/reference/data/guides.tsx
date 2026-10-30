@@ -18,7 +18,7 @@ export const GUIDES = [
     intro:
       "The quietest detail. The biggest moment. A good cinema room gives both somewhere to land.",
     goal: "Dialogue clarity, controlled reflections, even bass",
-    size: "Illustrative room Â· 5.2 Ã— 4.1 m",
+    size: "Illustrative room · 5.2 × 4.1 m",
     scheme: {
       room: "home-theatre",
       finish: "walnut",
@@ -63,7 +63,7 @@ export const GUIDES = [
     image: EDITORIAL_IMAGES.studio,
     intro: "A room that lets you trust your ears. Less second-guessing, more making.",
     goal: "A stable stereo image and more reliable mix decisions",
-    size: "Illustrative room Â· 4.0 Ã— 3.2 m",
+    size: "Illustrative room · 4.0 × 3.2 m",
     scheme: {
       room: "studio",
       finish: "oak",
@@ -78,7 +78,7 @@ export const GUIDES = [
     sections: [
       [
         "Find your reference position.",
-        "Set the monitors and listening seat symmetrically across the room width. Keep the left and right speakers in comparable surroundings. Speaker-boundary interactions vary with distance, so there is no universally correct desk position; use the monitor manufacturerâ€™s guidance, listening tests and measurements.",
+        "Set the monitors and listening seat symmetrically across the room width. Keep the left and right speakers in comparable surroundings. Speaker-boundary interactions vary with distance, so there is no universally correct desk position; use the monitor manufacturer’s guidance, listening tests and measurements.",
       ],
       [
         "Control the first arrival.",
@@ -109,7 +109,7 @@ export const GUIDES = [
     intro:
       "Conversations that feel effortless. Calls that sound closer. Work with a little more headspace.",
     goal: "Clearer speech and less distracting reverberation",
-    size: "Illustrative room Â· 6.0 Ã— 4.5 m",
+    size: "Illustrative room · 6.0 × 4.5 m",
     scheme: {
       room: "office",
       finish: "oak",
