@@ -2,6 +2,8 @@
 
 The brand book and client brief in `public/images/` governed this pass. `DESIGN_DIRECTION.md` records the source hierarchy and design decisions.
 
+The captures below document the alcove before the subsequent headline-only restoration to “Sound, in better shape.”
+
 ## Review images
 
 - [Desktop - 1440 x 1000](desktop.png)
@@ -17,7 +19,7 @@ The brand book and client brief in `public/images/` governed this pass. `DESIGN_
 ## What changed
 
 - Original sound-wave wordmark from the brand book, warm off-white/beige surfaces, navy type and burnt-orange accents. Small text and active controls use a darker orange tint for contrast.
-- Bold, oversized Raleway in the revised hero, with lighter headings on interior pages. Local Quicksand body fonts follow the brand book's fallback guidance; Gotham font files were not supplied.
+- Light Raleway and an orange italic Playfair accent in the hero, with lighter headings on interior pages. Local Quicksand body fonts follow the brand book's fallback guidance; Gotham font files were not supplied.
 - Interactive timber finishes and an architectural backing reveal in the hero. The acoustic study advances through absorption, diffusion and low-frequency balance on larger screens; it remains a tabbed section on smaller screens and with reduced motion.
 - Product exploration, catalogue filters and room configuration remain. The room atelier adds a finish-study view and supports home theatre, listening room, studio and workplace presets.
 - Shared page introductions, header and footer, responsive controls, and redirects for older collection/configurator URLs.

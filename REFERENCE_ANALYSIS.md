@@ -31,3 +31,5 @@ The subsequent brand-book redesign and latest user feedback supersede exact repl
 ## Listening alcove - 31 October 2026
 
 The user approved replacing the isolated slab with a sculptural architectural listening alcove while retaining the dynamic details and cursor reactivity. The hero now shows a timber-ribbed, felt-backed space with a rust seat and warm light. Finish selection recolours the timber and “Inside the build” reveals the backing. Existing typography, contour field, badge and studio card remain. The scene uses the existing Three.js dependency, samples the local timber photograph through UV coordinates, and supplies an inline architectural SVG for SSR/loading/no-WebGL states. Browser checks cover five widths, rendered changes, keyboard controls, pause, visibility suspension, reduced motion, navigation cleanup and fallback operation. Updated review artifacts are in `docs/design-review/`.
+
+The subsequent headline-only request restores the lighter “Sound, in better shape.” typography from `b9d05e5`, including orange italic Playfair, while retaining the alcove and all interactive features.

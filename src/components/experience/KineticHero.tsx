@@ -60,24 +60,20 @@ export function KineticHero() {
             Natural material. Unexpected feeling.
           </motion.p>
           <h1 className="ta-kinetic-title" data-testid="hero-headline">
-            <span>
-              <motion.span
-                initial={reduced ? false : { y: "110%", rotate: 3 }}
-                animate={{ y: 0, rotate: 0 }}
-                transition={{ duration: 0.95, ease }}
-              >
-                Sound<span className="ta-title-dot">.</span>
-              </motion.span>
-            </span>
-            <span>
-              <motion.span
-                initial={reduced ? false : { y: "110%", rotate: 3 }}
-                animate={{ y: 0, rotate: 0 }}
-                transition={{ duration: 0.95, delay: 0.12, ease }}
-              >
-                Shaped<span className="ta-title-dot">.</span>
-              </motion.span>
-            </span>
+            <motion.span
+              initial={reduced ? false : { y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.9, ease }}
+            >
+              Sound, in
+            </motion.span>
+            <motion.span
+              initial={reduced ? false : { y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.9, delay: 0.12, ease }}
+            >
+              better <em>shape.</em>
+            </motion.span>
           </h1>
           <div className="ta-kinetic-intro">
             <span className="ta-kinetic-plus" aria-hidden="true">
