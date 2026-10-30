@@ -10,17 +10,24 @@ export function MaterialStudy({
   exploded = false,
   mode = "absorb",
   className = "",
+  kinetic = false,
+  motionPaused = false,
 }: {
   finish?: TimberFinish;
   exploded?: boolean;
   mode?: AcousticMode;
   className?: string;
+  kinetic?: boolean;
+  motionPaused?: boolean;
 }) {
   const host = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const pointer = useMotionValue(0);
+  const pointerY = useMotionValue(0);
   const smooth = useSpring(pointer, { stiffness: 90, damping: 24 });
-  const rotate = useTransform(smooth, [-1, 1], [-4, 4]);
+  const smoothY = useSpring(pointerY, { stiffness: 90, damping: 24 });
+  const rotate = useTransform(smooth, [-1, 1], [kinetic ? -9 : -4, kinetic ? 9 : 4]);
+  const pitch = useTransform(smoothY, [-1, 1], [3, -3]);
   return (
     <div
       ref={host}
@@ -28,17 +35,28 @@ export function MaterialStudy({
       data-finish={finish}
       data-mode={mode}
       data-exploded={exploded}
+      data-kinetic={kinetic}
+      data-paused={motionPaused}
       onPointerMove={(event) => {
-        if (reduced || event.pointerType === "touch") return;
+        if (reduced || motionPaused || event.pointerType === "touch") return;
         const rect = host.current?.getBoundingClientRect();
-        if (rect) pointer.set(((event.clientX - rect.left) / rect.width - 0.5) * 2);
+        if (rect) {
+          pointer.set(((event.clientX - rect.left) / rect.width - 0.5) * 2);
+          pointerY.set(((event.clientY - rect.top) / rect.height - 0.5) * 2);
+        }
       }}
-      onPointerLeave={() => pointer.set(0)}
+      onPointerLeave={() => {
+        pointer.set(0);
+        pointerY.set(0);
+      }}
       aria-hidden="true"
     >
       <BrandContours className="ta-material-contours" />
       <div className="ta-object-shadow" />
-      <motion.div className="ta-object-orbit" style={reduced ? {} : { rotateY: rotate }}>
+      <motion.div
+        className="ta-object-orbit"
+        style={reduced || motionPaused ? {} : { rotateY: rotate, rotateX: kinetic ? pitch : 0 }}
+      >
         {mode === "absorb" && (
           <div className="ta-material-board">
             <div className="ta-felt-layer" />

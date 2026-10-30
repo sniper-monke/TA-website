@@ -6,20 +6,15 @@ import {
   useMotionValueEvent,
   useReducedMotion,
   useScroll,
-  useTransform,
 } from "framer-motion";
-import { ArrowDown, ArrowRight, ArrowUpRight, Layers3, Minus, Plus } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Minus, Plus } from "lucide-react";
 import products from "@/data/reference-products.json";
 import projects from "@/data/reference-projects.json";
 import { BrandContours } from "./BrandContours";
-import { MaterialStudy, type AcousticMode, type TimberFinish } from "./MaterialStudy";
+import { MaterialStudy, type AcousticMode } from "./MaterialStudy";
+import { KineticHero } from "./KineticHero";
 
 const ease = [0.22, 1, 0.36, 1] as const;
-const finishes: { id: TimberFinish; label: string; colour: string }[] = [
-  { id: "oak", label: "Natural oak", colour: "#c9a875" },
-  { id: "walnut", label: "Walnut", colour: "#6b4a33" },
-  { id: "ebony", label: "Smoked ebony", colour: "#3b3a38" },
-];
 const principles: {
   id: AcousticMode;
   title: string;
@@ -100,114 +95,6 @@ function Reveal({
     >
       {children}
     </motion.div>
-  );
-}
-
-function Hero() {
-  const [finish, setFinish] = useState<TimberFinish>("oak");
-  const [exploded, setExploded] = useState(false);
-  const selected = finishes.find((item) => item.id === finish)!;
-  const ref = useRef<HTMLElement>(null);
-  const reduced = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [0, reduced ? 0 : 90]);
-  return (
-    <section ref={ref} className="ta-hero" data-testid="hero">
-      <div className="ta-hero-meta ta-shell ta-micro">
-        <span>
-          <i />
-          Material meets sound
-        </span>
-        <span>Timber Acoustics / Designed in India</span>
-      </div>
-      <div className="ta-hero-main ta-shell">
-        <div className="ta-hero-copy">
-          <motion.p
-            className="ta-micro ta-rust"
-            initial={reduced ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.15 }}
-          >
-            Acoustic surfaces. Natural soul.
-          </motion.p>
-          <h1 data-testid="hero-headline">
-            <motion.span
-              initial={reduced ? false : { y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.9, ease }}
-            >
-              Sound, in
-            </motion.span>
-            <motion.span
-              initial={reduced ? false : { y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.9, delay: 0.12, ease }}
-            >
-              better <em>shape.</em>
-            </motion.span>
-          </h1>
-          <p className="ta-hero-description">
-            Create spaces that sound as good as they look. Considered acoustic design, made from
-            timber, texture and a little intention.
-          </p>
-          <div className="ta-hero-links">
-            <Link to="/products" className="ta-button" data-testid="hero-explore-button">
-              Explore the collection <ArrowUpRight size={17} />
-            </Link>
-            <Link to="/build-a-room" className="ta-text-link" data-testid="hero-build-button">
-              Build your room <ArrowRight size={15} />
-            </Link>
-          </div>
-        </div>
-        <motion.div className="ta-hero-product" style={{ y }}>
-          <span className="ta-hero-serial ta-micro">TA—01 / Aalto Slat</span>
-          <MaterialStudy finish={finish} exploded={exploded} />
-          <div className="ta-product-annotation ta-micro">
-            <span>Timber face</span>
-            <span>Acoustic felt</span>
-            <span>2400 × 600 mm</span>
-          </div>
-        </motion.div>
-      </div>
-      <div className="ta-hero-controls ta-shell">
-        <div className="ta-finish-selector">
-          <span className="ta-micro">Finish /</span>
-          <div role="group" aria-label="Preview timber finish">
-            {finishes.map((item) => (
-              <button
-                key={item.id}
-                aria-label={item.label}
-                aria-pressed={finish === item.id}
-                onClick={() => setFinish(item.id)}
-                data-testid={`hero-finish-${item.id}`}
-              >
-                <span style={{ background: item.colour }} />
-              </button>
-            ))}
-          </div>
-          <span className="ta-finish-name" aria-live="polite">
-            {selected.label}
-          </span>
-        </div>
-        <button
-          className="ta-layer-control ta-micro"
-          onClick={() => setExploded(!exploded)}
-          aria-pressed={exploded}
-          data-testid="hero-layers"
-        >
-          <Layers3 size={15} />
-          {exploded ? "Bring it together" : "Explore the layers"}
-          {exploded ? <Minus size={14} /> : <Plus size={14} />}
-        </button>
-        <a href="#sound-study" className="ta-scroll-link ta-micro">
-          A closer look <ArrowDown size={15} />
-        </a>
-      </div>
-      <div className="ta-hero-caption ta-shell ta-micro">
-        <span>Natural materials. Considered acoustics.</span>
-        <span>Sample material study / Indicative dimensions</span>
-      </div>
-    </section>
   );
 }
 
@@ -502,7 +389,7 @@ function RoomInvitation() {
 export function HomeExperience() {
   return (
     <div className="ta-home">
-      <Hero />
+      <KineticHero />
       <SoundStudy />
       <div className="ta-material-statement">
         <BrandContours />
