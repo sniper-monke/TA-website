@@ -26,13 +26,13 @@ export function StoryPanel() {
         Origin
       </div>
 
-      <div className="relative z-10 mx-auto grid max-w-[1600px] gap-14 md:grid-cols-[minmax(0,0.95fr)_minmax(320px,1.05fr)] md:gap-[6vw]">
+      <div className="relative z-10 mx-auto grid min-w-0 grid-cols-1 max-w-[1600px] gap-14 md:grid-cols-[minmax(0,0.95fr)_minmax(320px,1.05fr)] md:gap-[6vw]">
         <div ref={copyRef}>
           <Reveal>
             <p className="label-mono text-signal">Origin / 00</p>
           </Reveal>
           <h2
-            className="font-display mt-5 text-[clamp(3.2rem,7vw,8.8rem)]"
+            className="font-display mt-5 text-[clamp(2.15rem,10vw,3rem)] leading-[0.94] tracking-[-0.055em] [font-stretch:85%] md:text-[clamp(3.2rem,7vw,8.8rem)] md:leading-[1.2] md:tracking-normal md:[font-stretch:100%]"
             aria-label="We design silence like architecture."
           >
             {lines.map((line, i) => (

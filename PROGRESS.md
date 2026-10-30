@@ -36,3 +36,8 @@
 ## Light headline restoration
 
 - Restored the headline from `b9d05e5`: “Sound, in better shape.” in weight-300 Raleway with orange italic Playfair for “shape.” Restored its original responsive sizes, spacing and entrance fade. The listening alcove, live patterns and controls are unchanged. Browser-checked 1440, 768, 390 and 320 px widths: the computed fonts/weight/colour match, both lines fit, reduced-motion text stays visible, and no browser errors or horizontal overflow were found. Typecheck, targeted ESLint, all four tests and production build passed. Updated the design notes to record this headline-only request.
+
+## Design-v2 branch for presentation
+
+- Created `design-v2` from `aa3bbba`, retaining all ten redesign commits after the existing remote `main` (`2def497`). Included the two remaining local UI edits: responsive StoryPanel sizing/layout and horizontal overflow clipping. Added explicit TanStack Start framework detection, npm installation/build commands for Vercel, and ignored generated `.vercel/` files.
+- Formatting, targeted ESLint, typecheck and all four tests passed. A production build with `NITRO_PRESET=vercel` passed and generated valid Vercel Build Output v3 with the Node.js 24 SSR handler. The npm lockfile matches package.json. Reviewed the diff and preserved the untracked brand documents and unrelated `tmp/` content. The new Vercel project should track `design-v2` as its Production Branch; the existing online site remains on remote `main`.
