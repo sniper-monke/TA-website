@@ -13,7 +13,8 @@ import {
   Plus,
 } from "lucide-react";
 import { LiveContourField } from "./LiveContourField";
-import { MaterialStudy, type TimberFinish } from "./MaterialStudy";
+import type { TimberFinish } from "./MaterialStudy";
+import { HeroListeningScene } from "./HeroListeningScene";
 
 const finishes: { id: TimberFinish; label: string; colour: string }[] = [
   { id: "oak", label: "Natural oak", colour: "#c9a875" },
@@ -103,11 +104,13 @@ export function KineticHero() {
         </div>
         <motion.div className="ta-kinetic-object" style={{ y }}>
           <div className="ta-kinetic-object-label ta-micro">
-            <span>TA / 001</span>
-            <span>Timber + felt</span>
+            <span>TA / Listening spaces</span>
+            <span>Timber. Texture. Stillness.</span>
           </div>
-          <MaterialStudy finish={finish} exploded={exploded} kinetic motionPaused={!active} />
-          <span className="ta-kinetic-dimension ta-micro">2400 × 600 / Aalto Slat</span>
+          <HeroListeningScene finish={finish} exploded={exploded} active={active} />
+          <span className="ta-kinetic-dimension ta-micro">
+            A little space. A different feeling.
+          </span>
         </motion.div>
         <div className="ta-resonate-stamp" aria-hidden="true">
           <svg viewBox="0 0 80 34" fill="none">
@@ -167,7 +170,7 @@ export function KineticHero() {
           data-testid="hero-layers"
         >
           <Layers3 size={16} />
-          <span>{exploded ? "Bring it together" : "Pull it apart"}</span>
+          <span>{exploded ? "Close the build" : "Inside the build"}</span>
           {exploded ? <Minus size={15} /> : <Plus size={15} />}
         </button>
         <button
@@ -187,7 +190,7 @@ export function KineticHero() {
       </div>
       <div className="ta-kinetic-caption ta-shell ta-micro">
         <span>Acoustics with a natural soul.</span>
-        <span>Illustrative material study / Sample catalogue</span>
+        <span>Illustrative listening space / Sample catalogue</span>
       </div>
     </section>
   );
