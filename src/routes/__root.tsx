@@ -23,6 +23,9 @@ import referenceFonts from "../reference-fonts.css?url";
 import referenceEditorial from "../reference-editorial.css?url";
 import experienceCss from "../experience.css?url";
 import heroCss from "../hero.css?url";
+import storefrontCss from "../storefront.css?url";
+import homeLayoutCss from "../home-layout.css?url";
+import productPageCss from "../product-page.css?url";
 
 function NotFoundComponent() {
   return (
@@ -105,6 +108,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "stylesheet", href: referenceEditorial },
       { rel: "stylesheet", href: experienceCss },
       { rel: "stylesheet", href: heroCss },
+      { rel: "stylesheet", href: storefrontCss },
+      { rel: "stylesheet", href: homeLayoutCss },
+      { rel: "stylesheet", href: productPageCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "icon", href: "/favicon.ico?v=2", type: "image/x-icon" },

@@ -297,11 +297,11 @@ export default function Configurator() {
               }
             >
               <Plus size={17} />
-              Add scheme to enquiry
+              Save room for a quote
             </button>
             <Link to="/basket" data-testid="cfg-view-basket" className="text-link mt-4">
               <ShoppingBag size={15} />
-              View enquiry basket
+              View bag & room shortlist
             </Link>
             <p className="mt-5 border-t border-timber-ink/10 pt-4 text-xs leading-relaxed text-timber-ink/65">
               Visual concept, not a complete acoustic specification. The team will confirm coverage,

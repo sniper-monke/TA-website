@@ -7,6 +7,22 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
+  vite: {
+    optimizeDeps: {
+      // Reject old bundle URLs instead of loading a second React dispatcher.
+      // The wrapper enables ignoreOutdatedRequests; restore Vite's default guard.
+      ignoreOutdatedRequests: false,
+      // These are reached through route splitting and otherwise trigger late rebundles.
+      include: [
+        "@radix-ui/react-dialog",
+        "@radix-ui/react-slider",
+        "@tanstack/router-core",
+        "@tanstack/router-core/isServer",
+        "@tanstack/router-core/ssr/client",
+        "seroval",
+      ],
+    },
+  },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this

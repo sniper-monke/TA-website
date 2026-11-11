@@ -64,7 +64,7 @@ export function LiveContourField({ active }: { active: boolean }) {
 
     const tick = (now: number) => {
       frame = 0;
-      if (!active || !visible || document.hidden) return;
+      if (!active || width < 900 || !visible || document.hidden) return;
       if (now - previous > 32) {
         phase.current += Math.min((now - previous) / 1000 || 0.033, 0.05);
         previous = now;
@@ -76,7 +76,7 @@ export function LiveContourField({ active }: { active: boolean }) {
       frame = requestAnimationFrame(tick);
     };
     const resume = () => {
-      if (active && visible && !document.hidden && !frame) {
+      if (active && width >= 900 && visible && !document.hidden && !frame) {
         previous = performance.now();
         frame = requestAnimationFrame(tick);
       }

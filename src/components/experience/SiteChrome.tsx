@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowDown, ArrowUpRight, Plus, ShoppingBag, X } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Plus, ShoppingBag, X } from "lucide-react";
 import { useBasket } from "@/reference/context/BasketContext";
-import { BrandContours } from "./BrandContours";
+import { useCatalogue } from "@/hooks/use-catalogue";
+import { spaceLinks } from "@/data/site-content";
 
 const links = [
-  { to: "/products", label: "The collection", short: "Products" },
-  { to: "/build-a-room", label: "Build a room", short: "Build a room" },
-  { to: "/projects", label: "Spaces", short: "Spaces" },
-  { to: "/guides", label: "Field notes", short: "Field notes" },
-  { to: "/story", label: "Our story", short: "Story" },
+  { to: "/products", label: "Acoustic products", short: "Products" },
+  { to: "/build-a-room", label: "Solutions / Build a room", short: "Solutions" },
+  { to: "/projects", label: "Projects", short: "Projects" },
+  { to: "/guides", label: "Acoustic knowledge", short: "Knowledge" },
+  { to: "/story", label: "About Timber", short: "About" },
 ] as const;
 
 export function SiteHeader() {
@@ -20,6 +21,26 @@ export function SiteHeader() {
   const pathname = useLocation({ select: (location) => location.pathname });
   const toggle = useRef<HTMLButtonElement>(null);
   const menu = useRef<HTMLElement>(null);
+  const catalogueMenu = useRef<HTMLDetailsElement>(null);
+  const { data: catalogue } = useCatalogue();
+  useEffect(() => {
+    const close = (event: PointerEvent) => {
+      if (!catalogueMenu.current?.contains(event.target as Node))
+        catalogueMenu.current?.removeAttribute("open");
+    };
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && catalogueMenu.current?.open) {
+        catalogueMenu.current.removeAttribute("open");
+        catalogueMenu.current.querySelector("summary")?.focus();
+      }
+    };
+    document.addEventListener("pointerdown", close);
+    document.addEventListener("keydown", escape);
+    return () => {
+      document.removeEventListener("pointerdown", close);
+      document.removeEventListener("keydown", escape);
+    };
+  }, []);
 
   useEffect(() => {
     const update = () => setScrolled(window.scrollY > 24);
@@ -27,7 +48,10 @@ export function SiteHeader() {
     window.addEventListener("scroll", update, { passive: true });
     return () => window.removeEventListener("scroll", update);
   }, []);
-  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => {
+    setOpen(false);
+    catalogueMenu.current?.removeAttribute("open");
+  }, [pathname]);
   useEffect(() => {
     if (!open) return;
     const previous = document.body.style.overflow;
@@ -73,7 +97,58 @@ export function SiteHeader() {
           <img src="/brand/timber-acoustics.svg" alt="Timber Acoustics" width="250" height="26" />
         </Link>
         <nav className="ta-desktop-nav" aria-label="Primary">
-          {links.map((item) => (
+          <details className="ta-product-menu" ref={catalogueMenu}>
+            <summary data-testid="product-menu-toggle">
+              Products <ChevronDown size={13} />
+            </summary>
+            <div className="ta-mega-menu" data-testid="product-mega-menu">
+              <div className="ta-mega-inner ta-shell ta-grouped-menu">
+                <div>
+                  <p className="ta-micro ta-rust">Acoustic treatment</p>
+                  <a href="/products?family=absorption">
+                    Absorption <ArrowUpRight size={14} />
+                  </a>
+                  <a href="/products?family=diffusion">
+                    Diffusion <ArrowUpRight size={14} />
+                  </a>
+                  <a href="/products?family=bass-traps">
+                    Bass management <ArrowUpRight size={14} />
+                  </a>
+                  <a href="/products?family=room-kits">
+                    Room kits <ArrowUpRight size={14} />
+                  </a>
+                  <Link to="/products" className="ta-text-link">
+                    All products <ArrowUpRight size={15} />
+                  </Link>
+                </div>
+                <div>
+                  <p className="ta-micro ta-rust">Studio furniture</p>
+                  <a href="/products?family=racks-and-tables">
+                    Studio desks & racks <ArrowUpRight size={14} />
+                  </a>
+                  <Link to="/build-a-room" className="ta-text-link">
+                    Plan your setup <ArrowUpRight size={15} />
+                  </Link>
+                </div>
+                <div>
+                  <p className="ta-micro ta-rust">By space</p>
+                  {spaceLinks.map((space) => (
+                    <a key={space.label} href={space.href}>
+                      {space.label}
+                      <ArrowUpRight size={14} />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </details>
+          <Link to="/build-a-room" data-active={pathname.startsWith("/build-a-room")}>
+            Solutions
+          </Link>
+          <Link to="/" hash="explore-spaces">
+            Spaces
+          </Link>
+          {links.slice(2).map((item) => (
             <Link key={item.to} to={item.to} data-active={pathname.startsWith(item.to)}>
               {item.short}
             </Link>
@@ -83,11 +158,11 @@ export function SiteHeader() {
           <Link
             to="/basket"
             className="ta-basket"
-            aria-label={`Enquiry basket, ${count} items`}
+            aria-label={`Shopping bag, ${count} items`}
             data-testid="nav-basket"
           >
             <ShoppingBag size={16} strokeWidth={1.4} />
-            <span>Enquiry</span>
+            <span>Bag</span>
             <span className="ta-count" data-testid="nav-basket-count">
               {String(count).padStart(2, "0")}
             </span>
@@ -120,7 +195,7 @@ export function SiteHeader() {
             data-testid="mobile-menu"
           >
             <div className="ta-mobile-label ta-micro">
-              Explore Timber Acoustics <span>01—05</span>
+              Explore Timber Acoustics <span>01—06</span>
             </div>
             {links.map((item, index) => (
               <Link key={item.to} to={item.to} onClick={() => setOpen(false)}>
@@ -129,7 +204,29 @@ export function SiteHeader() {
                 <ArrowUpRight size={22} strokeWidth={1} />
               </Link>
             ))}
-            <p className="ta-micro ta-mobile-note">Natural materials. Considered acoustics.</p>
+            <div className="ta-mobile-categories" aria-label="Product categories">
+              {catalogue?.families.map((family) => (
+                <a key={family.slug} href={`/products?family=${encodeURIComponent(family.slug)}`}>
+                  {family.name}
+                  <ArrowUpRight size={13} />
+                </a>
+              ))}
+            </div>
+            <div className="ta-mobile-space-links" aria-label="By space">
+              <p className="ta-micro ta-rust">By space</p>
+              {spaceLinks.map((space) => (
+                <a href={space.href} key={space.label}>
+                  {space.label}
+                  <ArrowUpRight size={13} />
+                </a>
+              ))}
+            </div>
+            <Link to="/contact" onClick={() => setOpen(false)}>
+              <span className="ta-micro">06</span>
+              <span>Ask the team</span>
+              <ArrowUpRight size={18} />
+            </Link>
+            <p className="ta-micro ta-mobile-note">Acoustic treatment. Naturally considered.</p>
           </motion.nav>
         )}
       </AnimatePresence>
@@ -139,49 +236,47 @@ export function SiteHeader() {
 
 export function SiteFooter() {
   return (
-    <footer className="ta-footer" data-testid="site-footer">
-      <div className="ta-footer-top ta-shell">
-        <div className="ta-footer-heading">
-          <p className="ta-micro">A quieter kind of conversation</p>
-          <h2>
-            Good sound.
+    <footer className="ta-layout-footer" data-testid="site-footer">
+      <div className="ta-layout-footer-grid ta-shell">
+        <div className="ta-footer-brand">
+          <Link to="/" aria-label="Timber Acoustics home">
+            <img src="/brand/timber-acoustics.svg" alt="Timber Acoustics" width="250" height="26" />
+          </Link>
+          <p>
+            Acoustic solutions for studios,
             <br />
-            <span>Starts here.</span>
-          </h2>
-          <Link to="/build-a-room" className="ta-button ta-button-light">
-            Imagine your space <ArrowUpRight size={17} />
-          </Link>
-        </div>
-        <BrandContours className="ta-footer-rings" />
-        <div className="ta-footer-links">
-          <p className="ta-micro">
-            Find your way <ArrowDown size={13} />
+            homes and creative spaces.
           </p>
-          {links.map((item) => (
-            <Link key={item.to} to={item.to}>
-              {item.label}
-              <ArrowUpRight size={14} />
-            </Link>
-          ))}
-          <Link to="/contact">
-            Project enquiries <ArrowUpRight size={14} />
-          </Link>
+          <span className="ta-layout-content-note">Sample catalogue / Illustrative projects</span>
         </div>
+        <nav aria-label="Footer products">
+          <h2>Products</h2>
+          <a href="/products?family=absorption">Absorption</a>
+          <a href="/products?family=diffusion">Diffusion</a>
+          <a href="/products?family=bass-traps">Bass management</a>
+          <a href="/products?family=racks-and-tables">Studio furniture & racks</a>
+          <Link to="/products">All products</Link>
+        </nav>
+        <nav aria-label="Footer spaces">
+          <h2>Solutions / Spaces</h2>
+          {spaceLinks.map((space) => (
+            <a key={space.label} href={space.href}>
+              {space.label}
+            </a>
+          ))}
+          <Link to="/build-a-room">Build a room</Link>
+        </nav>
+        <nav aria-label="Footer company">
+          <h2>Company</h2>
+          <Link to="/story">Our story</Link>
+          <Link to="/projects">Projects</Link>
+          <Link to="/guides">Knowledge</Link>
+          <Link to="/contact">Contact us</Link>
+        </nav>
       </div>
-      <div className="ta-footer-base ta-shell">
-        <Link to="/" aria-label="Timber Acoustics home">
-          <img
-            src="/brand/timber-acoustics-light.svg"
-            alt="Timber Acoustics"
-            width="250"
-            height="26"
-          />
-        </Link>
-        <p>Designed in India. Felt everywhere.</p>
-        <span className="ta-micro">© {new Date().getFullYear()}</span>
-      </div>
-      <div className="ta-footer-fine ta-shell">
-        <span>Sample catalogue · Indicative pricing · Illustrative spaces</span>
+      <div className="ta-layout-footer-base ta-shell">
+        <p>&copy; {new Date().getFullYear()} Timber Acoustics. All rights reserved.</p>
+        <span>Designed in India. Felt everywhere.</span>
         <Link to="/admin/login">
           Team workspace <ArrowUpRight size={12} />
         </Link>

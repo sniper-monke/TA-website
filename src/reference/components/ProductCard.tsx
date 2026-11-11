@@ -24,7 +24,10 @@ const ProductCard = ({ product: p, familyName, index = 0 }) => (
             {p.name}
           </h3>
         </div>
-        <p className="pt-4 text-sm font-normal text-timber-ink/70">{formatPrice(p.price)}</p>
+        <p className="pt-4 text-sm font-normal text-timber-ink/70">
+          {p.source === "shopify" ? "From " : ""}
+          {formatPrice(p.price, p.currency)}
+        </p>
       </div>
     </Link>
   </Reveal>

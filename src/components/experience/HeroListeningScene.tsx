@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import type { TimberFinish } from "./MaterialStudy";
 import type { ListeningEngine, ListeningState } from "./listening-scene";
+import { useReducedMotionPreference } from "@/hooks/use-reduced-motion";
 
 /** The inline architectural illustration also serves SSR, loading and no-WebGL states. */
 export function HeroListeningScene({
@@ -17,12 +18,24 @@ export function HeroListeningScene({
   const engine = useRef<ListeningEngine | null>(null);
   const latest = useRef<ListeningState>({ finish, exploded, active });
   const [ready, setReady] = useState(false);
+  const [desktop, setDesktop] = useState(false);
+  const reduced = useReducedMotionPreference();
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 900px) and (pointer: fine)");
+    const update = () => setDesktop(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
   useEffect(() => {
     latest.current = { finish, exploded, active };
     engine.current?.update(latest.current);
   }, [finish, exploded, active]);
   useEffect(() => {
-    if (import.meta.env.SSR || !host.current) return;
+    if (import.meta.env.SSR || !host.current || !desktop || reduced) {
+      setReady(false);
+      return;
+    }
     let disposed = false;
     const element = host.current;
     void Promise.all([import("three"), import("./listening-scene")])
@@ -45,7 +58,7 @@ export function HeroListeningScene({
       engine.current?.dispose();
       engine.current = null;
     };
-  }, []);
+  }, [desktop, reduced]);
   return (
     <div
       className="ta-listening-scene"

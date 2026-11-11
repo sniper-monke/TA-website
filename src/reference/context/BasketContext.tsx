@@ -11,13 +11,15 @@ type BasketEntry = {
   scheme?: Record<string, string>;
   description?: string;
   image?: string;
+  variantId?: string;
+  currency?: string;
 };
 type BasketItem = BasketEntry & { id: string; quantity: number };
 type BasketState = {
   items: BasketItem[];
   count: number;
   total: number;
-  add: (entry: BasketEntry) => void;
+  add: (entry: BasketEntry, quantity?: number) => void;
   quantity: (id: string, value: number) => void;
   remove: (id: string) => void;
   clear: () => void;
@@ -25,7 +27,7 @@ type BasketState = {
 const BasketContext = createContext<BasketState | null>(null);
 const KEY = "timber-enquiry-basket-v1";
 const identity = (item: BasketEntry) =>
-  JSON.stringify([item.kind, item.slug, item.finish, item.size, item.scheme]);
+  JSON.stringify([item.kind, item.slug, item.finish, item.size, item.scheme, item.variantId]);
 
 export const BasketProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<BasketItem[]>([]);
@@ -62,10 +64,14 @@ export const BasketProvider = ({ children }: { children: ReactNode }) => {
       }
     }
   }, [items, loaded]);
-  const add = (item: BasketEntry) => {
+  const add = (item: BasketEntry, amount = 1) => {
+    if (!Number.isInteger(amount) || amount < 1 || amount > 99) {
+      toast.error("Choose a quantity from 1 to 99.");
+      return;
+    }
     const key = identity(item);
     const existing = items.find((x) => identity(x) === key);
-    if ((!existing && items.length >= 30) || (existing?.quantity ?? 0) >= 99) {
+    if ((!existing && items.length >= 30) || (existing?.quantity ?? 0) + amount > 99) {
       toast.error("Your basket has reached its limit.");
       return;
     }
@@ -73,11 +79,14 @@ export const BasketProvider = ({ children }: { children: ReactNode }) => {
       const match = prev.find((x) => identity(x) === key);
       return match
         ? prev.map((x) =>
-            x.id === match.id ? { ...x, quantity: Math.min(99, x.quantity + 1) } : x,
+            x.id === match.id ? { ...x, quantity: Math.min(99, x.quantity + amount) } : x,
           )
-        : [...prev, { ...item, id: crypto.randomUUID(), quantity: 1 }];
+        : [...prev, { ...item, id: crypto.randomUUID(), quantity: amount }];
     });
-    toast.success(`${item.name} added to your enquiry`, { id: "basket-added" });
+    toast.success(
+      `${item.name} added to your ${item.kind === "product" ? "bag" : "room shortlist"}`,
+      { id: "basket-added" },
+    );
   };
   const quantity = (id: string, value: number) =>
     setItems((prev) =>

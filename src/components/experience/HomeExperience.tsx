@@ -1,381 +1,266 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
-import { ArrowRight, ArrowUpRight, Minus, Plus } from "lucide-react";
-import { useReducedMotionPreference } from "@/hooks/use-reduced-motion";
-import products from "@/data/reference-products.json";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Headphones,
+  Mic2,
+  MonitorSpeaker,
+  SlidersHorizontal,
+} from "lucide-react";
 import projects from "@/data/reference-projects.json";
+import { trustedClients } from "@/data/site-content";
+import { useCatalogue } from "@/hooks/use-catalogue";
 import { BrandContours } from "./BrandContours";
-import { MaterialStudy, type AcousticMode } from "./MaterialStudy";
 import { KineticHero } from "./KineticHero";
 
-const ease = [0.22, 1, 0.36, 1] as const;
-const principles: {
-  id: AcousticMode;
-  title: string;
-  line: string;
-  copy: string;
-  detail: string;
-  family: string;
-}[] = [
+const categories = [
+  { slug: "absorption", title: "Absorption", note: "Soften echo. Bring speech into focus." },
+  { slug: "diffusion", title: "Diffusion", note: "Scatter reflections. Keep the room alive." },
   {
-    id: "absorb",
-    title: "Absorb",
-    line: "Less echo. More of what matters.",
-    copy: "Timber and acoustic backing work together to soften reflections. A clearer conversation. A little more detail in your favourite record.",
-    detail: "Timber face / Acoustic backing",
-    family: "absorption",
+    slug: "bass-traps",
+    title: "Bass management",
+    note: "Give lingering low frequencies less room.",
   },
   {
-    id: "diffuse",
-    title: "Diffuse",
-    line: "Keep the life. Lose the glare.",
-    copy: "Sculpted surfaces scatter reflections in different directions, helping a room feel open and balanced without taking all its energy away.",
-    detail: "Sculpted timber / Varied depth",
-    family: "diffusion",
-  },
-  {
-    id: "trap",
-    title: "Balance",
-    line: "Give the low end somewhere to go.",
-    copy: "Deeper treatment helps manage the energy that collects in a room. Start with placement and measurement, then choose the treatment your space needs.",
-    detail: "Corner placement / Deeper treatment",
-    family: "bass-traps",
-  },
-];
-const rooms = [
-  {
-    id: "home-theatre",
-    name: "Home theatre",
-    note: "Feel every scene.",
-    image: "/images/timber-theatre.webp",
-  },
-  {
-    id: "listening-room",
-    name: "Listening room",
-    note: "Closer to the music.",
-    image: "/reference-photos/photo-16.jpg",
-  },
-  {
-    id: "studio",
-    name: "Studio",
-    note: "Hear what is there.",
-    image: "/images/timber-studio.webp",
-  },
-  {
-    id: "office",
-    name: "Workplace",
-    note: "Make space to think.",
-    image: "/images/timber-office.webp",
+    slug: "racks-and-tables",
+    title: "Studio furniture & racks",
+    note: "A considered place for your studio setup.",
   },
 ];
 
-function Reveal({
-  children,
-  className = "",
-  delay = 0,
-}: {
-  children: ReactNode;
-  className?: string;
-  delay?: number;
-}) {
-  const reduced = useReducedMotionPreference();
-  return (
-    <motion.div
-      className={className}
-      initial={reduced ? false : { opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.8, delay, ease }}
-    >
-      {children}
-    </motion.div>
-  );
-}
+const homepageSpaces = [
+  { label: "Recording studio", href: "/guides/studio", icon: SlidersHorizontal },
+  { label: "Home studio", href: "/build-a-room?room=studio", icon: MonitorSpeaker },
+  { label: "Podcast studio", href: "/contact", icon: Mic2 },
+  { label: "Listening room", href: "/build-a-room?room=listening-room", icon: Headphones },
+];
 
-function SoundStudy() {
-  const [active, setActive] = useState(0);
-  const section = useRef<HTMLElement>(null);
-  const scrollEnabled = useRef(false);
-  const lastScrollChapter = useRef(0);
-  const reduced = useReducedMotionPreference();
-  const { scrollYProgress } = useScroll({ target: section, offset: ["start start", "end end"] });
-  useEffect(() => {
-    const query = window.matchMedia("(min-width: 1100px) and (min-height: 850px)");
-    const update = () => {
-      scrollEnabled.current = query.matches && !reduced;
-    };
-    update();
-    query.addEventListener("change", update);
-    return () => query.removeEventListener("change", update);
-  }, [reduced]);
-  useMotionValueEvent(scrollYProgress, "change", (progress) => {
-    if (!scrollEnabled.current) return;
-    const chapter = Math.min(2, Math.floor(progress * 3));
-    if (chapter !== lastScrollChapter.current) {
-      lastScrollChapter.current = chapter;
-      setActive(chapter);
-    }
-  });
-  const principle = principles[active]!;
+function TrustedPartners() {
   return (
     <section
-      ref={section}
-      id="sound-study"
-      className="ta-sound-study ta-shell"
-      data-testid="sound-study"
+      className="ta-layout-trust ta-shell"
+      data-home-section="trusted-partners"
+      aria-label="Trusted partners"
     >
-      <div className="ta-study-stick">
-        <Reveal className="ta-section-heading">
-          <p className="ta-micro ta-rust">01 / A different way to hear</p>
-          <h2>
-            A room is more than
+      <div>
+        <p className="ta-micro">Trusted partners</p>
+        {!trustedClients.length && (
+          <span className="ta-placeholder-note">Approved names & logos to follow</span>
+        )}
+      </div>
+      <div className="ta-partner-list">
+        {trustedClients.length
+          ? trustedClients.map((name) => <span key={name}>{name}</span>)
+          : Array.from({ length: 5 }, (_, i) => (
+              <span className="ta-partner-placeholder" key={i}>
+                Client logo {String(i + 1).padStart(2, "0")}
+              </span>
+            ))}
+      </div>
+    </section>
+  );
+}
+
+function OurApproach() {
+  return (
+    <section
+      className="ta-layout-approach ta-shell"
+      id="our-approach"
+      data-home-section="our-approach"
+      aria-labelledby="approach-title"
+    >
+      <div className="ta-approach-copy">
+        <p className="ta-micro ta-rust">Our approach</p>
+        <h2 id="approach-title">
+          Acoustics, materials
+          <br />
+          and <em>design.</em>
+        </h2>
+        <p>
+          Good acoustics starts with understanding the room. We bring together absorption, diffusion
+          and bass control to help you hear more clearly and feel more at ease.
+        </p>
+        <p>Thoughtful treatment. Honest materials. A finish that belongs in your space.</p>
+        <Link to="/story" className="ta-text-link">
+          Our philosophy <ArrowRight size={16} />
+        </Link>
+      </div>
+      <div className="ta-approach-image">
+        <img
+          src="/images/timber-detail.webp"
+          alt="Close-up of timber slats and acoustic backing"
+          loading="lazy"
+        />
+        <span className="ta-micro">Absorb / Diffuse / Balance</span>
+      </div>
+    </section>
+  );
+}
+
+function ProductCategories() {
+  const { data, isError, refetch } = useCatalogue();
+  return (
+    <section
+      className="ta-layout-categories ta-shell"
+      data-home-section="product-categories"
+      aria-labelledby="categories-title"
+    >
+      <div className="ta-layout-heading">
+        <div>
+          <p className="ta-micro ta-rust">Our range</p>
+          <h2 id="categories-title">
+            Acoustic solutions
+            <br className="ta-mobile-break" /> & studio furniture.
+          </h2>
+        </div>
+        <Link to="/products" className="ta-text-link">
+          All products <ArrowUpRight size={16} />
+        </Link>
+      </div>
+      <div className="ta-layout-category-grid">
+        {categories.map((category) => {
+          const family = data?.families.find((item) => item.slug === category.slug);
+          return (
+            <a
+              href={`/products?family=${category.slug}`}
+              key={category.slug}
+              data-testid={`home-category-${category.slug}`}
+            >
+              <div className="ta-category-image">
+                {family && <img src={family.image} alt={category.title} loading="lazy" />}
+              </div>
+              <div className="ta-category-caption">
+                <h3>{category.title}</h3>
+                <ArrowRight size={17} />
+              </div>
+              <p>{category.note}</p>
+            </a>
+          );
+        })}
+      </div>
+      {isError && (
+        <p role="alert">
+          Category images could not be loaded.{" "}
+          <button className="ta-text-link" onClick={() => void refetch()}>
+            Try again
+          </button>
+        </p>
+      )}
+      <p className="ta-layout-content-note">
+        {data?.products.some((product) => product.sample)
+          ? "Preview catalogue / Reference photography / Specifications and pricing to be confirmed"
+          : "Explore the collection to choose your product and finish."}
+      </p>
+    </section>
+  );
+}
+
+function FeaturedProject() {
+  const project = projects[0]!;
+  return (
+    <section
+      className="ta-layout-featured"
+      data-home-section="featured-project"
+      aria-labelledby="featured-project-title"
+    >
+      <img
+        src={project.gallery[0]}
+        alt="An illustrative home theatre with timber acoustic treatment"
+        loading="lazy"
+      />
+      <div className="ta-featured-shade" />
+      <div className="ta-shell">
+        <div className="ta-banner-copy">
+          <p className="ta-micro ta-rust">Featured project / Home theatre</p>
+          <h2 id="featured-project-title">
+            The listening
             <br />
-            what you <em>see.</em>
+            <em>retreat.</em>
           </h2>
           <p>
-            It’s the conversation that flows.
-            <br />
-            The quiet that lets you think.
-            <br />
-            The feeling when a record comes alive.
+            Clearer dialogue. More balanced bass. A cinema concept built around the way a room
+            sounds.
           </p>
-        </Reveal>
-        <div className="ta-study-console">
-          <div className="ta-study-visual">
-            <div className="ta-study-readout ta-micro">
-              <span>Material behaviour</span>
-              <span>0{active + 1} / 03</span>
-            </div>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={principle.id}
-                initial={{ opacity: 0, scale: 0.97 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.03 }}
-                transition={{ duration: 0.35 }}
-              >
-                <MaterialStudy mode={principle.id} finish="walnut" />
-              </motion.div>
-            </AnimatePresence>
-            <p className="ta-study-detail ta-micro">
-              {principle.detail}
-              <span>Illustrative geometry</span>
-            </p>
-          </div>
-          <div className="ta-study-content">
-            <div className="ta-principle-tabs" role="tablist" aria-label="Acoustic principles">
-              {principles.map((item, index) => (
-                <button
-                  key={item.id}
-                  id={`tab-${item.id}`}
-                  role="tab"
-                  aria-selected={active === index}
-                  aria-controls="ta-principle-panel"
-                  tabIndex={active === index ? 0 : -1}
-                  onClick={() => setActive(index)}
-                  onKeyDown={(event) => {
-                    if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(event.key)) return;
-                    event.preventDefault();
-                    const next =
-                      event.key === "Home"
-                        ? 0
-                        : event.key === "End"
-                          ? principles.length - 1
-                          : (index + (event.key === "ArrowRight" ? 1 : -1) + principles.length) %
-                            principles.length;
-                    setActive(next);
-                    document.getElementById(`tab-${principles[next]!.id}`)?.focus();
-                  }}
-                  data-testid={`principle-${item.id}`}
-                >
-                  <span className="ta-micro">0{index + 1}</span>
-                  {item.title}
-                  <span>{active === index ? <Minus size={16} /> : <Plus size={16} />}</span>
-                </button>
-              ))}
-            </div>
-            <div
-              id="ta-principle-panel"
-              role="tabpanel"
-              aria-labelledby={`tab-${principle.id}`}
-              className="ta-principle-copy"
-              data-testid="principle-description"
-            >
-              <p className="ta-micro ta-rust">The idea / {principle.id}</p>
-              <h3>{principle.line}</h3>
-              <p>{principle.copy}</p>
-              <a href={`/products?family=${principle.family}`} className="ta-text-link">
-                Explore the treatment <ArrowUpRight size={16} />
-              </a>
-            </div>
-            <Link to="/story" className="ta-study-footnote ta-micro">
-              The Timber philosophy <ArrowUpRight size={14} />
-            </Link>
-          </div>
-        </div>
-        <div className="ta-study-scroll-track" aria-hidden="true">
-          <motion.div style={{ scaleX: scrollYProgress }} />
+          <Link to="/projects/$slug" params={{ slug: project.slug }} className="ta-text-link">
+            View project <ArrowRight size={16} />
+          </Link>
+          <span className="ta-layout-content-note">
+            Illustrative project / Reference photography
+          </span>
         </div>
       </div>
     </section>
   );
 }
 
-function Collection() {
-  const featured = [
-    ...products.filter((item) => item.featured),
-    ...products.filter((item) => !item.featured),
-  ].slice(0, 4);
+function ProjectsAndSpaces() {
   return (
-    <section className="ta-collection" data-testid="explore-products">
-      <div className="ta-shell">
-        <Reveal className="ta-section-heading">
-          <p className="ta-micro ta-rust">02 / Objects with purpose</p>
-          <h2>
-            Good sound.
-            <br />
-            <em>Great company.</em>
-          </h2>
-          <div>
-            <p>
-              Considered pieces.
-              <br />A world of possibilities.
-            </p>
-            <Link to="/products" className="ta-text-link">
-              All products <ArrowUpRight size={16} />
+    <section
+      className="ta-layout-projects-spaces ta-shell"
+      data-home-section="projects-and-spaces"
+      aria-label="Projects and spaces"
+    >
+      <div className="ta-more-projects">
+        <div className="ta-layout-small-heading">
+          <h2>More projects</h2>
+          <Link to="/projects" className="ta-text-link">
+            View all <ArrowUpRight size={14} />
+          </Link>
+        </div>
+        <div className="ta-more-projects-grid">
+          {projects.slice(1, 3).map((project) => (
+            <Link to="/projects/$slug" params={{ slug: project.slug }} key={project.slug}>
+              <img src={project.gallery[0]} alt={project.title} loading="lazy" />
+              <div>
+                <h3>{project.title}</h3>
+                <ArrowRight size={16} />
+              </div>
+              <span className="ta-layout-content-note">Illustrative project</span>
             </Link>
-          </div>
-        </Reveal>
-        <div className="ta-collection-grid">
-          {featured.map((product, index) => (
-            <Reveal
-              key={product.slug}
-              className={`ta-collection-item ta-piece-${index}`}
-              delay={(index % 2) * 0.08}
-            >
-              <Link
-                to="/products/$slug"
-                params={{ slug: product.slug }}
-                className="ta-product-link"
-                data-testid={`showcase-product-${product.slug}`}
-              >
-                <div className="ta-product-photo">
-                  <img src={product.gallery[0]} alt={product.name} loading="lazy" />
-                  <span className="ta-item-code ta-micro">TA / 0{index + 1}</span>
-                  <span className="ta-product-arrow">
-                    <ArrowUpRight size={22} strokeWidth={1.3} />
-                  </span>
-                </div>
-                <div className="ta-product-caption">
-                  <div>
-                    <p className="ta-micro">{product.family.replaceAll("-", " ")}</p>
-                    <h3>{product.name}</h3>
-                  </div>
-                  <span>₹{product.price.toLocaleString("en-IN")}</span>
-                </div>
-                <div className="ta-product-rule ta-micro">
-                  <span>{product.dims}</span>
-                  <span>
-                    Discover <Plus size={12} />
-                  </span>
-                </div>
-              </Link>
-            </Reveal>
           ))}
         </div>
-        <p className="ta-micro ta-catalogue-note">
-          Sample catalogue / Reference photography / Indicative prices
-        </p>
       </div>
-    </section>
-  );
-}
-
-function Spaces() {
-  return (
-    <section className="ta-spaces ta-shell">
-      <Reveal className="ta-section-heading">
-        <p className="ta-micro ta-rust">03 / Spaces with soul</p>
-        <h2>
-          Different rooms.
-          <br />
-          <em>One feeling.</em>
-        </h2>
-        <Link to="/projects" className="ta-text-link">
-          Explore the spaces <ArrowUpRight size={16} />
-        </Link>
-      </Reveal>
-      <div className="ta-spaces-grid">
-        {projects.slice(0, 2).map((project, index) => (
-          <Reveal key={project.slug} delay={index * 0.1}>
-            <Link to="/projects/$slug" params={{ slug: project.slug }} className="ta-space-link">
-              <div className="ta-space-photo">
-                <img src={project.gallery[0]} alt={project.title} loading="lazy" />
-                <span className="ta-micro">Illustrative space</span>
-                <ArrowUpRight size={24} />
-              </div>
-              <div className="ta-space-caption">
-                <span className="ta-micro">
-                  0{index + 1} / {project.room_type.replaceAll("-", " ")}
-                </span>
-                <h3>{project.title}</h3>
-                <span>{project.area} m²</span>
-              </div>
-            </Link>
-          </Reveal>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function RoomInvitation() {
-  return (
-    <section className="ta-room-section">
-      <div className="ta-shell">
-        <Reveal className="ta-section-heading">
-          <p className="ta-micro ta-rust">04 / Your room. Reimagined.</p>
-          <h2>
-            Find your
-            <br />
-            <em>room’s rhythm.</em>
-          </h2>
-          <div>
-            <p>
-              A little timber. A little intention.
-              <br />
-              Start with the space you have.
-            </p>
-            <Link to="/build-a-room" className="ta-text-link">
-              Enter the room atelier <ArrowUpRight size={16} />
-            </Link>
-          </div>
-        </Reveal>
-        <div className="ta-room-grid">
-          {rooms.map((room, index) => (
-            <a
-              key={room.id}
-              href={`/build-a-room?room=${room.id}`}
-              className="ta-room-link"
-              data-testid={`home-room-${room.id}`}
-            >
-              <div className="ta-room-image">
-                <img src={room.image} alt={`${room.name} inspiration`} loading="lazy" />
-                <span className="ta-micro">0{index + 1}</span>
-                <ArrowUpRight size={20} />
-              </div>
-              <h3>{room.name}</h3>
-              <p>{room.note}</p>
+      <div className="ta-explore-spaces" id="explore-spaces">
+        <div className="ta-layout-small-heading">
+          <h2>Explore spaces</h2>
+          <Link to="/build-a-room" className="ta-text-link">
+            Build a room <ArrowUpRight size={14} />
+          </Link>
+        </div>
+        <div className="ta-space-types">
+          {homepageSpaces.map((space) => (
+            <a href={space.href} key={space.label}>
+              <space.icon size={29} strokeWidth={1.2} />
+              <h3>{space.label}</h3>
+              <ArrowRight size={15} />
             </a>
           ))}
         </div>
-        <div className="ta-room-note ta-micro">
-          <span>Explore a material palette. Make it yours.</span>
-          <Link to="/guides">
-            A little sound advice <ArrowRight size={14} />
-          </Link>
+      </div>
+    </section>
+  );
+}
+
+function Consultation() {
+  return (
+    <section
+      className="ta-layout-consultation"
+      data-home-section="consultation"
+      aria-labelledby="consultation-title"
+    >
+      <BrandContours />
+      <div className="ta-shell">
+        <div>
+          <p className="ta-micro ta-rust">Let's talk acoustics</p>
+          <h2 id="consultation-title">
+            Build your
+            <br className="ta-mobile-break" /> <em>acoustic space.</em>
+          </h2>
+          <p>Every room tells a different story. Our job is to help yours sound like it should.</p>
         </div>
+        <Link to="/contact" className="ta-button">
+          Book a consultation <ArrowRight size={17} />
+        </Link>
       </div>
     </section>
   );
@@ -383,19 +268,14 @@ function RoomInvitation() {
 
 export function HomeExperience() {
   return (
-    <div className="ta-home">
+    <div className="ta-home ta-home-layout">
       <KineticHero />
-      <SoundStudy />
-      <div className="ta-material-statement">
-        <BrandContours />
-        <p>
-          Timber. Texture. <em>Feeling.</em>
-        </p>
-        <span className="ta-micro">Made to be heard. Designed to be felt.</span>
-      </div>
-      <Collection />
-      <Spaces />
-      <RoomInvitation />
+      <TrustedPartners />
+      <OurApproach />
+      <ProductCategories />
+      <FeaturedProject />
+      <ProjectsAndSpaces />
+      <Consultation />
     </div>
   );
 }

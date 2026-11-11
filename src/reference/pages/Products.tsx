@@ -64,7 +64,7 @@ export default function Products() {
   const visible = useMemo(() => {
     let list = products.filter(
       (p) =>
-        (family === "all" || p.family === family) &&
+        (family === "all" || p.family === family || p.families?.includes(family)) &&
         p.name.toLowerCase().includes(q.trim().toLowerCase()) &&
         p.price >= range[0] &&
         p.price <= range[1],
@@ -94,7 +94,12 @@ export default function Products() {
 
   return (
     <FadePage>
-      <PageHero eyebrow="Catalogue · Demo data" title="All products">
+      <PageHero
+        eyebrow={
+          products.some((p) => p.source === "shopify") ? "The collection" : "Catalogue · Demo data"
+        }
+        title="All products"
+      >
         Panels, slats, diffusers and more. Considered pieces for a room that sounds as good as it
         looks.
       </PageHero>
@@ -141,7 +146,8 @@ export default function Products() {
                 className="whitespace-nowrap text-xs font-normal text-timber-ink/60"
                 data-testid="price-range-label"
               >
-                {formatPrice(range[0])} — {formatPrice(range[1])}
+                {formatPrice(range[0], products[0]?.currency)} —{" "}
+                {formatPrice(range[1], products[0]?.currency)}
               </p>
             </div>
           </div>

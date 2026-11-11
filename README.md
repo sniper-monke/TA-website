@@ -21,6 +21,8 @@ npm i
 npm run dev
 ```
 
+Reuse the running dev server when reviewing changes. For React bundle/cache troubleshooting and the dev-server regression check, see [Development React bundle check](docs/DEV_SERVER.md).
+
 ## Built with
 
 - TanStack Start

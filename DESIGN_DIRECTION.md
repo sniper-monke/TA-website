@@ -1,8 +1,10 @@
 # Design direction - material in motion
 
-The latest hero feedback restores the earlier light headline while retaining the listening alcove, live patterns and cursor reactivity. The brand book governs identity, palette and typography.
+The current client pass retains the listening alcove within a warmer, calmer design. Acoustic products and outcomes must be immediately clear; the site must not read primarily as an architecture practice. The brand book governs identity, palette and typography. Current decisions and source distinctions are recorded in `docs/CLIENT_BRIEF.md`; the user’s frontend-first scope supersedes earlier Shopify implementation assumptions.
 
 ## Source hierarchy
+
+The current user decisions in `docs/CLIENT_BRIEF.md` and the newer `Timber-Acoustics-Website-1.docx` supersede the older experiment directions below. The client’s acoustic focus governs positioning; earlier architecture-first and Teenage Engineering references are historical context.
 
 1. `public/images/Timber Acoustics Brand Book.pdf` (26 pages): authority for identity, colour, type and brand patterns.
 2. `public/images/Timber-Acoustics-Website-Brief-Short.docx`: client requirements and the two screenshots of the earlier demo.

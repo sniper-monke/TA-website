@@ -1,3 +1,3 @@
 ﻿import { createFileRoute } from "@tanstack/react-router";
-import Basket from "@/reference/pages/Basket";
-export const Route = createFileRoute("/basket")({ component: Basket });
+import { ShoppingBagPage } from "@/components/experience/ShoppingBagPage";
+export const Route = createFileRoute("/basket")({ component: ShoppingBagPage });

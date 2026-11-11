@@ -39,14 +39,13 @@ export function KineticHero() {
       ref={ref}
       className="ta-hero ta-hero-kinetic"
       data-testid="hero"
+      data-home-section="hero"
       data-motion={active ? "live" : "paused"}
     >
       <LiveContourField active={active} />
       <div className="ta-kinetic-grid" aria-hidden="true" />
       <div className="ta-kinetic-meta ta-shell ta-micro">
-        <span>
-          <i />A different kind of good vibration
-        </span>
+        <span>Acoustic treatment, naturally</span>
         <span>Timber Acoustics / India</span>
       </div>
       <div className="ta-kinetic-stage ta-shell">
@@ -57,7 +56,7 @@ export function KineticHero() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            Natural material. Unexpected feeling.
+            Less echo. More clarity. Better balance.
           </motion.p>
           <h1 className="ta-kinetic-title" data-testid="hero-headline">
             <motion.span
@@ -80,21 +79,17 @@ export function KineticHero() {
               +
             </span>
             <p>
-              Real timber. Considered acoustics.
+              Acoustic panels, diffusers and bass traps.
               <br />
-              For spaces that feel as good as they sound.
+              Thoughtful treatment for the way your room sounds.
             </p>
           </div>
           <div className="ta-kinetic-links">
             <Link to="/products" className="ta-kinetic-cta" data-testid="hero-explore-button">
-              Find your sound <ArrowUpRight size={20} />
+              Explore products <ArrowUpRight size={20} />
             </Link>
-            <Link
-              to="/build-a-room"
-              className="ta-kinetic-secondary"
-              data-testid="hero-build-button"
-            >
-              Build your room <ArrowRight size={16} />
+            <Link to="/contact" className="ta-kinetic-secondary" data-testid="hero-build-button">
+              Book a consultation <ArrowRight size={16} />
             </Link>
           </div>
         </div>
@@ -136,7 +131,7 @@ export function KineticHero() {
           <p className="ta-micro">Good sound lives here.</p>
         </Link>
         <span className="ta-kinetic-edge ta-micro" aria-hidden="true">
-          Wood / Wave / Wonder
+          Absorb / Diffuse / Balance
         </span>
       </div>
       <div className="ta-kinetic-controls ta-shell">
@@ -180,8 +175,8 @@ export function KineticHero() {
           {active ? <Pause size={13} /> : <Play size={13} />}
           <span>Motion {active ? "on" : "off"}</span>
         </button>
-        <a href="#sound-study" className="ta-kinetic-scroll ta-micro">
-          Feel the difference <ArrowDown size={16} />
+        <a href="#our-approach" className="ta-kinetic-scroll ta-micro">
+          Our approach <ArrowDown size={16} />
         </a>
       </div>
       <div className="ta-kinetic-caption ta-shell ta-micro">
