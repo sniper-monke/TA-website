@@ -1,10 +1,23 @@
 import type * as Three from "three";
 import type { TimberFinish } from "./MaterialStudy";
 
-export type ListeningState = { finish: TimberFinish; exploded: boolean; active: boolean };
+export type AlcoveMode = "space" | "layers" | "sound";
+export type AlcoveView = "angle" | "front" | "inside";
+export type AlcoveLayer = "timber" | "backing" | "gap";
+export type ListeningState = {
+  finish: TimberFinish;
+  exploded: boolean;
+  active: boolean;
+  mode: AlcoveMode;
+  view: AlcoveView;
+  layer: AlcoveLayer;
+  treated: boolean;
+  pulse: number;
+  reset: number;
+};
 export type ListeningEngine = { update: (state: ListeningState) => void; dispose: () => void };
 
-/** Browser-only architectural study. Its geometry is independent of catalogue products. */
+/** Browser-only treatment study. Its geometry is independent of catalogue products. */
 export function createListeningScene(
   host: HTMLDivElement,
   THREE: typeof Three,
@@ -28,7 +41,7 @@ export function createListeningScene(
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.15;
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = THREE.PCFShadowMap;
   renderer.shadowMap.autoUpdate = false;
   renderer.shadowMap.needsUpdate = true;
   host.appendChild(renderer.domElement);
@@ -226,6 +239,82 @@ export function createListeningScene(
   floor.position.set(0, -0.025, 0.25);
   floor.castShadow = false;
 
+  const gapGuide = new THREE.LineSegments(
+    keep(new THREE.EdgesGeometry(keep(new THREE.BoxGeometry(0.16, 2.45, 2.45)))),
+    keep(
+      new THREE.LineBasicMaterial({
+        color: "#bf673b",
+        transparent: true,
+        opacity: 0.65,
+        depthTest: false,
+      }),
+    ),
+  );
+  gapGuide.position.set(1.63, 1.55, -0.05);
+  gapGuide.renderOrder = 8;
+  rig.add(gapGuide);
+
+  // Deliberately illustrative reflection paths, not a physical acoustic solver.
+  const pathControls = [
+    [
+      [0, 1.45, 0.65],
+      [-1.42, 2.2, -0.2],
+      [0.65, 2.45, -1.2],
+      [1.43, 1.65, 0.35],
+      [-1.4, 1.15, 0.8],
+      [0.3, 2.4, -1.2],
+    ],
+    [
+      [0, 1.45, 0.65],
+      [1.43, 2.05, -0.15],
+      [-0.7, 2.65, -1.2],
+      [-1.42, 1.5, 0.15],
+      [1.38, 1.1, 0.9],
+      [-0.3, 2.2, -1.2],
+    ],
+    [
+      [0, 1.45, 0.65],
+      [0.8, 2.85, -0.6],
+      [-1.42, 2.1, -0.8],
+      [1.43, 1.25, 0.45],
+      [-0.8, 2.55, -1.2],
+      [1.4, 2.25, 0.6],
+    ],
+  ];
+  const soundField = new THREE.Group();
+  rig.add(soundField);
+  const dotGeometry = keep(new THREE.SphereGeometry(0.045, 12, 8));
+  const soundPaths = pathControls.map((control) => {
+    const anchors = control.map((point) => new THREE.Vector3(point[0], point[1], point[2]));
+    const points: Three.Vector3[] = [];
+    for (let segment = 0; segment < anchors.length - 1; segment++)
+      for (let step = 0; step < 32; step++)
+        points.push(anchors[segment]!.clone().lerp(anchors[segment + 1]!, step / 32));
+    points.push(anchors[anchors.length - 1]!.clone());
+    const geometry = keep(new THREE.BufferGeometry().setFromPoints(points));
+    const surface = keep(
+      new THREE.LineDashedMaterial({
+        color: "#248082",
+        transparent: true,
+        opacity: 0.8,
+        dashSize: 0.065,
+        gapSize: 0.04,
+        depthTest: false,
+      }),
+    );
+    const line = new THREE.Line(geometry, surface);
+    line.computeLineDistances();
+    line.renderOrder = 10;
+    soundField.add(line);
+    const dotSurface = keep(
+      new THREE.MeshBasicMaterial({ color: "#248082", transparent: true, depthTest: false }),
+    );
+    const dot = new THREE.Mesh(dotGeometry, dotSurface);
+    dot.renderOrder = 11;
+    soundField.add(dot);
+    return { points, geometry, surface, line, dot, dotSurface };
+  });
+
   let state = initial;
   let visible = true;
   let lost = false;
@@ -238,6 +327,22 @@ export function createListeningScene(
   let targetX = 0;
   let targetY = 0;
   let settling = false;
+  let pulseAge = initial.pulse ? 0 : 5;
+  let wasBare = initial.mode === "sound" && !initial.treated;
+  const presets = {
+    angle: { yaw: 0.45, height: 3.2, distance: 8.7 },
+    front: { yaw: 0, height: 2.6, distance: 8.8 },
+    inside: { yaw: 0.04, height: 2.25, distance: 5.9 },
+  };
+  let orbitYaw = presets[initial.view].yaw;
+  let orbitPitch = 0;
+  let cameraYaw = orbitYaw;
+  let cameraPitch = 0;
+  let cameraDistance = presets[initial.view].distance;
+  let cameraHeight = presets[initial.view].height;
+  let dragging = false;
+  let dragX = 0;
+  let dragY = 0;
   const finishes = { oak: "#ffffff", walnut: "#9b7051", ebony: "#515855" };
   const targetColour = new THREE.Color(finishes[initial.finish]);
   const currentColour = targetColour.clone();
@@ -252,6 +357,7 @@ export function createListeningScene(
     last = now;
     if (state.active) {
       phase += dt;
+      pulseAge += dt;
       pointerX += (targetX - pointerX) * 0.07;
       pointerY += (targetY - pointerY) * 0.07;
       travellingLight.position.set(
@@ -269,19 +375,64 @@ export function createListeningScene(
       reveal = targetReveal;
       currentColour.copy(targetColour);
     }
+    const bare = state.mode === "sound" && !state.treated;
+    if (bare !== wasBare) renderer.shadowMap.needsUpdate = true;
+    wasBare = bare;
     ribs.forEach(({ rib, surface, z, variation }, index) => {
+      rib.visible = !bare;
       surface.color.copy(currentColour).multiplyScalar(variation);
+      surface.emissive.set(
+        state.mode === "layers" && state.layer === "timber" ? "#bf673b" : "#000000",
+      );
+      surface.emissiveIntensity = 0.16;
       const front = Math.max(0, (index - 9) / 5);
-      rib.position.z = z + reveal * front * 0.65;
-      rib.position.x = reveal * front * 0.25;
+      rib.position.z = z + reveal * front * 0.85;
+      rib.position.x = reveal * front * 0.5;
     });
-    const compact = host.clientWidth < 500;
-    camera.position.set((compact ? 3.1 : 3.8) + pointerX * 0.28, 3.2 + pointerY * 0.16, 7.8);
-    camera.lookAt(0, 1.7, 0);
+    backing.position.set(-reveal * 0.18, 0, -1.4 - reveal * 0.35);
+    rear.position.set(-reveal * 0.18, 0, -1.39 - reveal * 0.35);
+    felt.color.set(state.mode === "sound" && !state.treated ? "#d7c9b2" : "#2c3532");
+    felt.emissive.set(state.mode === "layers" && state.layer === "backing" ? "#248082" : "#000000");
+    felt.emissiveIntensity = 0.28;
+    gapGuide.visible = state.mode === "layers" && state.layer === "gap";
+    soundField.visible = state.mode === "sound";
+    soundPaths.forEach((path, index) => {
+      const progress = state.active ? Math.min(1, Math.max(0, pulseAge / 3.8 - index * 0.08)) : 0.6;
+      const reach = state.treated ? Math.min(progress, 0.24) : progress;
+      const at = Math.min(path.points.length - 1, Math.floor(reach * (path.points.length - 1)));
+      const fade = state.treated
+        ? Math.exp(-Math.max(0, progress - 0.18) * 8)
+        : Math.exp(-progress * 1.05);
+      const alive = !state.active || pulseAge < 4.5;
+      path.line.visible = path.dot.visible = alive;
+      path.geometry.setDrawRange(0, at + 1);
+      path.surface.color.set(state.treated ? "#68b6ac" : "#bf673b");
+      path.surface.opacity = fade * 0.85;
+      path.dotSurface.color.copy(path.surface.color);
+      path.dotSurface.opacity = fade;
+      path.dot.position.copy(path.points[at]!);
+    });
+    const preset = presets[state.view];
+    const approach = state.active ? 0.085 : 1;
+    cameraYaw += (orbitYaw - cameraYaw) * approach;
+    cameraPitch += (orbitPitch - cameraPitch) * approach;
+    cameraDistance += (preset.distance - cameraDistance) * approach;
+    cameraHeight += (preset.height - cameraHeight) * approach;
+    const angle = cameraYaw + pointerX * 0.025;
+    camera.position.set(
+      Math.sin(angle) * cameraDistance,
+      cameraHeight + cameraPitch * 2 + pointerY * 0.08,
+      Math.cos(angle) * cameraDistance,
+    );
+    camera.lookAt(0, state.view === "inside" ? 1.75 : 1.7, state.view === "inside" ? -0.3 : 0);
     if (Math.abs(previousReveal - reveal) > 0.00001) renderer.shadowMap.needsUpdate = true;
     renderer.render(scene, camera);
     settling =
       Math.abs(targetReveal - reveal) > 0.001 ||
+      Math.abs(cameraYaw - orbitYaw) +
+        Math.abs(cameraPitch - orbitPitch) +
+        Math.abs(cameraDistance - preset.distance) >
+        0.001 ||
       Math.abs(currentColour.r - targetColour.r) +
         Math.abs(currentColour.g - targetColour.g) +
         Math.abs(currentColour.b - targetColour.b) >
@@ -302,12 +453,37 @@ export function createListeningScene(
     requestDraw();
   };
   const move = (event: PointerEvent) => {
-    if (!state.active || event.pointerType === "touch") return;
+    if (event.pointerType === "touch") return;
+    if (dragging) {
+      orbitYaw = Math.max(-0.95, Math.min(0.95, orbitYaw - (event.clientX - dragX) * 0.005));
+      orbitPitch = Math.max(-0.25, Math.min(0.35, orbitPitch + (event.clientY - dragY) * 0.004));
+      dragX = event.clientX;
+      dragY = event.clientY;
+      requestDraw();
+      return;
+    }
+    if (!state.active) return;
     const bounds = host.getBoundingClientRect();
     targetX = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2;
     targetY = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2;
   };
   const leave = () => {
+    if (dragging) return;
+    targetX = targetY = 0;
+  };
+  const down = (event: PointerEvent) => {
+    if (event.pointerType === "touch" || event.button !== 0) return;
+    dragging = true;
+    dragX = event.clientX;
+    dragY = event.clientY;
+    host.dataset["dragging"] = "true";
+    host.setPointerCapture(event.pointerId);
+    event.preventDefault();
+  };
+  const up = (event: PointerEvent) => {
+    dragging = false;
+    delete host.dataset["dragging"];
+    if (host.hasPointerCapture(event.pointerId)) host.releasePointerCapture(event.pointerId);
     targetX = targetY = 0;
   };
   const visibility = () => {
@@ -335,12 +511,20 @@ export function createListeningScene(
   resizeObserver.observe(host);
   host.addEventListener("pointermove", move, { passive: true });
   host.addEventListener("pointerleave", leave);
+  host.addEventListener("pointerdown", down);
+  host.addEventListener("pointerup", up);
+  host.addEventListener("pointercancel", up);
   document.addEventListener("visibilitychange", visibility);
   renderer.domElement.addEventListener("webglcontextlost", onLost);
   resize();
   return {
     update(next) {
       const motionChanged = state.active !== next.active;
+      if (state.view !== next.view || state.reset !== next.reset) {
+        orbitYaw = presets[next.view].yaw;
+        orbitPitch = 0;
+      }
+      if (state.pulse !== next.pulse) pulseAge = 0;
       state = next;
       targetColour.set(finishes[next.finish]);
       if (motionChanged) {
@@ -357,6 +541,9 @@ export function createListeningScene(
       resizeObserver.disconnect();
       host.removeEventListener("pointermove", move);
       host.removeEventListener("pointerleave", leave);
+      host.removeEventListener("pointerdown", down);
+      host.removeEventListener("pointerup", up);
+      host.removeEventListener("pointercancel", up);
       document.removeEventListener("visibilitychange", visibility);
       renderer.domElement.removeEventListener("webglcontextlost", onLost);
       for (const resource of resources) resource.dispose();

@@ -1,20 +1,11 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { useReducedMotionPreference } from "@/hooks/use-reduced-motion";
-import {
-  ArrowDown,
-  ArrowRight,
-  ArrowUpRight,
-  Layers3,
-  Minus,
-  Pause,
-  Play,
-  Plus,
-} from "lucide-react";
+import { ArrowDown, ArrowRight, ArrowUpRight, Pause, Play } from "lucide-react";
 import { LiveContourField } from "./LiveContourField";
 import type { TimberFinish } from "./MaterialStudy";
-import { HeroListeningScene } from "./HeroListeningScene";
+import { AlcoveExplorer } from "./AlcoveExplorer";
 
 const finishes: { id: TimberFinish; label: string; colour: string }[] = [
   { id: "oak", label: "Natural oak", colour: "#c9a875" },
@@ -25,19 +16,14 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 export function KineticHero() {
   const [finish, setFinish] = useState<TimberFinish>("oak");
-  const [exploded, setExploded] = useState(false);
   const [paused, setPaused] = useState(false);
   const reduced = useReducedMotionPreference();
   const active = !paused && !reduced;
   const selected = finishes.find((item) => item.id === finish)!;
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [0, active ? 100 : 0]);
 
   return (
     <section
-      ref={ref}
-      className="ta-hero ta-hero-kinetic"
+      className="ta-hero ta-hero-kinetic ta-hero-experiment"
       data-testid="hero"
       data-home-section="hero"
       data-motion={active ? "live" : "paused"}
@@ -93,46 +79,9 @@ export function KineticHero() {
             </Link>
           </div>
         </div>
-        <motion.div className="ta-kinetic-object" style={{ y }}>
-          <div className="ta-kinetic-object-label ta-micro">
-            <span>TA / Listening spaces</span>
-            <span>Timber. Texture. Stillness.</span>
-          </div>
-          <HeroListeningScene finish={finish} exploded={exploded} active={active} />
-          <span className="ta-kinetic-dimension ta-micro">
-            A little space. A different feeling.
-          </span>
-        </motion.div>
-        <div className="ta-resonate-stamp" aria-hidden="true">
-          <svg viewBox="0 0 80 34" fill="none">
-            {Array.from({ length: 15 }, (_, i) => (
-              <path
-                key={i}
-                d={`M${5 + i * 5} ${17 - (Math.sin(i * 0.8) * 0.5 + 0.5) * 13}V${17 + (Math.sin(i * 0.8) * 0.5 + 0.5) * 13}`}
-                stroke="currentColor"
-                strokeWidth="2"
-              />
-            ))}
-          </svg>
-          <span>
-            Made to
-            <br />
-            resonate.
-          </span>
-          <ArrowUpRight size={17} />
+        <div className="ta-kinetic-object">
+          <AlcoveExplorer finish={finish} active={active} />
         </div>
-        <Link to="/projects" className="ta-kinetic-room">
-          <div>
-            <img src="/images/timber-studio.webp" alt="A timber-lined recording space" />
-            <span>
-              In the room <ArrowUpRight size={15} />
-            </span>
-          </div>
-          <p className="ta-micro">Good sound lives here.</p>
-        </Link>
-        <span className="ta-kinetic-edge ta-micro" aria-hidden="true">
-          Absorb / Diffuse / Balance
-        </span>
       </div>
       <div className="ta-kinetic-controls ta-shell">
         <div className="ta-finish-selector">
@@ -154,16 +103,13 @@ export function KineticHero() {
             {selected.label}
           </span>
         </div>
-        <button
-          className="ta-kinetic-layer"
-          onClick={() => setExploded(!exploded)}
-          aria-pressed={exploded}
-          data-testid="hero-layers"
+        <a
+          className="ta-alcove-use-finish"
+          href={`/build-a-room?finish=${finish}`}
+          data-testid="hero-use-finish"
         >
-          <Layers3 size={16} />
-          <span>{exploded ? "Close the build" : "Inside the build"}</span>
-          {exploded ? <Minus size={15} /> : <Plus size={15} />}
-        </button>
+          Use this finish in a room <ArrowUpRight size={15} />
+        </a>
         <button
           className="ta-motion-toggle ta-micro"
           onClick={() => setPaused(!paused)}
@@ -181,7 +127,7 @@ export function KineticHero() {
       </div>
       <div className="ta-kinetic-caption ta-shell ta-micro">
         <span>Acoustics with a natural soul.</span>
-        <span>Illustrative listening space / Sample catalogue</span>
+        <span>Concept study / Not a product model or acoustic measurement</span>
       </div>
     </section>
   );

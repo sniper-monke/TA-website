@@ -1,0 +1,346 @@
+/* Isolated alcove experiment. The saved checkpoint retains the previous hero. */
+.ta-home-layout .ta-hero-experiment .ta-kinetic-stage {
+  height: 560px;
+}
+.ta-home-layout .ta-hero-experiment .ta-kinetic-object {
+  width: 56%;
+  height: 100%;
+  right: 0;
+}
+.ta-alcove-explorer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.ta-alcove-mode-tabs {
+  position: absolute;
+  top: 4px;
+  right: 20%;
+  left: 20%;
+  z-index: 6;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid var(--ta-rule);
+}
+.ta-alcove-mode-tabs > button {
+  position: relative;
+  padding: 10px 14px;
+  font-size: 11px;
+  white-space: nowrap;
+  color: #63747d;
+  border-bottom: 2px solid transparent;
+}
+.ta-alcove-mode-tabs > button[aria-selected="true"] {
+  border-color: var(--ta-rust-strong);
+  color: var(--ta-ink);
+}
+.ta-alcove-explorer-panel {
+  position: absolute;
+  inset: 42px 0 0;
+}
+.ta-alcove-explorer .ta-listening-scene {
+  position: absolute;
+  inset: 0 0 107px;
+  height: auto;
+}
+.ta-alcove-explorer .ta-alcove-webgl {
+  cursor: grab;
+  touch-action: pan-y;
+}
+.ta-alcove-explorer .ta-alcove-webgl[data-dragging="true"] {
+  cursor: grabbing;
+}
+.ta-alcove-scene-tools {
+  position: absolute;
+  bottom: 64px;
+  left: 10%;
+  right: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  z-index: 5;
+}
+.ta-alcove-segments {
+  display: flex;
+  align-items: stretch;
+  background: #fcfaf6b3;
+  border: 1px solid var(--ta-rule);
+}
+.ta-alcove-segments > button {
+  min-width: 62px;
+  padding: 8px 13px;
+  font-size: 10px;
+  color: #526875;
+  border-right: 1px solid var(--ta-rule);
+}
+.ta-alcove-segments > button:last-child {
+  border: 0;
+}
+.ta-alcove-segments > button[aria-pressed="true"] {
+  background: #e8ddcb;
+  color: var(--ta-ink);
+}
+.ta-alcove-reset {
+  display: grid;
+  place-items: center;
+  width: 35px;
+  height: 35px;
+  border: 1px solid var(--ta-rule);
+  background: #fcfaf6b3;
+}
+.ta-alcove-layer-steps > button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 9px;
+  min-width: 0;
+  padding-inline: 11px;
+}
+.ta-alcove-layer-steps > button > span {
+  color: var(--ta-rust-strong);
+  font-size: 8px;
+}
+.ta-alcove-pulse-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 8px 13px;
+  min-height: 35px;
+  font-size: 10px;
+  border: 1px solid var(--ta-rust-strong);
+  color: var(--ta-rust-strong);
+  background: #fcfaf6c9;
+}
+.ta-alcove-pulse-button:hover {
+  background: #e8ddcb;
+}
+.ta-alcove-insight {
+  position: absolute;
+  bottom: 0;
+  left: 8%;
+  right: 8%;
+  min-height: 50px;
+  text-align: center;
+  font-size: 10px;
+  line-height: 1.65;
+  color: #526875;
+}
+.ta-alcove-insight > p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.ta-alcove-insight svg {
+  flex-shrink: 0;
+}
+.ta-alcove-drag-hint {
+  display: none;
+}
+.ta-alcove-explorer:has([data-renderer="webgl"]) .ta-alcove-drag-hint {
+  display: inline;
+}
+[data-mode="sound"][data-treated="false"] .ta-alcove-rib {
+  display: none;
+}
+.ta-alcove-insight > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--ta-rust-strong);
+  font-size: 9px;
+  padding-top: 5px;
+}
+.ta-alcove-insight > span {
+  display: block;
+  font-size: 9px;
+  margin-top: 5px;
+  color: #6c7b81;
+}
+.ta-alcove-use-finish {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 23px;
+  margin-left: auto;
+  padding: 12px 17px;
+  border: 1px solid var(--ta-rule);
+  font-size: 11px;
+}
+.ta-alcove-use-finish:hover {
+  background: var(--ta-paper);
+}
+.ta-alcove-explorer [data-view="angle"] .ta-alcove-fallback {
+  transform: perspective(900px) rotateY(-10deg);
+}
+.ta-alcove-explorer [data-mode="layers"] .ta-alcove-front-rib {
+  transform: translate(50px, -16px);
+}
+.ta-alcove-explorer [data-mode="layers"][data-layer="backing"] .ta-alcove-fallback-backing {
+  filter: brightness(1.5);
+}
+.ta-alcove-explorer [data-mode="layers"][data-layer="timber"] .ta-alcove-front-rib {
+  filter: brightness(1.15);
+}
+.ta-alcove-svg-path {
+  stroke-dasharray: 8 7;
+  opacity: 0.55;
+}
+.ta-alcove-svg-sound.is-playing .ta-alcove-svg-path {
+  stroke-dasharray: 1200;
+  animation: ta-alcove-sound-bare 4.5s ease-out both;
+}
+[data-treated="true"] .ta-alcove-svg-sound.is-playing .ta-alcove-svg-path {
+  animation-name: ta-alcove-sound-treated;
+}
+[data-treated="true"] .ta-alcove-svg-sound:not(.is-playing) .ta-alcove-svg-path {
+  stroke-dasharray: 450 750;
+  opacity: 0.45;
+}
+@keyframes ta-alcove-sound-bare {
+  0% {
+    stroke-dashoffset: 1200;
+    opacity: 0.9;
+  }
+  80% {
+    stroke-dashoffset: 0;
+    opacity: 0.45;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+@keyframes ta-alcove-sound-treated {
+  0% {
+    stroke-dashoffset: 1200;
+    opacity: 0.8;
+  }
+  45% {
+    stroke-dashoffset: 800;
+    opacity: 0.25;
+  }
+  70%,
+  100% {
+    stroke-dashoffset: 650;
+    opacity: 0;
+  }
+}
+@media (max-width: 1199px) {
+  .ta-home-layout .ta-hero-experiment .ta-kinetic-stage {
+    height: 550px;
+  }
+  .ta-alcove-mode-tabs {
+    left: 10%;
+    right: 10%;
+  }
+  .ta-alcove-scene-tools {
+    left: 3%;
+    right: 3%;
+  }
+  .ta-alcove-insight {
+    left: 4%;
+    right: 4%;
+  }
+  .ta-alcove-layer-steps > button {
+    padding-inline: 8px;
+  }
+  .ta-alcove-use-finish {
+    font-size: 10px;
+    gap: 12px;
+  }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .ta-home-layout .ta-hero-experiment .ta-kinetic-object {
+    top: 10px;
+    right: -1%;
+    width: 51%;
+  }
+  .ta-alcove-mode-tabs {
+    left: 3%;
+    right: 3%;
+  }
+  .ta-alcove-mode-tabs > button {
+    font-size: 10px;
+    padding-inline: 10px;
+  }
+  .ta-alcove-layer-steps > button {
+    flex-direction: column;
+    gap: 3px;
+    font-size: 8px;
+  }
+}
+@media (max-width: 767px) {
+  .ta-home-layout .ta-hero-experiment .ta-kinetic-stage {
+    height: auto;
+    padding-bottom: 10px;
+  }
+  .ta-home-layout .ta-hero-experiment .ta-kinetic-object {
+    position: relative;
+    width: 100%;
+    height: 430px;
+    margin-top: 30px;
+    right: auto;
+  }
+  .ta-alcove-mode-tabs {
+    left: 4%;
+    right: 4%;
+    top: 0;
+  }
+  .ta-alcove-mode-tabs > button {
+    flex: 1;
+    min-height: 44px;
+    font-size: 10px;
+    padding-inline: 8px;
+  }
+  .ta-alcove-explorer-panel {
+    top: 44px;
+  }
+  .ta-alcove-explorer .ta-listening-scene {
+    bottom: 110px;
+  }
+  .ta-alcove-scene-tools {
+    left: 0;
+    right: 0;
+    bottom: 65px;
+    gap: 9px;
+  }
+  .ta-alcove-segments > button {
+    min-height: 44px;
+    min-width: 57px;
+    padding-inline: 10px;
+  }
+  .ta-alcove-layer-steps > button {
+    min-width: 0;
+    font-size: 8px;
+    padding-inline: 7px;
+    gap: 5px;
+  }
+  .ta-alcove-insight {
+    left: 0;
+    right: 0;
+    font-size: 9px;
+  }
+  .ta-alcove-insight > span {
+    font-size: 8px;
+  }
+  .ta-alcove-reset,
+  .ta-alcove-pulse-button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .ta-alcove-use-finish {
+    width: 100%;
+    margin: 0;
+    min-height: 42px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ta-alcove-svg-sound.is-playing .ta-alcove-svg-path {
+    animation: none;
+    stroke-dasharray: 8 7;
+    opacity: 0.6;
+  }
+}

@@ -1,5 +1,7 @@
 # Homepage wireframe alignment — 11 November 2026
 
+The subsequent [interactive alcove experiment](../alcove-experiment/README.md) has a separate checkpoint, comparison instructions and current hero screenshots.
+
 The homepage now follows the user-approved reference structure:
 
 1. Shared header with a product menu grouped by acoustic treatment, studio furniture and space.

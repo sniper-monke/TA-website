@@ -26,6 +26,7 @@ import heroCss from "../hero.css?url";
 import storefrontCss from "../storefront.css?url";
 import homeLayoutCss from "../home-layout.css?url";
 import productPageCss from "../product-page.css?url";
+import alcoveExperimentCss from "../alcove-experiment.css?url";
 
 function NotFoundComponent() {
   return (
@@ -111,6 +112,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "stylesheet", href: storefrontCss },
       { rel: "stylesheet", href: homeLayoutCss },
       { rel: "stylesheet", href: productPageCss },
+      { rel: "stylesheet", href: alcoveExperimentCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "icon", href: "/favicon.ico?v=2", type: "image/x-icon" },
