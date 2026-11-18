@@ -4,7 +4,7 @@ import type { StoreProduct } from "./storefront";
 export type DemoProduct = (typeof demoProducts)[number];
 export type ProductItem = DemoProduct | StoreProduct;
 export const isStoreProduct = (product: ProductItem): product is StoreProduct =>
-  "source" in product && product.source === "shopify";
+  "source" in product && (product.source === "shopify" || product.source === "csv");
 
 export function productGuidance(family: string) {
   if (family === "racks-and-tables")

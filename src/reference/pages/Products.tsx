@@ -96,7 +96,9 @@ export default function Products() {
     <FadePage>
       <PageHero
         eyebrow={
-          products.some((p) => p.source === "shopify") ? "The collection" : "Catalogue · Demo data"
+          products.some((p) => p.source === "shopify")
+            ? "The collection"
+            : "Catalogue · Shopify export"
         }
         title="All products"
       >

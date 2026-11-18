@@ -229,7 +229,9 @@ function Collection() {
           ))}
         </div>
         <p className="fine-print mt-8" data-testid="home-catalogue-note">
-          Sample catalogue · Reference photography · Indicative prices
+          {items.some((p) => p.source === "csv")
+            ? "Shopify catalogue export · Live availability pending connection"
+            : "Explore the Timber Acoustics collection"}
         </p>
       </div>
     </section>

@@ -155,3 +155,20 @@ describe("Product selections", () => {
     expect(selections()[0].quantity).toBe(99);
   });
 });
+
+it("shows imported options without misrepresenting unknown stock or allowing purchases", () => {
+  mount({
+    product: {
+      ...live,
+      source: "csv",
+      variants: live.variants.map((v) => ({ ...v, availableForSale: false })),
+    },
+  });
+  expect(screen.getByTestId("product-add-basket")).toBeDisabled();
+  expect(screen.getByTestId("product-add-basket")).toHaveTextContent(
+    "Online purchasing coming soon",
+  );
+  expect(screen.getByTestId("product-detail")).toHaveAttribute("data-product-source", "csv");
+  fireEvent.click(screen.getByTestId("product-add-basket"));
+  expect(selections()).toEqual([]);
+});

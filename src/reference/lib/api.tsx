@@ -1,15 +1,13 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment -- Adapted from the reference JavaScript. */
 // @ts-nocheck
-import products from "@/data/reference-products.json";
 import projects from "@/data/reference-projects.json";
-import families from "@/data/reference-families.json";
 import { getCatalogue, getStoreProduct } from "@/lib/commerce";
 import { money } from "@/lib/storefront";
 const missing = () => Object.assign(new Error("Not found"), { response: { status: 404 } });
 let pendingCatalogue;
 export const fetchCatalogue = () => {
   if (!pendingCatalogue) {
-    pendingCatalogue = getCatalogue().then((catalogue) => catalogue || { products, families });
+    pendingCatalogue = getCatalogue();
     // Deduplicate simultaneous readers without caching inventory across visits.
     pendingCatalogue
       .finally(() => {
@@ -22,8 +20,7 @@ export const fetchCatalogue = () => {
 export const fetchProducts = async () => (await fetchCatalogue()).products;
 export const fetchProduct = async (slug) => {
   const result = await getStoreProduct({ data: { handle: slug } });
-  if (result.mode === "shopify") return result.product || Promise.reject(missing());
-  return products.find((p) => p.slug === slug) || Promise.reject(missing());
+  return result.product || Promise.reject(missing());
 };
 export const fetchFamilies = async () => (await fetchCatalogue()).families;
 export const api = {

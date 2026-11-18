@@ -2,15 +2,15 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 export const getCatalogue = createServerFn({ method: "GET" }).handler(async () => {
-  const { loadCatalogue } = await import("./shopify.server");
-  return loadCatalogue();
+  const { catalogue } = await import("./catalogue.server");
+  return catalogue();
 });
 
 export const getStoreProduct = createServerFn({ method: "GET" })
   .validator(z.object({ handle: z.string().min(1).max(255) }))
   .handler(async ({ data }) => {
-    const { loadProduct } = await import("./shopify.server");
-    return loadProduct(data.handle);
+    const { productByHandle } = await import("./catalogue.server");
+    return productByHandle(data.handle);
   });
 
 export const beginCheckout = createServerFn({ method: "POST" })

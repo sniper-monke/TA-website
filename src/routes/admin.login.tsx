@@ -1,17 +1,30 @@
 import { useState, type FormEvent } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { adminLogin } from "@/lib/admin";
 import { ArrowRight, LockKeyhole } from "lucide-react";
 import { Field, ErrorNotice } from "@/reference/components/Forms";
 
 export const Route = createFileRoute("/admin/login")({ component: Login });
 
 function Login() {
+  const navigate = useNavigate();
+  const [busy, setBusy] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  function submit(event: FormEvent) {
+  async function submit(event: FormEvent) {
     event.preventDefault();
-    setError("Team sign-in is not configured on this preview.");
+    if (busy) return;
+    setBusy(true);
+    setError("");
+    try {
+      await adminLogin({ data: { email, password } });
+      await navigate({ to: "/admin" });
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Sign-in failed.");
+    } finally {
+      setBusy(false);
+    }
   }
   return (
     <section className="login-page shell">
@@ -48,8 +61,8 @@ function Login() {
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
         />
         <ErrorNotice id="admin-login-error">{error}</ErrorNotice>
-        <button data-testid="admin-login-submit" className="action-button">
-          Enter the workspace <ArrowRight size={16} />
+        <button disabled={busy} data-testid="admin-login-submit" className="action-button">
+          {busy ? "Signing in…" : "Enter the workspace"} <ArrowRight size={16} />
         </button>
       </form>
     </section>

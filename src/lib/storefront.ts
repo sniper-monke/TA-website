@@ -1,4 +1,6 @@
 export type StoreVariant = {
+  sku?: string;
+  compareAtPrice?: string | null;
   id: string;
   title: string;
   availableForSale: boolean;
@@ -13,6 +15,7 @@ export type StoreProduct = {
   family: string;
   families: string[];
   purpose: string;
+  description?: string;
   price: number;
   currency: string;
   gallery: string[];
@@ -21,7 +24,7 @@ export type StoreProduct = {
   installation: string;
   featured: boolean;
   sample: boolean;
-  source: "shopify";
+  source: "shopify" | "csv";
   options: { name: string; values: string[] }[];
   variants: StoreVariant[];
   specifications: { name: string; value: string }[];

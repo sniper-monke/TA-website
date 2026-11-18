@@ -37,6 +37,7 @@ export function ProductExperience({
 }: Props) {
   const { add } = useBasket();
   const live = isStoreProduct(product) ? product : null;
+  const imported = live?.source === "csv";
   const demo = isStoreProduct(product) ? null : product;
   const guidance = productGuidance(product.family);
   const first = live?.variants.find((variant) => variant.availableForSale) || live?.variants[0];
@@ -165,19 +166,23 @@ export function ProductExperience({
         : "Verified product sheets and installation documents have not been supplied for this preview. You can request the information you need from the team.",
     },
     {
-      question: product.sample
-        ? "Can I buy this preview product?"
-        : "How do purchases and custom projects work?",
-      answer: product.sample
-        ? "This is a design preview with sample products and indicative prices. You can save selections in the bag, but checkout is unavailable. Final product details will be confirmed before online purchasing is enabled."
-        : "Standard available products can be added to your bag. Shipping, taxes, pricing and availability are confirmed at checkout. Custom room treatment and project requirements are quoted separately.",
+      question: imported
+        ? "Can I purchase this product online?"
+        : product.sample
+          ? "Can I buy this preview product?"
+          : "How do purchases and custom projects work?",
+      answer: imported
+        ? "This product comes from the Shopify catalogue export. Online purchasing will be available after the live Shopify connection is configured. Stock is not available in the export."
+        : product.sample
+          ? "This is a design preview with sample products and indicative prices. You can save selections in the bag, but checkout is unavailable. Final product details will be confirmed before online purchasing is enabled."
+          : "Standard available products can be added to your bag. Shipping, taxes, pricing and availability are confirmed at checkout. Custom room treatment and project requirements are quoted separately.",
     },
   ];
   return (
     <article
       className="ta-product-page"
       data-testid="product-detail"
-      data-product-source={live ? "shopify" : "preview"}
+      data-product-source={live?.source || "preview"}
     >
       <div className="ta-shell">
         <nav className="ta-product-breadcrumb" aria-label="Breadcrumb">
@@ -254,7 +259,13 @@ export function ProductExperience({
             <p className="ta-product-purpose">{product.purpose}</p>
             <div className="ta-product-pricing">
               <p data-testid="product-price">{money(price, currency)}</p>
-              <span>{product.sample ? "Sample price / per item" : "Per item"}</span>
+              <span>
+                {imported
+                  ? "Export price / per item"
+                  : product.sample
+                    ? "Sample price / per item"
+                    : "Per item"}
+              </span>
             </div>
             <div className="ta-product-options">
               {options.map((option) => (
@@ -335,7 +346,13 @@ export function ProductExperience({
                 onClick={addSelection}
               >
                 <Plus size={16} />
-                {!available ? (variant ? "Sold out" : "Combination unavailable") : "Add to bag"}
+                {imported
+                  ? "Online purchasing coming soon"
+                  : !available
+                    ? variant
+                      ? "Sold out"
+                      : "Combination unavailable"
+                    : "Add to bag"}
               </button>
             </div>
             <div className="ta-product-purchase-links">
@@ -347,11 +364,13 @@ export function ProductExperience({
               </a>
             </div>
             <p className="ta-product-purchase-note" role="status">
-              {product.sample
-                ? "Design preview. Prices and options are illustrative; purchasing is unavailable."
-                : !available
-                  ? "Choose an available option or ask the team about alternatives."
-                  : "Shipping, taxes and availability are confirmed at checkout."}
+              {imported
+                ? "Imported Shopify catalogue. Live stock and checkout pending connection. INR pricing requires confirmation."
+                : product.sample
+                  ? "Design preview. Prices and options are illustrative; purchasing is unavailable."
+                  : !available
+                    ? "Choose an available option or ask the team about alternatives."
+                    : "Shipping, taxes and availability are confirmed at checkout."}
             </p>
           </div>
         </section>
@@ -386,6 +405,7 @@ export function ProductExperience({
             <p className="ta-micro ta-rust">Overview</p>
             <h2>{guidance.headline}</h2>
             <p>{guidance.overview}</p>
+            {live?.description && <p style={{ whiteSpace: "pre-line" }}>{live.description}</p>}
             <a
               href={guidance.furniture ? quoteHref : `/build-a-room?${roomParams}`}
               className="ta-text-link"
