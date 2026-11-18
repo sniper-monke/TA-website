@@ -109,14 +109,14 @@ export function AdminWorkspace() {
   };
   const p = detail.data?.product;
   return (
-    <section className="admin-workspace">
-      <header className="admin-heading">
+    <section className="ta-admin-workspace">
+      <header className="ta-admin-heading">
         <div>
           <p className="label-eyebrow">Timber Acoustics / Team workspace</p>
           <h1>Store overview</h1>
           <p>Manage your catalogue, review content and check your store connection.</p>
         </div>
-        <div className="admin-actions">
+        <div className="ta-admin-actions">
           <a href="/" target="_blank" rel="noreferrer">
             View store <ArrowUpRight size={15} />
           </a>
@@ -139,7 +139,7 @@ export function AdminWorkspace() {
           </button>
         </div>
       </header>
-      <nav className="admin-tabs" aria-label="Workspace sections">
+      <nav className="ta-admin-tabs" aria-label="Workspace sections">
         {tabs.map((name) => (
           <button
             key={name}
@@ -151,19 +151,19 @@ export function AdminWorkspace() {
         ))}
       </nav>
       {(query.error || actionError) && (
-        <p role="alert" className="admin-alert">
+        <p role="alert" className="ta-admin-alert">
           {actionError || query.error?.message}
         </p>
       )}
       {query.isLoading && (
-        <p role="status" className="admin-card">
+        <p role="status" className="ta-admin-card">
           Loading workspace…
         </p>
       )}
       {data && (
         <>
-          <div className="admin-status">
-            <span className={`admin-dot ${data.mode === "shopify" ? "connected" : ""}`} />
+          <div className="ta-admin-status">
+            <span className={`ta-admin-dot ${data.mode === "shopify" ? "connected" : ""}`} />
             <strong>
               {data.mode === "shopify"
                 ? "Live Shopify catalogue"
@@ -176,13 +176,13 @@ export function AdminWorkspace() {
             </span>
           </div>
           {data.error && (
-            <p className="admin-alert" role="alert">
+            <p className="ta-admin-alert" role="alert">
               {data.error}
             </p>
           )}
           {tab === "Overview" && (
             <>
-              <div className="admin-stats">
+              <div className="ta-admin-stats">
                 {[
                   ["Products", products.length],
                   ["Export variants", data.report.variants],
@@ -195,12 +195,12 @@ export function AdminWorkspace() {
                   </div>
                 ))}
               </div>
-              <div className="admin-columns">
-                <section className="admin-card">
+              <div className="ta-admin-columns">
+                <section className="ta-admin-card">
                   <p className="label-eyebrow">Catalogue</p>
                   <h2>Your products, at a glance.</h2>
                   <p>Browse products, inspect variants and download a filtered catalogue.</p>
-                  <div className="admin-metrics">
+                  <div className="ta-admin-metrics">
                     <p>
                       <span>Catalogue source</span>
                       <strong>
@@ -220,15 +220,15 @@ export function AdminWorkspace() {
                       <strong>{data.families.length}</strong>
                     </p>
                   </div>
-                  <button className="admin-primary" onClick={() => setTab("Products")}>
+                  <button className="ta-admin-primary" onClick={() => setTab("Products")}>
                     Browse products <ArrowUpRight size={15} />
                   </button>
                 </section>
-                <section className="admin-card">
+                <section className="ta-admin-card">
                   <p className="label-eyebrow">Catalogue health</p>
                   <h2>Content to review</h2>
                   <p>{products.filter(needsReview).length} products have missing content fields.</p>
-                  <div className="admin-metrics">
+                  <div className="ta-admin-metrics">
                     {[
                       ["No dimensions", products.filter((p) => !p.dims).length],
                       ["No material details", products.filter((p) => !p.material).length],
@@ -255,13 +255,13 @@ export function AdminWorkspace() {
                   </button>
                 </section>
               </div>
-              <section className="admin-card">
+              <section className="ta-admin-card">
                 <h2>Store operations</h2>
                 <p>
                   Use your Shopify account for operational changes. This workspace does not yet
                   write to Shopify.
                 </p>
-                <div className="admin-operation-links">
+                <div className="ta-admin-operation-links">
                   {[
                     ["Products & inventory", "products"],
                     ["Orders & fulfilment", "orders"],
@@ -293,7 +293,7 @@ export function AdminWorkspace() {
           )}
           {(tab === "Products" || tab === "Media & quality") && (
             <>
-              <div className="admin-section-title">
+              <div className="ta-admin-section-title">
                 <div>
                   <h2>{tab === "Products" ? "Your catalogue" : "Media & content review"}</h2>
                   <p>
@@ -305,8 +305,8 @@ export function AdminWorkspace() {
                   Export filtered CSV
                 </button>
               </div>
-              <div className="admin-filters">
-                <label className="admin-search">
+              <div className="ta-admin-filters">
+                <label className="ta-admin-search">
                   <Search size={16} />
                   <input
                     aria-label="Search products or SKUs"
@@ -354,12 +354,12 @@ export function AdminWorkspace() {
                   Needs review
                 </label>
               </div>
-              <p className="admin-muted">
+              <p className="ta-admin-muted">
                 {visible.length} products · prices{" "}
                 {data.mode === "csv" ? "from export, assumed INR" : "from Shopify"}
               </p>
               {tab === "Products" ? (
-                <div className="admin-table-wrap">
+                <div className="ta-admin-table-wrap">
                   <table>
                     <thead>
                       <tr>
@@ -375,7 +375,7 @@ export function AdminWorkspace() {
                         <tr key={product.slug}>
                           <td>
                             <button
-                              className="admin-product-button"
+                              className="ta-admin-product-button"
                               onClick={() => setSelected(product.slug)}
                             >
                               <img src={product.gallery[0]} alt="" loading="lazy" />
@@ -397,7 +397,7 @@ export function AdminWorkspace() {
                           <td>{product.gallery.length} images</td>
                           <td>
                             <span
-                              className={`admin-badge ${needsReview(product) ? "review" : "complete"}`}
+                              className={`ta-admin-badge ${needsReview(product) ? "review" : "complete"}`}
                             >
                               {needsReview(product) ? "Needs review" : "Complete"}
                             </span>
@@ -408,7 +408,7 @@ export function AdminWorkspace() {
                   </table>
                 </div>
               ) : (
-                <div className="admin-media-grid">
+                <div className="ta-admin-media-grid">
                   {visible.slice(page * 15, (page + 1) * 15).map((product) => (
                     <button key={product.slug} onClick={() => setSelected(product.slug)}>
                       <img src={product.gallery[0]} alt={product.name} loading="lazy" />
@@ -427,8 +427,8 @@ export function AdminWorkspace() {
                   ))}
                 </div>
               )}
-              {!visible.length && <p className="admin-card">No products match these filters.</p>}
-              <div className="admin-pagination">
+              {!visible.length && <p className="ta-admin-card">No products match these filters.</p>}
+              <div className="ta-admin-pagination">
                 <button disabled={page === 0} onClick={() => setPage((v) => v - 1)}>
                   Previous
                 </button>
@@ -445,11 +445,11 @@ export function AdminWorkspace() {
             </>
           )}
           {tab === "Connection" && (
-            <div className="admin-connection">
-              <section className="admin-card">
+            <div className="ta-admin-connection">
+              <section className="ta-admin-card">
                 <p className="label-eyebrow">Shopify / Server connection</p>
                 <h2>Store connection</h2>
-                <div className="admin-metrics">
+                <div className="ta-admin-metrics">
                   <p>
                     <span>Store domain</span>
                     <strong>{data.domain || "Not configured"}</strong>
@@ -496,7 +496,10 @@ export function AdminWorkspace() {
           if (!open) setSelected(null);
         }}
       >
-        <DialogContent className="admin-product-dialog">
+        <DialogContent
+          className="ta-admin-product-dialog translate-x-0 translate-y-0"
+          overlayClassName="ta-admin-dialog-overlay"
+        >
           <DialogTitle>{p?.name || "Product details"}</DialogTitle>
           <DialogDescription>
             Inspect catalogue content, options and variant pricing. Changes are managed in Shopify.
@@ -505,7 +508,7 @@ export function AdminWorkspace() {
           {detail.error && <p role="alert">{detail.error.message}</p>}
           {p && (
             <>
-              <div className="admin-detail-actions">
+              <div className="ta-admin-detail-actions">
                 <a
                   href={`/products/${encodeURIComponent(p.slug)}`}
                   target="_blank"
@@ -522,22 +525,22 @@ export function AdminWorkspace() {
                   Download product JSON
                 </button>
               </div>
-              <p className="admin-muted">
+              <p className="ta-admin-muted">
                 {p.source === "csv"
                   ? "CSV snapshot · stock unknown · checkout disabled"
                   : "Live Shopify product"}
               </p>
-              <div className="admin-detail-gallery">
+              <div className="ta-admin-detail-gallery">
                 {p.gallery.map((url, i) => (
                   <a key={`${url}-${i}`} href={url} target="_blank" rel="noreferrer">
                     <img src={url} alt={`${p.name} — image ${i + 1}`} loading="lazy" />
                   </a>
                 ))}
               </div>
-              <p className="admin-description">
+              <p className="ta-admin-description">
                 {p.description || p.purpose || "No description supplied."}
               </p>
-              <div className="admin-metrics">
+              <div className="ta-admin-metrics">
                 {[
                   ["Handle", p.slug],
                   ["Dimensions", p.dims],
@@ -551,7 +554,7 @@ export function AdminWorkspace() {
                 ))}
               </div>
               <h3>Variants ({p.variants.length})</h3>
-              <div className="admin-table-wrap">
+              <div className="ta-admin-table-wrap">
                 <table>
                   <thead>
                     <tr>

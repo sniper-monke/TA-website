@@ -1,5 +1,5 @@
-﻿.admin-workspace,
-.admin-product-dialog {
+.ta-admin-workspace,
+.ta-admin-product-dialog {
   --admin-ink: #153a54;
   --admin-muted: #64747b;
   --admin-line: #dce2df;
@@ -8,58 +8,61 @@
     500 14px/1.6 Quicksand,
     sans-serif;
 }
-.admin-workspace {
+.ta-admin-workspace {
+  /* Keep the dashboard out of the legacy editorial sidebar grid. */
+  display: block;
+  min-width: 0;
   width: min(100%, 1400px);
   margin: auto;
   padding: 140px 40px 72px;
   min-height: 85vh;
 }
-.admin-workspace h1 {
+.ta-admin-workspace h1 {
   font:
     600 clamp(28px, 3.5vw, 40px)/1.2 Raleway,
     sans-serif;
   margin: 10px 0;
 }
-.admin-workspace h2 {
+.ta-admin-workspace h2 {
   font:
     600 21px/1.3 Raleway,
     sans-serif;
   margin: 8px 0 12px;
 }
-.admin-heading,
-.admin-section-title {
+.ta-admin-heading,
+.ta-admin-section-title {
   display: flex;
   justify-content: space-between;
   gap: 24px;
   align-items: center;
   margin-bottom: 28px;
 }
-.admin-heading p,
-.admin-card > p,
-.admin-section-title p {
+.ta-admin-heading p,
+.ta-admin-card > p,
+.ta-admin-section-title p {
   color: var(--admin-muted);
   font-size: 13px;
 }
-.admin-workspace .label-eyebrow {
+.ta-admin-workspace .label-eyebrow {
   color: #a4532d;
   font-size: 10px;
   letter-spacing: 0.16em;
 }
-.admin-actions,
-.admin-detail-actions {
+.ta-admin-actions,
+.ta-admin-detail-actions {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
 }
-.admin-actions {
+.ta-admin-actions {
   flex-shrink: 0;
 }
-.admin-workspace button,
-.admin-workspace select,
-.admin-actions a,
-.admin-detail-actions a,
-.admin-product-dialog button:not([data-slot]),
-.admin-dialog-close {
+.ta-admin-workspace button,
+.ta-admin-workspace select,
+.ta-admin-actions a,
+.ta-admin-detail-actions a,
+.ta-admin-product-dialog button:not([data-slot]),
+.ta-admin-dialog-close {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -79,26 +82,26 @@
     background 150ms,
     border-color 150ms;
 }
-.admin-workspace button:disabled {
+.ta-admin-workspace button:disabled {
   opacity: 0.45;
   cursor: default;
 }
-.admin-workspace button:hover:not(:disabled),
-.admin-actions a:hover,
-.admin-detail-actions a:hover,
-.admin-detail-actions button:hover {
+.ta-admin-workspace button:hover:not(:disabled),
+.ta-admin-actions a:hover,
+.ta-admin-detail-actions a:hover,
+.ta-admin-detail-actions button:hover {
   background: #eaf0ec;
   border-color: #a6b8b1;
 }
-.admin-workspace .admin-primary {
+.ta-admin-workspace .ta-admin-primary {
   background: var(--admin-ink);
   color: #fffefa;
   border-color: var(--admin-ink);
 }
-.admin-workspace .admin-primary:hover:not(:disabled) {
+.ta-admin-workspace .ta-admin-primary:hover:not(:disabled) {
   background: #24526b;
 }
-.admin-tabs {
+.ta-admin-tabs {
   display: flex;
   gap: 6px;
   padding: 6px;
@@ -107,20 +110,20 @@
   background: #edece5;
   overflow-x: auto;
 }
-.admin-tabs button {
+.ta-admin-tabs button {
   white-space: nowrap;
   border: 1px solid transparent;
   background: transparent;
   padding: 10px 20px;
   color: var(--admin-muted);
 }
-.admin-tabs button[aria-current] {
+.ta-admin-tabs button[aria-current] {
   color: var(--admin-ink);
   border-color: var(--admin-line);
   background: #fffefa;
   box-shadow: 0 1px 3px #153a5410;
 }
-.admin-status {
+.ta-admin-status {
   display: flex;
   gap: 10px;
   align-items: center;
@@ -128,10 +131,10 @@
   font-size: 12px;
   padding: 22px 2px;
 }
-.admin-status > span:last-child {
+.ta-admin-status > span:last-child {
   color: var(--admin-muted);
 }
-.admin-dot {
+.ta-admin-dot {
   width: 8px;
   height: 8px;
   flex-shrink: 0;
@@ -139,17 +142,17 @@
   background: #b27a32;
   box-shadow: 0 0 0 4px #b27a3212;
 }
-.admin-dot.connected {
+.ta-admin-dot.connected {
   background: #37745c;
   box-shadow: 0 0 0 4px #37745c12;
 }
-.admin-stats {
+.ta-admin-stats {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
   margin-bottom: 24px;
 }
-.admin-stats > div {
+.ta-admin-stats > div {
   border: 1px solid var(--admin-line);
   background: #fffefa;
   border-radius: 12px;
@@ -158,22 +161,22 @@
   flex-direction: column;
   gap: 8px;
 }
-.admin-stats span {
+.ta-admin-stats span {
   font-size: 12px;
   color: var(--admin-muted);
 }
-.admin-stats strong {
+.ta-admin-stats strong {
   font-size: 34px;
   font-weight: 600;
   line-height: 1.3;
   font-variant-numeric: tabular-nums;
 }
-.admin-columns {
+.ta-admin-columns {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
 }
-.admin-card {
+.ta-admin-card {
   min-width: 0;
   padding: 28px;
   background: #fffefa;
@@ -181,17 +184,17 @@
   border-radius: 12px;
   margin-bottom: 24px;
 }
-.admin-card > button {
+.ta-admin-card > button {
   margin-top: 22px;
 }
-.admin-muted {
+.ta-admin-muted {
   color: var(--admin-muted);
   font-size: 12px;
 }
-.admin-metrics {
+.ta-admin-metrics {
   margin-top: 16px;
 }
-.admin-metrics p {
+.ta-admin-metrics p {
   display: flex;
   justify-content: space-between;
   gap: 18px;
@@ -199,23 +202,23 @@
   padding: 13px 0;
   font-size: 12px;
 }
-.admin-metrics p > span {
+.ta-admin-metrics p > span {
   color: var(--admin-muted);
 }
-.admin-metrics strong {
+.ta-admin-metrics strong {
   font-weight: 600;
   overflow-wrap: anywhere;
   text-align: right;
   min-width: 0;
 }
-.admin-operation-links {
+.ta-admin-operation-links {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
   margin-top: 22px;
 }
-.admin-operation-links > a,
-.admin-operation-links > span {
+.ta-admin-operation-links > a,
+.ta-admin-operation-links > span {
   border: 1px solid var(--admin-line);
   padding: 18px;
   font-size: 13px;
@@ -225,19 +228,19 @@
   justify-content: space-between;
   border-radius: 8px;
 }
-.admin-operation-links > a:hover {
+.ta-admin-operation-links > a:hover {
   border-color: #7a9c8d;
   background: #eff4ee;
 }
-.admin-operation-links > span {
+.ta-admin-operation-links > span {
   background: #f6f6f1;
   color: var(--admin-muted);
 }
-.admin-operation-links small {
+.ta-admin-operation-links small {
   width: 100%;
   font-size: 11px;
 }
-.admin-filters {
+.ta-admin-filters {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -248,27 +251,27 @@
   margin: 20px 0 14px;
   align-items: center;
 }
-.admin-filters label {
+.ta-admin-filters label {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 12px;
 }
-.admin-search {
+.ta-admin-search {
   flex: 1 1 220px;
   min-width: 0;
   border: 1px solid var(--admin-line);
   padding: 10px 12px;
   border-radius: 8px;
 }
-.admin-search:focus-within {
+.ta-admin-search:focus-within {
   border-color: #a4532d;
 }
-.admin-search svg {
+.ta-admin-search svg {
   flex-shrink: 0;
   color: var(--admin-muted);
 }
-.admin-search input {
+.ta-admin-search input {
   min-width: 0;
   border: 0;
   background: transparent;
@@ -277,24 +280,24 @@
   padding: 0;
   font-size: 13px;
 }
-.admin-filters input[type="checkbox"] {
+.ta-admin-filters input[type="checkbox"] {
   width: 16px;
   height: 16px;
   accent-color: #153a54;
 }
-.admin-table-wrap {
+.ta-admin-table-wrap {
   overflow-x: auto;
   background: #fffefa;
   border: 1px solid var(--admin-line);
   border-radius: 12px;
   margin-top: 16px;
 }
-.admin-table-wrap table {
+.ta-admin-table-wrap table {
   border-collapse: collapse;
   width: 100%;
   font-size: 12px;
 }
-.admin-table-wrap th {
+.ta-admin-table-wrap th {
   text-align: left;
   color: var(--admin-muted);
   background: #eef1eb;
@@ -305,15 +308,15 @@
   padding: 14px 20px;
   white-space: nowrap;
 }
-.admin-table-wrap td {
+.ta-admin-table-wrap td {
   padding: 16px 20px;
   border-top: 1px solid #e8ece6;
   min-width: 100px;
 }
-.admin-table-wrap tbody tr:hover {
+.ta-admin-table-wrap tbody tr:hover {
   background: #f8faf5;
 }
-.admin-workspace .admin-product-button {
+.ta-admin-workspace .ta-admin-product-button {
   padding: 0;
   border: 0;
   background: transparent;
@@ -324,7 +327,7 @@
   gap: 14px;
   line-height: 1.5;
 }
-.admin-product-button img {
+.ta-admin-product-button img {
   height: 52px;
   width: 52px;
   object-fit: cover;
@@ -332,29 +335,29 @@
   border-radius: 8px;
   flex-shrink: 0;
 }
-.admin-product-button small {
+.ta-admin-product-button small {
   display: block;
   color: var(--admin-muted);
   font-size: 11px;
   font-weight: 500;
   margin-top: 3px;
 }
-.admin-badge {
+.ta-admin-badge {
   display: inline-block;
   border-radius: 20px;
   padding: 4px 9px;
   font-size: 10px;
   white-space: nowrap;
 }
-.admin-badge.review {
+.ta-admin-badge.review {
   color: #86501d;
   background: #fcf0da;
 }
-.admin-badge.complete {
+.ta-admin-badge.complete {
   color: #30634e;
   background: #e8f2e9;
 }
-.admin-pagination {
+.ta-admin-pagination {
   display: flex;
   gap: 16px;
   align-items: center;
@@ -362,7 +365,7 @@
   margin-top: 20px;
   font-size: 12px;
 }
-.admin-alert {
+.ta-admin-alert {
   background: #fff0e6;
   border: 1px solid #dfb49a;
   border-radius: 8px;
@@ -371,13 +374,13 @@
   font-size: 13px;
   overflow-wrap: anywhere;
 }
-.admin-media-grid {
+.ta-admin-media-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
   margin-top: 20px;
 }
-.admin-media-grid button {
+.ta-admin-media-grid button {
   min-width: 0;
   display: flex;
   flex-direction: column;
@@ -386,22 +389,29 @@
   padding: 14px;
   border-radius: 12px;
 }
-.admin-media-grid img {
+.ta-admin-media-grid img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
   border-radius: 6px;
   margin-bottom: 8px;
 }
-.admin-media-grid strong {
+.ta-admin-media-grid strong {
   font-size: 13px;
 }
-.admin-media-grid span,
-.admin-media-grid small {
+.ta-admin-media-grid span,
+.ta-admin-media-grid small {
   color: var(--admin-muted);
   font-size: 11px;
 }
-.admin-product-dialog {
+.ta-experience .ta-admin-dialog-overlay {
+  z-index: 80;
+}
+.ta-experience .ta-admin-product-dialog {
+  z-index: 81;
+  /* The legacy utility sheet and Tailwind both apply translation to dialogs. */
+  translate: none;
+  transform: translate(-50%, -50%);
   max-width: 1000px !important;
   width: calc(100vw - 32px) !important;
   max-height: 88dvh;
@@ -410,126 +420,140 @@
   padding: 32px !important;
   border-radius: 14px;
 }
-.admin-product-dialog h2 {
+.ta-admin-product-dialog h2 {
   padding-right: 32px;
   font-size: 24px;
   line-height: 1.3;
 }
-.admin-product-dialog h3 {
+.ta-admin-product-dialog h3 {
   font-size: 16px;
   font-weight: 600;
 }
-.admin-product-dialog > button:last-child {
+.ta-admin-product-dialog > button:last-child {
   min-height: 32px;
   padding: 6px;
   border: 0;
   background: transparent;
 }
-.admin-detail-gallery {
+.ta-admin-detail-gallery {
   display: flex;
   gap: 12px;
   overflow-x: auto;
   padding: 12px 0;
 }
-.admin-detail-gallery a {
+.ta-admin-detail-gallery a {
   flex-shrink: 0;
 }
-.admin-detail-gallery img {
+.ta-admin-detail-gallery img {
   height: 140px;
   width: 140px;
   object-fit: cover;
   border-radius: 8px;
 }
-.admin-description {
+.ta-admin-description {
   white-space: pre-line;
   font-size: 13px;
   line-height: 1.8;
 }
-.admin-workspace :focus-visible,
-.admin-product-dialog :focus-visible {
+.ta-admin-workspace :focus-visible,
+.ta-admin-product-dialog :focus-visible {
   outline: 2px solid #a4532d;
   outline-offset: 3px;
 }
-.admin-workspace code {
+.ta-admin-workspace code {
   overflow-wrap: anywhere;
   font-size: 11px;
   background: #eef1eb;
   padding: 2px 4px;
   border-radius: 3px;
 }
-.admin-connection {
+.ta-admin-connection {
   max-width: 850px;
 }
 @media (max-width: 1000px) {
-  .admin-heading {
+  .ta-admin-heading {
     align-items: flex-start;
     flex-direction: column;
   }
-  .admin-stats {
+  .ta-admin-stats {
     gap: 12px;
   }
-  .admin-stats > div {
+  .ta-admin-stats > div {
     padding: 18px;
   }
 }
 @media (max-width: 760px) {
-  .admin-workspace {
+  .ta-admin-workspace {
     padding: 116px 18px 48px;
   }
-  .admin-section-title {
+  .ta-admin-section-title {
     align-items: flex-start;
     flex-direction: column;
     gap: 14px;
   }
-  .admin-stats {
+  .ta-admin-stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .admin-columns {
+  .ta-admin-columns {
     grid-template-columns: minmax(0, 1fr);
     gap: 0;
   }
-  .admin-operation-links {
+  .ta-admin-operation-links {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .admin-media-grid {
+  .ta-admin-media-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
   }
-  .admin-card {
+  .ta-admin-card {
     padding: 20px;
   }
-  .admin-tabs button {
+  .ta-admin-tabs button {
     padding: 10px 14px;
   }
-  .admin-filters select {
+  .ta-admin-filters select {
     flex: 1;
     min-width: 0;
   }
-  .admin-search {
-    flex-basis: 100%;
+  .ta-admin-filters {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .admin-product-dialog {
+  .ta-admin-search {
+    grid-column: 1 / -1;
+  }
+  .ta-admin-filters label:last-child {
+    grid-column: 1 / -1;
+  }
+  .ta-admin-product-dialog {
     padding: 24px 18px !important;
   }
 }
 @media (max-width: 440px) {
-  .admin-media-grid {
+  .ta-admin-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ta-admin-filters {
     grid-template-columns: minmax(0, 1fr);
   }
-  .admin-operation-links {
+  .ta-admin-media-grid {
     grid-template-columns: minmax(0, 1fr);
   }
-  .admin-stats strong {
+  .ta-admin-operation-links {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ta-admin-stats strong {
     font-size: 28px;
   }
-  .admin-pagination {
+  .ta-admin-pagination {
     gap: 10px;
     justify-content: space-between;
   }
-  .admin-pagination button {
+  .ta-admin-pagination button {
     padding: 9px 10px;
   }
-  .admin-metrics p {
+  .ta-admin-metrics p {
     gap: 12px;
   }
 }
