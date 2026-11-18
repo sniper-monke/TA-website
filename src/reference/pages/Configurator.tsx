@@ -1,16 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment -- Adapted from the reference JavaScript. */
 // @ts-nocheck
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useSearchParams } from "@/reference/router";
 import { Plus, ShoppingBag } from "lucide-react";
 import { useBasket } from "@/reference/context/BasketContext";
-import { fetchProduct } from "@/reference/lib/api";
 import { motion } from "framer-motion";
 import { CONFIG, ROOM_TYPES } from "@/reference/data/configurator";
 import { PageHero } from "@/reference/components/Chrome";
 import RoomPreview from "@/reference/components/RoomPreview";
 import { FadePage, Reveal } from "@/reference/components/Reveal";
-import { formatPrice } from "@/reference/lib/api";
 import { MaterialStudy } from "@/components/experience/MaterialStudy";
 
 function Group({ legend, opts, value, onPick, swatch, testPrefix }) {
@@ -19,7 +17,6 @@ function Group({ legend, opts, value, onPick, swatch, testPrefix }) {
       <legend className="label-quiet">{legend}</legend>
       <div className="mt-3.5 flex flex-wrap gap-2">
         {opts.map((o) => {
-          const extra = o.price ?? o.add;
           const active = value === o.id;
           return (
             <motion.button
@@ -41,9 +38,6 @@ function Group({ legend, opts, value, onPick, swatch, testPrefix }) {
                 />
               )}
               {o.label}
-              {extra ? (
-                <span className="text-[11px] text-timber-ink/45">+{formatPrice(extra)}</span>
-              ) : null}
             </motion.button>
           );
         })}
@@ -58,13 +52,6 @@ export default function Configurator() {
   const { add } = useBasket();
   const initialRoom = ROOM_TYPES.find((r) => r.id === params.get("room")) || ROOM_TYPES[0];
   const [roomType, setRoomType] = useState(initialRoom.id);
-  const [basePrice, setBasePrice] = useState(null);
-  const [priceError, setPriceError] = useState(false);
-  useEffect(() => {
-    fetchProduct("slat-panel-2400")
-      .then((p) => setBasePrice(p.price))
-      .catch(() => setPriceError(true));
-  }, []);
   const [s, setS] = useState(() => {
     const defaults = {
       finish: "oak",
@@ -104,8 +91,6 @@ export default function Configurator() {
   const wallCount = s.walls === "both" ? 2 : 1;
   const panelCount = coverage * wallCount;
   const error = CONFIG.validate(s);
-  const unit = (basePrice ?? 0) + (finish.price ?? 0) + (mod.add ?? 0);
-  const total = unit * panelCount;
 
   return (
     <FadePage>
@@ -122,6 +107,7 @@ export default function Configurator() {
         data-testid="configurator"
       >
         <Reveal className="lg:sticky lg:top-24 lg:self-start min-w-0">
+          <div id="room-preview" />
           <div className="overflow-hidden rounded-lg border border-timber-ink/10 bg-gradient-to-b from-white/60 to-timber-sand shadow-[0_24px_70px_rgba(21,58,84,0.08)]">
             <div className="flex items-center justify-between border-b border-timber-ink/10 px-6 py-4">
               <p className="label-eyebrow" data-testid="cfg-room-label">
@@ -255,6 +241,9 @@ export default function Configurator() {
             className="rounded-md border border-timber-ink/10 bg-white/50 p-6 shadow-[0_8px_32px_rgba(21,58,84,0.06)] backdrop-blur-xl"
             data-testid="cfg-summary"
           >
+            <a href="#room-preview" className="ta-cfg-preview-link">
+              Review your room preview ↑
+            </a>
             <p className="label-quiet">Summary</p>
             <p className="mt-3 text-sm font-light leading-relaxed text-timber-ink/75">
               {panelCount} × {mod.label} mm {finish.label} slat panel{panelCount > 1 ? "s" : ""}{" "}
@@ -265,8 +254,7 @@ export default function Configurator() {
               className="mt-5 font-display text-4xl font-light text-timber-ink"
               data-testid="cfg-total-price"
             >
-              {basePrice === null ? "—" : formatPrice(total)}{" "}
-              <span className="label-eyebrow align-middle">Indicative price</span>
+              By quotation
             </p>
             {error && (
               <p
@@ -277,22 +265,17 @@ export default function Configurator() {
                 {error}
               </p>
             )}
-            {priceError && (
-              <p className="error-notice" data-testid="cfg-price-error">
-                This scheme is temporarily unavailable. Please try again later.
-              </p>
-            )}
             <button
               className="action-button w-full mt-6"
               data-testid="cfg-add-basket"
-              disabled={Boolean(error) || basePrice === null}
+              disabled={Boolean(error)}
               onClick={() =>
                 add({
                   kind: "scheme",
                   name: `${rt.label} scheme`,
                   description: `${panelCount} panels · ${finish.label} / ${felt.label} · ${mod.label} mm · ${wallLabel} · ${layout.label}`,
                   scheme: { roomType, ...s },
-                  unit_price: total,
+                  unit_price: 0,
                 })
               }
             >

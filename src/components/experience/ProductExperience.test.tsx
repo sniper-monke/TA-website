@@ -96,6 +96,29 @@ const live: StoreProduct = {
 };
 
 describe("Product selections", () => {
+  it("starts with the selected available variant's image", () => {
+    mount({
+      product: {
+        ...live,
+        variants: live.variants.map((variant, index) => ({
+          ...variant,
+          availableForSale: index > 0,
+        })),
+      },
+    });
+    expect(screen.getByTestId("product-main-image")).toHaveAttribute("src", "/charcoal.jpg");
+    expect(screen.getByTestId("product-price")).toHaveTextContent("2,000");
+  });
+  it("restores the product photo when switching to a variant without its own image", () => {
+    mount({ product: live });
+    fireEvent.click(screen.getByRole("button", { name: "Charcoal" }));
+    fireEvent.click(screen.getByRole("button", { name: "100 mm" }));
+    expect(screen.getByTestId("product-main-image")).toHaveAttribute("src", "/charcoal.jpg");
+    fireEvent.click(screen.getByRole("button", { name: "Sand" }));
+    fireEvent.click(screen.getByRole("button", { name: "50 mm" }));
+    expect(screen.getByTestId("product-main-image")).toHaveAttribute("src", "/panel.jpg");
+    expect(screen.getByTestId("product-price")).toHaveTextContent("1,000");
+  });
   it("saves the chosen preview finish, size and quantity together", () => {
     mount({ product: products[0]! });
     fireEvent.click(screen.getByRole("button", { name: "Walnut" }));

@@ -1,5 +1,10 @@
 # Shopify connection and team workspace
 
+Updated 18 November 2026. See the [documentation index](README.md),
+[current project status](PROJECT_REFERENCE.md), [Vercel/access guide](DEPLOYMENT_AND_ACCESS.md)
+and [remaining launch checklist](LAUNCH_CHECKLIST.md). This document describes
+implemented behavior; live store/payment and production-login outcomes remain unverified.
+
 ## What is implemented
 
 The customer catalogue now reads `src/data/shopify-products.json`, generated from
@@ -36,8 +41,8 @@ does not create or update anything in the client's Shopify store.
    permissions. Use your own Shopify account rather than their owner password or 2FA.
 3. **Headless channel storefront and private Storefront API token**. Enable product
    and collection read access, variant availability and cart/checkout access
-   (`unauthenticated_read_product_listings`, `unauthenticated_read_checkouts`,
-   `unauthenticated_write_checkouts` as applicable to the channel's settings).
+   needed by the actual adapter queries. Review the current Headless permissions
+   and test those operations; a historical scope-name list is not proof of access.
    Publish the intended products and collections to this storefront's channel.
    Make the required custom metafields accessible to the Storefront API.
 4. **Business confirmation**: store currency, target countries/markets, tax display,
@@ -105,8 +110,10 @@ definitions; Shopify page-builder HTML and option apps are not automatically ren
 ## Admin access and credentials
 
 Previously `/admin/login` was a visual mockup and `/admin` redirected there. No
-working account existed. A local account has now been generated; its password is
-provided in the task handoff. Only the hash and session secret are saved in ignored
+working account existed. A local account has now been generated. Its identifier is
+`admin@timberacoustics.local`; the password is recorded only in ignored
+`docs/private/admin-access.md` on the originating workstation and should be saved
+in a password manager. Only the hash and session secret are saved in ignored
 `.env.local`. These credentials are for **this workspace**, not Shopify admin.
 The client must invite your own account to Shopify; local code cannot create a
 Shopify owner/staff account without store access.
@@ -123,6 +130,11 @@ sessions after restart. There is one server-configured account, with no password
 reset email, multi-user roles, audit log or MFA. Set `ADMIN_EMAIL`,
 `ADMIN_PASSWORD_HASH` and `ADMIN_SESSION_SECRET` as production server secrets before
 deploying. Use a separate account/password for production.
+
+The Vercel deployment reported **Team access is not configured. Run npm run
+admin:setup on the server.** The local setup file does not travel through Git;
+set all three admin variables in Vercel's intended environment and redeploy.
+Follow the [full deployment/error-resolution guide](DEPLOYMENT_AND_ACCESS.md).
 
 Passwords use PBKDF2-SHA256 with a random salt and 600,000 iterations. Sessions are
 sealed, HTTP-only, SameSite=Strict, secure in production and expire after eight hours.
@@ -167,5 +179,7 @@ fallback boundaries, password verification, unauthenticated access denial, sessi
 creation/rotation/logout, and the existing live Shopify cart adapter.
 
 Actual store authentication, live prices/stock, payment and order creation require
-client access and must be verified against the real store. No push or deployment
-is performed as part of this local repository implementation.
+client access and must be verified against the real store. The catalogue/admin
+implementation was successfully published to `main` as `44b3515`; the user's
+subsequent Vercel deployment report does not establish successful admin or Shopify
+configuration. See [publication and validation history](PROJECT_REFERENCE.md).

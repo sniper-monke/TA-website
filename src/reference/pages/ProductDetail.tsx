@@ -7,9 +7,9 @@ import { ErrorNotice } from "@/reference/components/Forms";
 import { FadePage } from "@/reference/components/Reveal";
 import { ProductExperience } from "@/components/experience/ProductExperience";
 
-export default function ProductDetail() {
+export default function ProductDetail({ initialProduct }) {
   const { slug } = useParams();
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState(initialProduct || null);
   const [families, setFamilies] = useState([]);
   const [all, setAll] = useState([]);
   const [notFound, setNotFound] = useState(false);
@@ -19,11 +19,14 @@ export default function ProductDetail() {
 
   useEffect(() => {
     let active = true;
-    setProduct(null);
     setNotFound(false);
     setLoadError("");
     setSupportingError(false);
-    Promise.allSettled([fetchProduct(slug), fetchFamilies(), fetchProducts()]).then(([p, f, a]) => {
+    Promise.allSettled([
+      initialProduct && attempt === 0 ? Promise.resolve(initialProduct) : fetchProduct(slug),
+      fetchFamilies(),
+      fetchProducts(),
+    ]).then(([p, f, a]) => {
       if (!active) return;
       if (p.status === "fulfilled") setProduct(p.value);
       else if (p.reason.response?.status === 404) setNotFound(true);
@@ -35,7 +38,7 @@ export default function ProductDetail() {
     return () => {
       active = false;
     };
-  }, [slug, attempt]);
+  }, [slug, attempt, initialProduct]);
 
   if (loadError)
     return (

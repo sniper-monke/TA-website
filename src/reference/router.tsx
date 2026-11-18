@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment -- Adapted from the reference JavaScript. */
 // @ts-nocheck
-import { useState } from "react";
 import {
   useLocation as useTanstackLocation,
   useParams as useTanstackParams,
+  useNavigate,
 } from "@tanstack/react-router";
 export function Link({ to, children, ...props }) {
   return (
@@ -34,17 +34,16 @@ export function useParams() {
 }
 export function useSearchParams() {
   const location = useTanstackLocation();
-  const [search, setSearch] = useState(location.searchStr || "");
+  const navigate = useNavigate();
   return [
-    new URLSearchParams(search),
+    new URLSearchParams(location.searchStr || ""),
     (params, options) => {
-      const next = `?${params}`;
-      window.history[options?.replace ? "replaceState" : "pushState"](
-        window.history.state,
-        "",
-        next,
-      );
-      setSearch(next);
+      void navigate({
+        to: location.pathname,
+        search: Object.fromEntries(params),
+        replace: options?.replace ?? false,
+        resetScroll: false,
+      });
     },
   ];
 }

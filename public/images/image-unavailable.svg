@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480" fill="none">
+  <path fill="#ede6da" d="M0 0h480v480H0z"/>
+  <g stroke="#153a54" stroke-linecap="round" stroke-width="3" opacity=".45">
+    <path d="M199 184v39m12-57v39m12-13v49m12-69v39m12-5v43m12-66v39m12-54v39m12-12v43"/>
+  </g>
+  <text x="240" y="290" fill="#153a54" text-anchor="middle" font-family="sans-serif" font-size="19">Image unavailable</text>
+  <text x="240" y="319" fill="#526875" text-anchor="middle" font-family="sans-serif" font-size="12">Please ask us for product photography.</text>
+</svg>

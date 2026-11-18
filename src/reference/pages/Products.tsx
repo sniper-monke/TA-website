@@ -2,7 +2,7 @@
 // @ts-nocheck
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "@/reference/router";
-import { Search } from "lucide-react";
+import { ChevronDown, Search, SlidersHorizontal, X } from "lucide-react";
 import { fetchFamilies, fetchProducts, formatPrice } from "@/reference/lib/api";
 import { PageHero } from "@/reference/components/Chrome";
 import ProductCard from "@/reference/components/ProductCard";
@@ -27,9 +27,12 @@ export default function Products() {
   const [attempt, setAttempt] = useState(0);
   const [q, setQ] = useState("");
   const [sort, setSort] = useState("featured");
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [bounds, setBounds] = useState([0, 100000]);
   const [range, setRange] = useState([0, 100000]);
   const family = params.get("family") || "all";
+  const activeFilters =
+    Number(family !== "all") + Number(range[0] !== bounds[0] || range[1] !== bounds[1]);
 
   useEffect(() => {
     let active = true;
@@ -119,22 +122,67 @@ export default function Products() {
             </button>
           </div>
         )}
-        <div className="grid gap-8 border-y border-timber-ink/10 py-8 lg:grid-cols-12 lg:items-center">
-          <div className="relative lg:col-span-4">
+        <div className="ta-catalogue-toolbar">
+          <div className="ta-catalogue-search">
             <Search
               size={16}
               className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 text-timber-ink/40"
             />
             <input
               data-testid="search-input"
+              type="search"
+              aria-label="Search products"
               value={q}
               onChange={(e) => setQ(e.target.value)}
               placeholder="Search products"
-              className="w-full border-b border-timber-ink/15 bg-transparent py-3 pl-7 text-sm font-light text-timber-ink outline-none transition-colors placeholder:text-timber-ink/35 focus:border-timber-orange"
+              className="w-full border-b border-timber-ink/15 bg-transparent py-3 pl-7 pr-11 text-sm font-light text-timber-ink outline-none transition-colors placeholder:text-timber-ink/35 focus:border-timber-orange"
             />
+            {q && (
+              <button
+                className="ta-search-clear"
+                onClick={() => setQ("")}
+                aria-label="Clear search"
+              >
+                <X size={17} />
+              </button>
+            )}
           </div>
-          <div className="lg:col-span-5">
-            <div className="flex items-center gap-6">
+          <button
+            className="ta-filter-toggle"
+            aria-expanded={filtersOpen}
+            aria-controls="catalogue-filters"
+            onClick={() => setFiltersOpen(!filtersOpen)}
+          >
+            <SlidersHorizontal size={16} /> Filters{" "}
+            {activeFilters > 0 && <span>{activeFilters}</span>}
+            <ChevronDown size={15} />
+          </button>
+          <div className="ta-catalogue-sort">
+            <select
+              data-testid="sort-select"
+              aria-label="Sort products"
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+            >
+              {SORTS.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.label}
+                </option>
+              ))}
+            </select>
+            <ChevronDown size={15} aria-hidden="true" />
+          </div>
+        </div>
+        <div id="catalogue-filters" className="ta-catalogue-filters" data-open={filtersOpen}>
+          <div className="ta-catalogue-filter-heading">
+            <p className="label-quiet">Refine your selection</p>
+            <button className="ta-text-link" onClick={reset}>
+              Reset filters
+            </button>
+          </div>
+          <div className="ta-price-filter">
+            <p className="label-quiet">Price range</p>
+            <div className="ta-price-filter-control">
               <Slider
                 data-testid="price-slider"
                 min={bounds[0]}
@@ -153,41 +201,26 @@ export default function Products() {
               </p>
             </div>
           </div>
-          <div className="lg:col-span-3 lg:text-right">
-            <select
-              data-testid="sort-select"
-              value={sort}
-              onChange={(e) => setSort(e.target.value)}
-              className="w-full cursor-pointer appearance-none rounded-full border border-timber-ink/15 bg-transparent px-5 py-3 text-[11px] uppercase tracking-[0.18em] text-timber-ink outline-none transition-colors focus:border-timber-orange lg:w-auto"
-            >
-              {SORTS.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.label}
-                </option>
-              ))}
-            </select>
+          <div className="mt-8 flex flex-wrap gap-2" data-testid="family-chips">
+            {[{ slug: "all", name: "All" }, ...families].map((f) => (
+              <button
+                key={f.slug}
+                data-testid={`family-chip-${f.slug}`}
+                onClick={() => setFamily(f.slug)}
+                aria-pressed={family === f.slug}
+                className={`rounded-full border px-5 py-2.5 text-[11px] uppercase tracking-[0.18em] transition-colors duration-300 ${
+                  family === f.slug
+                    ? "border-timber-orange bg-timber-orange text-timber-cream"
+                    : "border-timber-ink/15 text-timber-ink/65 hover:border-timber-ink/40 hover:text-timber-ink"
+                }`}
+              >
+                {f.name}
+              </button>
+            ))}
           </div>
         </div>
 
-        <div className="mt-8 flex flex-wrap gap-2" data-testid="family-chips">
-          {[{ slug: "all", name: "All" }, ...families].map((f) => (
-            <button
-              key={f.slug}
-              data-testid={`family-chip-${f.slug}`}
-              onClick={() => setFamily(f.slug)}
-              aria-pressed={family === f.slug}
-              className={`rounded-full border px-5 py-2.5 text-[11px] uppercase tracking-[0.18em] transition-colors duration-300 ${
-                family === f.slug
-                  ? "border-timber-orange bg-timber-orange text-timber-cream"
-                  : "border-timber-ink/15 text-timber-ink/65 hover:border-timber-ink/40 hover:text-timber-ink"
-              }`}
-            >
-              {f.name}
-            </button>
-          ))}
-        </div>
-
-        <p className="label-quiet mt-10" data-testid="results-count">
+        <p className="label-quiet mt-10" data-testid="results-count" role="status">
           {loading
             ? "Loading…"
             : error
@@ -216,6 +249,7 @@ export default function Products() {
         <div
           className="mt-8 grid grid-cols-1 gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3"
           data-testid="product-grid"
+          aria-busy={loading}
         >
           {visible.map((p, i) => (
             <ProductCard key={p.slug} product={p} familyName={familyName(p.family)} index={i} />

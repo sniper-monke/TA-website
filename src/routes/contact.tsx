@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "@tanstack/react-router";
 import { PageHero } from "@/reference/components/Chrome";
+import { useBasket } from "@/reference/context/BasketContext";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -20,14 +21,24 @@ export const Route = createFileRoute("/contact")({
 
 function Contact() {
   const [sent, setSent] = useState(false);
+  const [draft, setDraft] = useState<Record<string, string>>({});
+  const preview = useRef<HTMLDivElement>(null);
+  const nameInput = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (sent) preview.current?.focus();
+  }, [sent]);
   const location = useLocation();
+  const { items } = useBasket();
   const enquiryParams = new URLSearchParams(location.searchStr);
   const enquiryProduct = enquiryParams.get("product")?.slice(0, 200);
   const selection = enquiryParams.get("selection")?.slice(0, 500);
   const requestedQuantity = enquiryParams.get("quantity")?.slice(0, 3);
-  const initialMessage = enquiryProduct
-    ? `${enquiryParams.get("request") === "quote" ? "I'd like a quote for" : "I'm interested in"} ${enquiryProduct}.${selection ? `\nOptions: ${selection}` : ""}${requestedQuantity ? `\nQuantity: ${requestedQuantity}` : ""}\n\nRoom details and requirements:\n`
-    : "";
+  const basketEnquiry = enquiryParams.get("basket") === "1";
+  const initialMessage = basketEnquiry
+    ? `I'd like a quote for these selections:\n${items.map((item) => `${item.quantity} × ${item.name}${item.description ? ` — ${item.description}` : ""}`).join("\n")}\n\nRoom details and requirements:\n`
+    : enquiryProduct
+      ? `${enquiryParams.get("request") === "quote" ? "I'd like a quote for" : "I'm interested in"} ${enquiryProduct}.${selection ? `\nOptions: ${selection}` : ""}${requestedQuantity ? `\nQuantity: ${requestedQuantity}` : ""}\n\nRoom details and requirements:\n`
+      : "";
   const field = "w-full border bg-card px-4 py-3 outline-none focus:border-signal";
   return (
     <>
@@ -49,29 +60,77 @@ function Contact() {
           Design preview · Enquiries are not delivered yet. You can explore the form below.
         </p>
         {sent ? (
-          <div role="status" className="border border-signal p-10 text-center">
+          <div
+            ref={preview}
+            tabIndex={-1}
+            className="ta-enquiry-preview border border-signal p-6 sm:p-10"
+          >
             <p className="font-display text-4xl">Your enquiry preview.</p>
             <p className="mt-3 text-muted-foreground">Demo form — nothing was sent.</p>
+            <dl className="mt-6 grid gap-4">
+              <div>
+                <dt className="label-mono">Name</dt>
+                <dd>{draft["name"]}</dd>
+              </div>
+              <div>
+                <dt className="label-mono">Email</dt>
+                <dd>{draft["email"]}</dd>
+              </div>
+              <div>
+                <dt className="label-mono">Space type</dt>
+                <dd>{draft["type"]}</dd>
+              </div>
+              <div>
+                <dt className="label-mono">Your message</dt>
+                <dd className="whitespace-pre-wrap break-words">{draft["msg"]}</dd>
+              </div>
+            </dl>
+            <button
+              className="ta-button mt-6"
+              type="button"
+              onClick={() => {
+                setSent(false);
+                requestAnimationFrame(() => nameInput.current?.focus());
+              }}
+            >
+              Edit enquiry
+            </button>
           </div>
         ) : (
           <form
+            key={initialMessage}
             onSubmit={(e) => {
               e.preventDefault();
+              setDraft(Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>);
               setSent(true);
             }}
             className="ta-contact-form grid gap-6 md:grid-cols-2"
           >
             <label className="grid gap-2">
               <span className="label-mono text-muted-foreground">Name</span>
-              <input required name="name" autoComplete="name" className={field} />
+              <input
+                ref={nameInput}
+                required
+                name="name"
+                autoComplete="name"
+                defaultValue={draft["name"]}
+                className={field}
+              />
             </label>
             <label className="grid gap-2">
               <span className="label-mono text-muted-foreground">Email</span>
-              <input required type="email" name="email" autoComplete="email" className={field} />
+              <input
+                required
+                type="email"
+                name="email"
+                autoComplete="email"
+                defaultValue={draft["email"]}
+                className={field}
+              />
             </label>
             <label className="grid gap-2">
               <span className="label-mono text-muted-foreground">Space type</span>
-              <select name="type" className={field}>
+              <select name="type" defaultValue={draft["type"]} className={field}>
                 <option>Studio</option>
                 <option>Home theatre</option>
                 <option>Hi-fi room</option>
@@ -81,7 +140,15 @@ function Contact() {
             </label>
             <label className="grid gap-2">
               <span className="label-mono text-muted-foreground">Room size (m²)</span>
-              <input name="size" inputMode="numeric" className={field} />
+              <input
+                name="size"
+                type="number"
+                min="0.1"
+                step="any"
+                inputMode="decimal"
+                defaultValue={draft["size"]}
+                className={field}
+              />
             </label>
             <label className="grid gap-2 md:col-span-2">
               <span className="label-mono text-muted-foreground">Tell us about the room</span>
@@ -90,7 +157,7 @@ function Contact() {
                 name="msg"
                 rows={5}
                 className={field}
-                defaultValue={initialMessage}
+                defaultValue={draft["msg"] ?? initialMessage}
               />
             </label>
             <button className="label-mono bg-signal py-4 text-accent-foreground transition-colors hover:bg-foreground md:col-span-2">

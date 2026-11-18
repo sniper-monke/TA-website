@@ -10,7 +10,7 @@ export const ReferenceSlider = React.forwardRef<
     ref={ref}
     value={value}
     defaultValue={defaultValue}
-    className={cn("relative flex w-full touch-none select-none items-center", className)}
+    className={cn("relative flex min-h-11 w-full touch-none select-none items-center", className)}
     {...props}
   >
     <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-[#153a54]/20">
@@ -22,7 +22,7 @@ export const ReferenceSlider = React.forwardRef<
         aria-label={
           values.length === 2 ? (index === 0 ? "Minimum price" : "Maximum price") : "Value"
         }
-        className="block h-4 w-4 rounded-full border border-[#153a54]/50 bg-[#f8f4ee] shadow focus-visible:outline-none"
+        className="relative block h-5 w-5 rounded-full border border-[#153a54]/50 bg-[#f8f4ee] shadow after:absolute after:-inset-3 after:content-['']"
       />
     ))}
   </SliderPrimitive.Root>

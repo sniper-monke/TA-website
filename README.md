@@ -2,6 +2,10 @@
 
 This project was built with [Lovable](https://lovable.dev).
 
+## Project reference
+
+Start with the [project documentation index](docs/README.md) for the current implementation, Shopify/admin setup, Vercel troubleshooting, content/media audits and launch checklist. Actual credentials stay in ignored local files and hosting secrets.
+
 ## Build with Lovable
 
 Open your project in the [Lovable editor](https://lovable.dev) and keep building.

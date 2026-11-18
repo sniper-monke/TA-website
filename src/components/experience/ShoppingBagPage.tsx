@@ -4,6 +4,7 @@ import { ArrowRight, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { useBasket } from "@/reference/context/BasketContext";
 import { beginCheckout } from "@/lib/commerce";
 import { money } from "@/lib/storefront";
+import { imageFallback } from "@/lib/image-fallback";
 import { PageHero } from "@/reference/components/Chrome";
 
 export function ShoppingBagPage() {
@@ -12,8 +13,10 @@ export function ShoppingBagPage() {
   const [error, setError] = useState("");
   const products = items.filter((x) => x.kind === "product");
   const schemes = items.filter((x) => x.kind === "scheme");
-  const live = products.filter((x) => x.variantId);
-  const preview = products.some((x) => !x.variantId);
+  const live = products.filter((x) =>
+    /^gid:\/\/shopify\/ProductVariant\/\d+$/.test(x.variantId || ""),
+  );
+  const preview = live.length !== products.length;
   const currencies = new Set(products.map((x) => x.currency || "INR"));
   const canCheckout = products.length > 0 && !preview && currencies.size === 1;
   const checkout = async () => {
@@ -50,7 +53,7 @@ export function ShoppingBagPage() {
             items.map((item, i) => (
               <article className="ta-bag-line" key={item.id} data-testid={`basket-item-${i}`}>
                 {item.image ? (
-                  <img src={item.image} alt={item.name} />
+                  <img src={item.image} alt={item.name} onError={imageFallback} />
                 ) : (
                   <div className="ta-bag-scheme">
                     Room
@@ -164,9 +167,9 @@ export function ShoppingBagPage() {
           <div className="ta-bag-advice">
             <h3>A whole room in mind?</h3>
             <p>Talk through treatment, placement and installation with the team.</p>
-            <Link to="/contact" className="ta-text-link">
+            <a href="/contact?request=quote&basket=1" className="ta-text-link">
               Request a project quote <ArrowRight size={15} />
-            </Link>
+            </a>
           </div>
         </aside>
       </section>

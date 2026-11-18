@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { toast } from "sonner";
+import { z } from "zod";
 
 type BasketEntry = {
   kind: "product" | "scheme";
@@ -26,6 +27,27 @@ type BasketState = {
 };
 const BasketContext = createContext<BasketState | null>(null);
 const KEY = "timber-enquiry-basket-v1";
+const savedItem = z.object({
+  id: z.string().min(1),
+  kind: z.enum(["product", "scheme"]),
+  name: z.string().min(1),
+  unit_price: z.number().finite().nonnegative(),
+  quantity: z.number().int().min(1).max(99),
+  slug: z.string().optional(),
+  finish: z.string().optional(),
+  size: z.string().optional(),
+  scheme: z.record(z.string()).optional(),
+  description: z.string().optional(),
+  image: z.string().optional(),
+  variantId: z
+    .string()
+    .regex(/^gid:\/\/shopify\/ProductVariant\/\d+$/)
+    .optional(),
+  currency: z
+    .string()
+    .regex(/^[A-Z]{3}$/)
+    .optional(),
+});
 const identity = (item: BasketEntry) =>
   JSON.stringify([item.kind, item.slug, item.finish, item.size, item.scheme, item.variantId]);
 
@@ -36,20 +58,7 @@ export const BasketProvider = ({ children }: { children: ReactNode }) => {
     try {
       const saved = JSON.parse(localStorage.getItem(KEY) || "[]");
       if (Array.isArray(saved))
-        setItems(
-          saved
-            .filter(
-              (x) =>
-                x &&
-                ["product", "scheme"].includes(x.kind) &&
-                x.id &&
-                Number.isInteger(x.quantity) &&
-                x.quantity > 0 &&
-                x.quantity <= 99 &&
-                Number.isFinite(x.unit_price),
-            )
-            .slice(0, 30),
-        );
+        setItems(saved.filter((x): x is BasketItem => savedItem.safeParse(x).success).slice(0, 30));
     } catch {
       /* Browser storage may be unavailable. */
     }
@@ -77,6 +86,7 @@ export const BasketProvider = ({ children }: { children: ReactNode }) => {
     }
     setItems((prev) => {
       const match = prev.find((x) => identity(x) === key);
+      if ((!match && prev.length >= 30) || (match?.quantity ?? 0) + amount > 99) return prev;
       return match
         ? prev.map((x) =>
             x.id === match.id ? { ...x, quantity: Math.min(99, x.quantity + amount) } : x,
@@ -88,12 +98,14 @@ export const BasketProvider = ({ children }: { children: ReactNode }) => {
       { id: "basket-added" },
     );
   };
-  const quantity = (id: string, value: number) =>
+  const quantity = (id: string, value: number) => {
+    if (!Number.isInteger(value)) return;
     setItems((prev) =>
       prev.map((x) =>
         x.id === id ? { ...x, quantity: Math.max(1, Math.min(99, value || 1)) } : x,
       ),
     );
+  };
   const remove = (id: string) => setItems((prev) => prev.filter((x) => x.id !== id));
   const clear = () => setItems([]);
   return (

@@ -20,6 +20,9 @@ dist-ssr
 .env.*
 !.env.example
 
+# Local-only credential reference; never publish access details.
+/docs/private/
+
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars

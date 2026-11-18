@@ -1,4 +1,11 @@
-# Client direction — updated 11 November 2026
+# Client direction — design approved 11 November 2026
+
+Current-status note added 18 November 2026: the 79-product client CSV has now been
+imported and the working read-only admin implemented. Live Shopify/checkout and
+enquiry delivery remain unverified/unconnected. References below to the earlier
+preview describe the original design phase. Use the [documentation index](README.md),
+[current project status](PROJECT_REFERENCE.md) and [launch checklist](LAUNCH_CHECKLIST.md)
+for the complete current handoff.
 
 ## Confirmed in this conversation
 
@@ -34,7 +41,9 @@ Quote links carry product name, selected options and quantity into the existing 
 
 ## Content still needed
 
-- Final product catalogue, variants, prices, specifications, test reports and installation documents.
+- Confirmation that the imported product catalogue/variants/prices are current,
+  actual currency/collections, missing structured specifications, test reports
+  and installation documents. The basic product records are already imported.
 - Approved client names/logos, real installations, case studies and workshop photography.
 - Confirmed company story and final copy. Existing demo story text and illustrative projects remain preview content.
 - Shopify store domain and Storefront API setup, followed by shipping, taxes, payments, market/currency and test-order verification.

@@ -10,6 +10,7 @@ import {
 import projects from "@/data/reference-projects.json";
 import { trustedClients } from "@/data/site-content";
 import { useCatalogue } from "@/hooks/use-catalogue";
+import { imageFallback } from "@/lib/image-fallback";
 import { BrandContours } from "./BrandContours";
 import { KineticHero } from "./KineticHero";
 
@@ -127,7 +128,14 @@ function ProductCategories() {
               data-testid={`home-category-${category.slug}`}
             >
               <div className="ta-category-image">
-                {family && <img src={family.image} alt={category.title} loading="lazy" />}
+                {family && (
+                  <img
+                    src={family.image}
+                    alt={category.title}
+                    loading="lazy"
+                    onError={imageFallback}
+                  />
+                )}
               </div>
               <div className="ta-category-caption">
                 <h3>{category.title}</h3>

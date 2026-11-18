@@ -195,6 +195,11 @@ export function ProjectDetail() {
           <span>Timber Acoustics</span>
         </div>
         <div className="project-products">
+          {!products.some((x) => p.products.includes(x.slug)) && (
+            <Link to="/products" className="text-link">
+              Explore acoustic products <ArrowUpRight size={18} />
+            </Link>
+          )}
           {products
             .filter((x) => p.products.includes(x.slug))
             .map((x) => (
@@ -206,7 +211,7 @@ export function ProjectDetail() {
                 <img src={mediaUrl(x.gallery[0])} alt={x.name} loading="lazy" />
                 <div>
                   <h3>{x.name}</h3>
-                  <span>{formatPrice(x.price)}</span>
+                  <span>{formatPrice(x.price, x.currency)}</span>
                 </div>
                 <ArrowUpRight size={18} />
               </Link>

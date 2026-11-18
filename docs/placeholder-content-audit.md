@@ -1,6 +1,8 @@
 # Demo, placeholder and unfinished-content inventory
 
-Audited against local source on 18 November 2026. This is a source audit, not a check of a deployed store. No storefront content was changed by this audit.
+Audited against local source on 18 November 2026; expanded to include media on the same date. This is a source audit, not a check of a deployed store. No storefront content was changed by this audit.
+
+**Media is included.** Section 11 covers reference photographs, product images and videos, branding, fonts, documents, generated graphics, empty media slots and historical review assets. The companion [complete media inventory](media-content-audit.csv) lists individual local files and imported media URLs, their placements and review status. Imported client product media is distinguished from demo/reference media.
 
 Three different statuses matter:
 
@@ -212,9 +214,25 @@ Sources: [admin workspace](../src/components/admin/AdminWorkspace.tsx), [admin s
 8. Product content edits, uploads, bulk mutations, order/refund handling, customer management, discount creation and enquiry management are not implemented locally. The current workspace is read-only catalogue review/export.
 9. No invented orders, customers, sales charts or revenue metrics were found in the active admin.
 
-## 11. Reference photography and asset inventory
+## 11. Complete media inventory
 
-Reference assets require client approval/replacement or confirmation of appropriate use. Their filenames alone do not establish who photographed them or their licensing. Imported Shopify CDN product galleries are separate from these reference assets.
+### Scope and classification
+
+The [searchable media inventory CSV](media-content-audit.csv) contains **2,019 records**: all 87 media/supporting-asset files under `public/`, `src/assets/` and `docs/`, all 1,913 distinct gallery/variant/embedded media URLs found in the imported catalogue and its original CSV descriptions, 9 generated visual systems, the 5 empty client-logo slots and the 5 variants without dedicated images. Repeated product-media URLs are consolidated into one record with all placements listed.
+
+- **Reference / confirm or replace**: 32 local photographs: 5 WebP editorial images, 23 numbered reference JPGs and 4 legacy JPG assets. Fifteen have active photo/texture usage; the other 17 have only legacy/unselected usages. Reference assets are not proof of a completed client installation.
+- **Imported client media / verify**: 1,773 distinct Shopify CDN image URLs used by product galleries and variant images. These come from the client export; they are not marked as invented placeholders.
+- **Original-export embedded media / not rendered**: 140 additional distinct URLs found in description HTML: 139 image URLs and 1 MP4 URL. The plain-text importer does not render these as media.
+- **Brand/supporting assets / not automatically demo**: 3 SVG brand files, 1 favicon, 8 font files and 2 client/reference documents.
+- **Historical review only**: 41 files under the five review folders, including 40 PNG screenshots and 1 GIF. They are not storefront media.
+- **Concept illustrations**: generated alcove, room/finish previews, sound paths and earlier visual experiments. They are not photographs, measured results or validated product models.
+- **Decorative graphics**: contours, rings, CSS grain and interface icons. These are design assets, not missing product/customer content.
+
+This is a file/reference audit. No remote media was downloaded, no CDN reachability was tested, no licensing/ownership was authenticated, and no all-image visual review was performed. Counts of distinct URLs do not establish distinct underlying photographs: URL parameters, resized copies or alternate crops may represent the same source image. A URL can also point to a diagram or render rather than a photograph.
+
+### Reference photographs: each file and its placement
+
+These require client approval/replacement or confirmation of appropriate use. Their filenames alone do not establish who photographed them or their licensing. Active reference imagery should be replaced with approved installation, workshop or material photographs where the page implies those subjects belong to Timber Acoustics. Imported Shopify CDN product galleries are separate from these reference assets.
 
 | Asset                            | Current/reference usage                                                      |
 | -------------------------------- | ---------------------------------------------------------------------------- |
@@ -251,6 +269,98 @@ Reference assets require client approval/replacement or confirmation of appropri
 | `src/assets/diffuser.jpg`        | Legacy product/material components                                           |
 | `src/assets/office.jpg`          | Legacy product/chapter components                                            |
 
+### Imported product galleries and variant images
+
+Sources: [normalized catalogue](../src/data/shopify-products.json), [original export](<products_export_1 (1).csv>), [importer](../scripts/import-shopify-products.mjs).
+
+- **1,946 gallery placements across 79 products**, representing **1,773 distinct image URLs**. All current gallery URLs use `cdn.shopify.com`; no imported product currently uses the generic missing-photo fallback.
+- **1,181 variant-image placements**, representing **901 distinct URLs**. All of those URLs also occur in the gallery set, so they are not 901 additional assets.
+- The companion CSV identifies each URL's product name/handle, gallery positions, variant names/SKUs and original image-alt values where supplied. This includes real product photos, diagrams, marketing graphics or renders as present in the export; their visual type has not been individually verified.
+- Homepage category covers use the first image of the first matching product. These are real exported image URLs, but the image selection is provisional rather than a client-curated collection banner.
+- Product cards, product-detail thumbnails/main images/zoom/overview images, related-product cards, admin media cards and product inspectors reuse this image set. A live product saved to the bag also uses its selected product image.
+- Original source alt text is inventoried, but the importer stores galleries as URL strings. The UI generates most gallery/card alt text from the product name; it does not preserve separate descriptive alt text for every gallery image. Variant image alt text is retained with a product-name fallback.
+- Variant images switch when a matching combination has a dedicated image. Where no dedicated image exists, the page retains a gallery image. This is an image-association gap, not an empty product gallery or proof of a missing photo.
+
+Every variant without a dedicated image:
+
+| Product                                                                                           | Variant / SKU                                             | Current media gap                                                                     |
+| ------------------------------------------------------------------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Non-Woven Soundproofing Blanket for Noise Reduction, Acoustic Curtains & Blinds, 1 Meter (Black ) | Default Title; no exported SKU                            | No variant image association; product gallery exists                                  |
+| High Density Foam Seal Tape \| 12mm x 6mm x 5M                                                    | Default Title; no exported SKU                            | No variant image association; product gallery exists                                  |
+| Item Customizations                                                                               | Default Title; no exported SKU                            | No variant image association; also confirm this app helper should be a public product |
+| Rockwool Safe 'n' Silent Pro 330                                                                  | Safe & Silent Pro 370 (Density 80 kg/m³); no exported SKU | No dedicated image for this variant; product gallery exists                           |
+| Pyramid Foam Panels                                                                               | Set of 18; SKU B0D8N8V2S6                                 | No dedicated image for this variant; product gallery exists                           |
+
+### Embedded images and video in the original CSV
+
+The original `Body (HTML)` fields contain **295 media-source placements**: **287 `<img src>` placements** and **8 `<source src>` placements**. They refer to **140 distinct URLs beyond the displayed gallery set**. All 8 source-tag placements refer to the same MP4 URL. The CSV inventory includes each image/video URL and the product descriptions that contain it.
+
+The video URL is `https://cdn.shopify.com/videos/c/o/v/2e032d71e5464ea98266a4b4206cb1ec.mp4`. It is source-export media, not a currently displayed homepage/product video. The importer strips HTML rather than rendering its images or video players, so neither these 139 embedded image URLs nor that MP4 is currently rendered from descriptions. Decide which media should be restored and where; the mere presence of a video URL does not verify its content, audio track or suitability.
+
+No active storefront video/audio player, audio playback demo, or local MP4/WebM/MP3/WAV/OGG file was found in the audited source/asset folders. The animated sound paths do not play sound. No external GLB/GLTF/OBJ model file was found; the current alcove geometry is generated in code.
+
+### Logos, favicon, empty slots and brand assets
+
+| File / slot                         | Usage                                                                | Status / action                                                                                              |
+| ----------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `/brand/timber-acoustics.svg`       | Active shared header and footer wordmark                             | Existing supplied brand asset; confirm final approved version, not an invented client-logo placeholder       |
+| `/brand/timber-mark.svg`            | Product/collection missing-image fallback; admin missing-image check | Brand symbol used as a generic fallback, not a product image; currently unused by the imported galleries     |
+| `/brand/timber-acoustics-light.svg` | Available light wordmark; no active source reference found           | Supporting brand variant, not a currently missing logo                                                       |
+| `/favicon.ico`                      | Root site/browser icon                                               | Existing icon; confirm final brand rendition. Its presence alone is not evidence it is a starter placeholder |
+| Client logo 01                      | Homepage Trusted partners                                            | Empty logo slot; approved client name and artwork required                                                   |
+| Client logo 02                      | Homepage Trusted partners                                            | Empty logo slot; approved client name and artwork required                                                   |
+| Client logo 03                      | Homepage Trusted partners                                            | Empty logo slot; approved client name and artwork required                                                   |
+| Client logo 04                      | Homepage Trusted partners                                            | Empty logo slot; approved client name and artwork required                                                   |
+| Client logo 05                      | Homepage Trusted partners                                            | Empty logo slot; approved client name and artwork required                                                   |
+
+### Generated graphics, animation and visual placeholders
+
+| Source / visual                                                      | Placement                                                                                     | Status                                                                                                            |
+| -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `HeroListeningScene.tsx`, `listening-scene.ts`, `AlcoveExplorer.tsx` | Homepage 3D alcove and inline SVG fallback; finish variants, layers, bare/treated reflections | Concept illustration, including fallback; not a real product model, manufactured assembly or acoustic measurement |
+| `MaterialStudy.tsx`                                                  | Room builder finish study                                                                     | Procedural finish/construction preview; visual swatches and grain are illustrative                                |
+| `reference/components/RoomPreview.tsx`                               | Active room-builder SVG scene                                                                 | Room proportions, furnishings, panels, slats and mounting positions are conceptual and not to scale               |
+| `LiveContourField.tsx`                                               | Homepage animated background                                                                  | Decorative generated wood-grain/contour motif; can remain as design artwork                                       |
+| `BrandContours.tsx`                                                  | Page-intro, consultation and material-study backgrounds                                       | Decorative vector motif; not a test graph, real material scan or client logo                                      |
+| `reference/components/WoodRings.tsx`                                 | Active story background rings; legacy rings marks                                             | Decorative vectors; the legacy rings mark is not the active supplied wordmark                                     |
+| `styles.css` inline SVG noise                                        | Grain texture on styled sections                                                              | Procedural decoration; not photographic media needing product replacement                                         |
+| `components/site/AcousticCanvas.tsx`                                 | Unselected earlier homepage study                                                             | Legacy abstract 3D animation; not an acoustic simulation                                                          |
+| `components/site/RoomCanvas.tsx`, `RoomStage.tsx`                    | Unselected earlier room builder                                                               | Legacy concept room/furniture/material renders                                                                    |
+
+Lucide/UI icons, gradients and CSS shadows are interface artwork rather than demo business content. The bag's **Room study** image substitute is a text block, not an undiscovered photo asset. No approved client-logo artwork exists behind the five text slots.
+
+### Fonts and supporting documents
+
+- All 8 font files under `public/fonts/` are included individually in the media inventory: the 3 Quicksand TTFs and 5 WOFF2s referenced by the older Montserrat/Playfair Display/Raleway font declarations. These are supporting typography assets, not placeholders for photography or customer content. Brand-font usage/licensing can be confirmed with the client.
+- `public/images/Timber Acoustics Brand Book.pdf` is an existing brand-reference document, not a product technical download. No active storefront link to it was found.
+- `public/images/Timber-Acoustics-Website-Brief-Short.docx` is an existing website brief, not customer-facing acoustic documentation. No active storefront link to it was found.
+- Both documents live under `public/`, so they can be addressed directly by URL when deployed even without a navigation link. Confirm whether they should remain publicly served. Moving them is outside this documentation update.
+- All 79 product `downloads` arrays remain empty. Final product sheets, installation/assembly PDFs, test reports, load ratings and CAD/drawings are missing media deliverables, not supplied by the brand book or website brief. There is no per-product downloadable asset to inventory yet.
+- Final social-share imagery and per-route `og:image`/`twitter:image` metadata are missing. The existing Twitter card type alone does not supply a share image.
+
+### Historical review screenshots and animation
+
+Every file is individually listed in the media CSV. These are internal review artifacts rather than assets imported by active routes:
+
+| Folder                    | Files            | Purpose                                                         |
+| ------------------------- | ---------------- | --------------------------------------------------------------- |
+| `docs/wireframe-review/`  | 8 PNGs           | Homepage/menu/layout review at desktop, tablet and mobile sizes |
+| `docs/product-review/`    | 9 PNGs           | Product-page, specifications and gallery-zoom review            |
+| `docs/alcove-experiment/` | 7 PNGs           | Alcove space/layers/gap/sound-path states                       |
+| `docs/design-review/`     | 8 PNGs and 1 GIF | Earlier design, fallback, room and hero-motion review           |
+| `docs/client-review/`     | 8 PNGs           | Earlier home, menu, featured content, acoustics and bag review  |
+
+### Client media handoff checklist
+
+1. Supply approved real installation images and permission to publish for each of the three replacement case studies, with correct titles, locations, dimensions and captions.
+2. Supply actual workshop/staff/process and material-detail images, or approve the current reference usage without implying they show the client's team/products.
+3. Supply five approved client logos and permission to name those clients, or reduce/remove the empty trust strip.
+4. Approve or replace the 15 actively used reference photographs/textures; separately decide whether to retain the 17 legacy-only photos.
+5. Review the imported image URLs, variant associations, gallery order, collection covers and descriptive alt text. The CSV lets the client review each exact URL.
+6. Decide which of the 139 source-only embedded images and the single embedded video should appear in product descriptions, and supply captions/transcripts if relevant.
+7. Supply final product PDFs/drawings/test reports and a social-share image; approve the final favicon/wordmark variants.
+8. Approve the concept alcove/room illustrations as illustrations, or provide validated product models/finish samples if product accuracy is required.
+
 ## 12. Dormant demo content still in the repository
 
 These components/pages are not selected by the current route modules. They should not be mistaken for additional currently visible site sections. Demo JSON imports in `use-catalogue` and `product-presentation` support TypeScript shapes; they do not restore the old runtime catalogue fallback.
@@ -282,8 +392,8 @@ These components/pages are not selected by the current route modules. They shoul
 
 - `README.md` still has the Lovable starter introduction and `<this-repository-url>` / `<repository-name>` setup placeholders.
 - `.env.example` deliberately has empty secret values. Example domains and `team@example.com` in handoff instructions are documentation examples, not working store/client credentials.
-- `docs/SHOPIFY_INTEGRATION.md` still describes the older sample-catalogue fallback. Current runtime fallback uses the imported CSV; `docs/shopify-and-admin.md` describes that newer behavior.
-- `docs/CLIENT_BRIEF.md` and review README files/screenshots in `docs/wireframe-review`, `product-review`, `client-review`, `design-review`, `alcove-experiment` document historical prototype states. Their statements that all products are samples are outdated after CSV import.
+- `docs/SHOPIFY_INTEGRATION.md` has been updated to document the current CSV/live boundary; its earlier sample-fallback description has been superseded. `docs/shopify-and-admin.md` and the [reference-pack index](README.md) describe the current handoff.
+- `docs/CLIENT_BRIEF.md` retains the approved design direction with an updated status note. Review README files/screenshots in `docs/wireframe-review`, `product-review`, `client-review`, `design-review`, `alcove-experiment` document historical prototype states; statements that all products are samples predate CSV import.
 - Test fixtures and assertions under `src/**/*.test.*` and `scripts/import-shopify-products.test.mjs` deliberately contain made-up values; they are not customer-facing content.
 - Search-field hints such as Search products, empty required fields, loading skeletons, 404/error messages and normal CSS `placeholder` selectors are functional UI, not business-data placeholders.
 

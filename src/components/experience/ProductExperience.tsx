@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   ArrowLeft,
@@ -26,6 +26,7 @@ import {
 import { useBasket } from "@/reference/context/BasketContext";
 import { isStoreProduct, productGuidance, type ProductItem } from "@/lib/product-presentation";
 import { money } from "@/lib/storefront";
+import { applyImageFallback, imageFallback } from "@/lib/image-fallback";
 
 type Props = { product: ProductItem; familyName?: string; related?: ProductItem[] };
 type Option = { name: string; values: { id: string; label: string; swatch?: string }[] };
@@ -48,8 +49,18 @@ export function ProductExperience({
         )
       : { Finish: demo?.finishes[0]?.id || "", Size: demo?.sizes[0] || "" },
   );
-  const [image, setImage] = useState(product.gallery[0] || "/brand/timber-mark.svg");
+  const [image, setImage] = useState(
+    first?.image?.url || product.gallery[0] || "/brand/timber-mark.svg",
+  );
   const [quantity, setQuantity] = useState(1);
+  const swipe = useRef<{ x: number; y: number } | null>(null);
+  const page = useRef<HTMLElement>(null);
+  useEffect(() => {
+    // Server-rendered images can fail before React attaches the error handler.
+    page.current?.querySelectorAll("img").forEach((photo) => {
+      if (photo.complete && !photo.naturalWidth) applyImageFallback(photo);
+    });
+  }, [image]);
   const options: Option[] = live
     ? live.options
         .filter((option) => !(option.name === "Title" && option.values[0] === "Default Title"))
@@ -112,7 +123,7 @@ export function ProductExperience({
     const match = live?.variants.find((entry) =>
       entry.selectedOptions.every((option) => next[option.name] === option.value),
     );
-    if (match?.image) setImage(match.image.url);
+    setImage(match?.image?.url || product.gallery[0] || "/brand/timber-mark.svg");
   };
   const changeImage = (direction: number) => {
     const index = Math.max(0, product.gallery.indexOf(image));
@@ -180,6 +191,7 @@ export function ProductExperience({
   ];
   return (
     <article
+      ref={page}
       className="ta-product-page"
       data-testid="product-detail"
       data-product-source={live?.source || "preview"}
@@ -210,7 +222,12 @@ export function ProductExperience({
                   data-testid={`product-thumb-${index}`}
                   onClick={() => setImage(url)}
                 >
-                  <img src={url} alt="" loading={index ? "lazy" : "eager"} />
+                  <img
+                    src={url}
+                    alt=""
+                    loading={index ? "lazy" : "eager"}
+                    onError={imageFallback}
+                  />
                 </button>
               ))}
             </div>
@@ -219,6 +236,24 @@ export function ProductExperience({
                 src={image}
                 alt={variant?.image?.altText || `${product.name} product view`}
                 data-testid="product-main-image"
+                onError={imageFallback}
+                onPointerDown={(event) => {
+                  if (event.pointerType !== "touch" || product.gallery.length < 2) return;
+                  swipe.current = { x: event.clientX, y: event.clientY };
+                  event.currentTarget.setPointerCapture(event.pointerId);
+                }}
+                onPointerUp={(event) => {
+                  const start = swipe.current;
+                  swipe.current = null;
+                  if (!start) return;
+                  const dx = event.clientX - start.x;
+                  const dy = event.clientY - start.y;
+                  if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy))
+                    changeImage(dx < 0 ? 1 : -1);
+                }}
+                onPointerCancel={() => {
+                  swipe.current = null;
+                }}
               />
               <span className="ta-product-photo-note">
                 {product.sample ? "Reference photography" : "Product gallery"}
@@ -247,7 +282,7 @@ export function ProductExperience({
                         ? "Reference photography for this design preview."
                         : "Product photograph"}
                     </DialogDescription>
-                    <img src={image} alt={product.name} />
+                    <img src={image} alt={product.name} onError={imageFallback} />
                   </DialogContent>
                 </Dialog>
               </div>
@@ -424,6 +459,7 @@ export function ProductExperience({
               src={product.gallery[1] || product.gallery[0]}
               alt={`${product.name} material or room reference`}
               loading="lazy"
+              onError={imageFallback}
             />
             <figcaption>
               {product.sample
@@ -586,7 +622,12 @@ export function ProductExperience({
             <div>
               {related.slice(0, 3).map((item) => (
                 <Link to="/products/$slug" params={{ slug: item.slug }} key={item.slug}>
-                  <img src={item.gallery[0]} alt={item.name} loading="lazy" />
+                  <img
+                    src={item.gallery[0]}
+                    alt={item.name}
+                    loading="lazy"
+                    onError={imageFallback}
+                  />
                   <div>
                     <p className="ta-micro">{item.family.replaceAll("-", " ")}</p>
                     <h3>{item.name}</h3>
