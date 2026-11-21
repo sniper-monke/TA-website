@@ -1034,6 +1034,18 @@
   }
 }
 
+@media (max-width: 360px) {
+  .timber-home-series button {
+    gap: 0.2rem;
+    font-size: 0.875rem;
+  }
+
+  .timber-home-series-mark {
+    width: 0.55rem;
+    gap: 0.08rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .timber-home *,
   .timber-home *::before,
