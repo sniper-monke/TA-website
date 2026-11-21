@@ -61,7 +61,11 @@ export function SiteHeader() {
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
-      <header className="ta-header" data-scrolled={scrolled} data-testid="site-header">
+      <header
+        className={pathname === "/" ? "ta-header timber-home-header" : "ta-header"}
+        data-scrolled={scrolled}
+        data-testid="site-header"
+      >
         <div className="ta-header-inner">
           <Link
             to="/"
@@ -69,7 +73,13 @@ export function SiteHeader() {
             aria-label="Timber Acoustics home"
             onClick={() => setOpen(false)}
           >
-            <img src="/brand/timber-acoustics.svg" alt="Timber Acoustics" width="250" height="26" />
+            <img
+              className="ta-main-logo"
+              src="/brand/timber-acoustics-orange.png"
+              alt="Timber Acoustics"
+              width="554"
+              height="127"
+            />
           </Link>
           <nav className="ta-desktop-nav" aria-label="Primary">
             <details className="ta-product-menu" ref={catalogueMenu}>
@@ -120,7 +130,7 @@ export function SiteHeader() {
             <Link to="/build-a-room" data-active={pathname.startsWith("/build-a-room")}>
               Solutions
             </Link>
-            <Link to="/" hash="explore-spaces">
+            <Link to="/" hash="spaces">
               Spaces
             </Link>
             {links.slice(2).map((item) => (
@@ -157,7 +167,12 @@ export function SiteHeader() {
       </header>
       <Dialog.Portal>
         <Dialog.Overlay className="ta-menu-backdrop" />
-        <Dialog.Content className="ta-mobile-dialog" aria-modal="true" aria-describedby={undefined}>
+        <Dialog.Content
+          className="ta-mobile-dialog"
+          aria-modal="true"
+          aria-describedby={undefined}
+          data-lenis-prevent
+        >
           <Dialog.Title className="sr-only">Explore Timber Acoustics</Dialog.Title>
           <div className="ta-mobile-dialog-header">
             <Link
@@ -167,10 +182,11 @@ export function SiteHeader() {
               onClick={() => setOpen(false)}
             >
               <img
-                src="/brand/timber-acoustics.svg"
+                className="ta-main-logo"
+                src="/brand/timber-acoustics-orange.png"
                 alt="Timber Acoustics"
-                width="250"
-                height="26"
+                width="554"
+                height="127"
               />
             </Link>
             <Dialog.Close className="ta-mobile-close" aria-label="Close menu">

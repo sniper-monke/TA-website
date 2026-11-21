@@ -1,14 +1,23 @@
-﻿import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { HomeExperience } from "@/components/experience/HomeExperience";
+import lenisCss from "lenis/dist/lenis.css?url";
+import homeRedesignCss from "../home-redesign.css?url";
+
+const title = "Timber Acoustics | Wood Acoustic Panels, Diffusers & Bass Traps";
+const description =
+  "Explore Timber Acoustics’ wood acoustic panels, sound diffusers and bass traps for studios, listening rooms, home theatres and commercial spaces.";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Timber Acoustics — Sound, in better shape." },
-      {
-        name: "description",
-        content:
-          "Natural timber, considered acoustics. Explore acoustic surfaces and create a space that sounds as good as it looks.",
-      },
+      { title },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+    ],
+    links: [
+      { rel: "stylesheet", href: lenisCss },
+      { rel: "stylesheet", href: homeRedesignCss },
     ],
   }),
   component: HomeExperience,

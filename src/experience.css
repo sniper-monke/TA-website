@@ -196,6 +196,9 @@
   width: 100%;
   height: auto;
 }
+.ta-logo:has(.ta-main-logo) {
+  width: clamp(7.9rem, 13vw, 10.9rem);
+}
 .ta-desktop-nav {
   display: flex;
   gap: 26px;

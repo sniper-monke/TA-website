@@ -3,6 +3,7 @@ import {
   Outlet,
   Link,
   createRootRouteWithContext,
+  useLocation,
   useRouter,
   HeadContent,
   Scripts,
@@ -15,6 +16,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "@/lib/cart";
 import { SiteHeader as Header, SiteFooter as Footer } from "@/components/experience/SiteChrome";
+import { HomeMarquee, HomeFooter } from "@/components/experience/HomeChrome";
 import { BasketProvider } from "@/reference/context/BasketContext";
 import { Toaster } from "sonner";
 import referenceUtilities from "../reference-utilities.css?url";
@@ -142,6 +144,7 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const isHome = useLocation({ select: (location) => location.pathname === "/" });
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -155,11 +158,12 @@ function RootComponent() {
             >
               Skip to content
             </a>
+            {isHome && <HomeMarquee />}
             <Header />
             <main id="main">
               <Outlet />
             </main>
-            <Footer />
+            {isHome ? <HomeFooter /> : <Footer />}
             <Toaster position="bottom-right" richColors closeButton />
           </BasketProvider>
         </CartProvider>

@@ -13,6 +13,12 @@
 
 Timber Acoustics marketing site: TanStack Start + React 19 + Tailwind v4 + shadcn/ui, single package (no monorepo).
 
+## Brand direction
+
+Use [the Timber Acoustics Brand Book](public/images/Timber%20Acoustics%20Brand%20Book.pdf)
+as the source of truth for design decisions. Check its palette, typography, logo,
+patterns, and relevant design examples before creating or changing a visual direction.
+
 ## Commands (all verified)
 
 - `npm i` — install. Both `package-lock.json` and `bun.lock` are committed; use **npm** locally (README/`node_modules` agree). `bun.lock` pins `@lovable.dev/*` to Lovable's private sandbox registry URL, and `bunfig.toml` enforces a 24h `minimumReleaseAge` — adding to `minimumReleaseAgeExcludes` needs user confirmation.
