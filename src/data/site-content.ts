@@ -6,7 +6,7 @@ export const spaceLinks = [
   { label: "Home studio", href: "/build-a-room?room=studio" },
   { label: "Podcast studio", href: "/contact" },
   { label: "Listening room", href: "/build-a-room?room=listening-room" },
-];
+] as const;
 
 export const acousticNeeds = [
   {

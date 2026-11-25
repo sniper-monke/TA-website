@@ -66,6 +66,14 @@ export function TimberWave({ reduced }: { reduced: boolean }) {
 
   const playing = state === "playing";
 
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (playing || !canvas) return;
+    // Drop the full-size backing buffer once the still image takes over.
+    canvas.width = 1;
+    canvas.height = 1;
+  }, [playing]);
+
   return (
     <>
       <div className="ta-v2-artwork" data-wave-state={state} data-testid="timber-wave">
@@ -78,7 +86,13 @@ export function TimberWave({ reduced }: { reduced: boolean }) {
           width="1983"
           height="793"
         />
-        <canvas ref={canvasRef} className="ta-v2-wave-canvas" aria-hidden="true" />
+        <canvas
+          ref={canvasRef}
+          className="ta-v2-wave-canvas"
+          width="1"
+          height="1"
+          aria-hidden="true"
+        />
       </div>
       {!reduced && (
         <button

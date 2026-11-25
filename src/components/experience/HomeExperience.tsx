@@ -3,11 +3,11 @@ import { Headphones, Mic2, MonitorSpeaker, SlidersHorizontal } from "lucide-reac
 import { useEffect, useRef, useState } from "react";
 import families from "@/data/reference-families.json";
 import projects from "@/data/reference-projects.json";
-import { trustedClients } from "@/data/site-content";
+import { spaceLinks, trustedClients } from "@/data/site-content";
 import { useCatalogue } from "@/hooks/use-catalogue";
 import { useReducedMotionPreference } from "@/hooks/use-reduced-motion";
 import { BrandContours } from "./BrandContours";
-import { KineticHero, ListeningStudy } from "./KineticHero";
+import { KineticHero } from "./KineticHero";
 
 const categories = [
   { slug: "absorption", title: "Absorption", note: "Soften echo. Bring speech into focus." },
@@ -24,12 +24,12 @@ const categories = [
   },
 ];
 
-const homepageSpaces = [
-  { label: "Recording studio", href: "/guides/studio", icon: SlidersHorizontal },
-  { label: "Home studio", href: "/build-a-room?room=studio", icon: MonitorSpeaker },
-  { label: "Podcast studio", href: "/contact", icon: Mic2 },
-  { label: "Listening room", href: "/build-a-room?room=listening-room", icon: Headphones },
-];
+const spaceIcons = {
+  "Recording studio": SlidersHorizontal,
+  "Home studio": MonitorSpeaker,
+  "Podcast studio": Mic2,
+  "Listening room": Headphones,
+} satisfies Record<(typeof spaceLinks)[number]["label"], typeof Headphones>;
 
 function TrustedPartners() {
   return (
@@ -212,49 +212,78 @@ function FeaturedProject() {
   );
 }
 
-function ProjectsAndSpaces() {
+function ExploreSpaces() {
   return (
     <section
-      className="ta-v2-shell ta-v2-projects-spaces"
-      data-home-section="projects-and-spaces"
-      aria-label="Projects and spaces"
+      className="ta-v2-spaces"
+      id="explore-spaces"
+      data-home-section="explore-spaces"
+      aria-labelledby="explore-spaces-title"
     >
-      <div className="ta-v2-projects">
-        <div className="ta-v2-subheading" data-home-reveal="copy">
-          <h2>More projects</h2>
-          <Link to="/projects" className="ta-v2-link">
-            View all
-          </Link>
-        </div>
-        <div className="ta-v2-project-grid">
-          {projects.slice(1, 3).map((project) => (
-            <Link to="/projects/$slug" params={{ slug: project.slug }} key={project.slug}>
-              <div className="ta-v2-project-image" data-home-reveal="photo">
-                <img src={project.gallery[0]} alt="" loading="lazy" decoding="async" />
-              </div>
-              <h3>{project.title}</h3>
-              <span className="ta-v2-note">Illustrative project</span>
+      <div className="ta-v2-shell ta-v2-space-grid">
+        <div>
+          <div className="ta-v2-subheading" data-home-reveal="copy">
+            <h2 id="explore-spaces-title">Explore spaces</h2>
+            <Link to="/build-a-room" className="ta-v2-link">
+              Build a room
             </Link>
-          ))}
+          </div>
+          <ul className="ta-v2-space-list" data-home-reveal="copy">
+            {spaceLinks.map(({ label, href }) => {
+              const Icon = spaceIcons[label];
+              return (
+                <li key={label}>
+                  <a href={href}>
+                    <Icon size={24} strokeWidth={1.5} aria-hidden="true" />
+                    {label}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
         </div>
+        <Link to="/projects" className="ta-v2-in-the-room" data-home-reveal="photo">
+          <img
+            src="/images/timber-studio.webp"
+            alt="A mixing desk in a recording studio"
+            loading="lazy"
+            decoding="async"
+            width="2000"
+            height="1333"
+          />
+          <div className="ta-v2-room-label">
+            <p className="ta-v2-label">Good sound lives here.</p>
+            <span>In the room</span>
+          </div>
+        </Link>
       </div>
-      <div className="ta-v2-spaces" id="explore-spaces">
-        <div className="ta-v2-subheading">
-          <h2>Explore spaces</h2>
-          <Link to="/build-a-room" className="ta-v2-link">
-            Build a room
+    </section>
+  );
+}
+
+function MoreProjects() {
+  return (
+    <section
+      className="ta-v2-shell ta-v2-projects"
+      data-home-section="projects"
+      aria-labelledby="more-projects-title"
+    >
+      <div className="ta-v2-subheading" data-home-reveal="copy">
+        <h2 id="more-projects-title">More projects</h2>
+        <Link to="/projects" className="ta-v2-link">
+          View all
+        </Link>
+      </div>
+      <div className="ta-v2-project-grid">
+        {projects.slice(1, 3).map((project) => (
+          <Link to="/projects/$slug" params={{ slug: project.slug }} key={project.slug}>
+            <div className="ta-v2-project-image" data-home-reveal="photo">
+              <img src={project.gallery[0]} alt="" loading="lazy" decoding="async" />
+            </div>
+            <h3>{project.title}</h3>
+            <span className="ta-v2-note">Illustrative project</span>
           </Link>
-        </div>
-        <ul className="ta-v2-space-list" data-home-reveal="copy">
-          {homepageSpaces.map((space) => (
-            <li key={space.label}>
-              <a href={space.href}>
-                <space.icon size={24} strokeWidth={1.5} aria-hidden="true" />
-                {space.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+        ))}
       </div>
     </section>
   );
@@ -330,10 +359,10 @@ export function HomeExperience() {
     <div className="ta-design-v2" ref={home}>
       <KineticHero />
       <OurApproach />
-      <ListeningStudy />
+      <ExploreSpaces />
       <ProductCategories />
       <FeaturedProject />
-      <ProjectsAndSpaces />
+      <MoreProjects />
       <TrustedPartners />
       <Consultation />
     </div>
