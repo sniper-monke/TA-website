@@ -1,12 +1,6 @@
-import { Link } from "@tanstack/react-router";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  Headphones,
-  Mic2,
-  MonitorSpeaker,
-  SlidersHorizontal,
-} from "lucide-react";
+﻿import { Link } from "@tanstack/react-router";
+import { Headphones, Mic2, MonitorSpeaker, SlidersHorizontal } from "lucide-react";
+import families from "@/data/reference-families.json";
 import projects from "@/data/reference-projects.json";
 import { trustedClients } from "@/data/site-content";
 import { useCatalogue } from "@/hooks/use-catalogue";
@@ -38,24 +32,22 @@ const homepageSpaces = [
 function TrustedPartners() {
   return (
     <section
-      className="ta-layout-trust ta-shell"
+      className="ta-v2-trust"
       data-home-section="trusted-partners"
       aria-label="Trusted partners"
     >
-      <div>
-        <p className="ta-micro">Trusted partners</p>
-        {!trustedClients.length && (
-          <span className="ta-placeholder-note">Approved names & logos to follow</span>
-        )}
-      </div>
-      <div className="ta-partner-list">
-        {trustedClients.length
-          ? trustedClients.map((name) => <span key={name}>{name}</span>)
-          : Array.from({ length: 5 }, (_, i) => (
-              <span className="ta-partner-placeholder" key={i}>
-                Client logo {String(i + 1).padStart(2, "0")}
-              </span>
-            ))}
+      <div className="ta-v2-shell">
+        <div>
+          <p className="ta-v2-label">Trusted partners</p>
+          {!trustedClients.length && <p>Approved names &amp; logos to follow</p>}
+        </div>
+        <ul>
+          {trustedClients.length
+            ? trustedClients.map((name) => <li key={name}>{name}</li>)
+            : Array.from({ length: 5 }, (_, index) => (
+                <li key={index}>Client logo {String(index + 1).padStart(2, "0")}</li>
+              ))}
+        </ul>
       </div>
     </section>
   );
@@ -64,93 +56,93 @@ function TrustedPartners() {
 function OurApproach() {
   return (
     <section
-      className="ta-layout-approach ta-shell"
+      className="ta-v2-approach ta-v2-shell"
       id="our-approach"
       data-home-section="our-approach"
       aria-labelledby="approach-title"
     >
-      <div className="ta-approach-copy">
-        <p className="ta-micro ta-rust">Our approach</p>
+      <div className="ta-v2-approach-copy">
+        <p className="ta-v2-label ta-v2-accent">Our approach</p>
         <h2 id="approach-title">
-          Acoustics, materials
-          <br />
-          and <em>design.</em>
+          Acoustics, materials and <em>design.</em>
         </h2>
         <p>
           Good acoustics starts with understanding the room. We bring together absorption, diffusion
           and bass control to help you hear more clearly and feel more at ease.
         </p>
         <p>Thoughtful treatment. Honest materials. A finish that belongs in your space.</p>
-        <Link to="/story" className="ta-text-link">
-          Our philosophy <ArrowRight size={16} />
+        <Link to="/story" className="ta-v2-link">
+          Our philosophy
         </Link>
       </div>
-      <div className="ta-approach-image">
+      <figure className="ta-v2-approach-figure">
         <img
           src="/images/timber-detail.webp"
           alt="Close-up of timber slats and acoustic backing"
           loading="lazy"
+          decoding="async"
         />
-        <span className="ta-micro">Absorb / Diffuse / Balance</span>
-      </div>
+        <figcaption className="ta-v2-label">Absorb / Diffuse / Balance</figcaption>
+      </figure>
     </section>
   );
 }
 
 function ProductCategories() {
   const { data, isError, refetch } = useCatalogue();
+
   return (
     <section
-      className="ta-layout-categories ta-shell"
+      className="ta-v2-range"
       data-home-section="product-categories"
       aria-labelledby="categories-title"
     >
-      <div className="ta-layout-heading">
-        <div>
-          <p className="ta-micro ta-rust">Our range</p>
-          <h2 id="categories-title">
-            Acoustic solutions
-            <br className="ta-mobile-break" /> & studio furniture.
-          </h2>
+      <div className="ta-v2-shell">
+        <div className="ta-v2-heading">
+          <div>
+            <p className="ta-v2-label ta-v2-accent">Our range</p>
+            <h2 id="categories-title">
+              Acoustic solutions <em>&amp; studio furniture.</em>
+            </h2>
+          </div>
+          <Link to="/products" className="ta-v2-link">
+            All products
+          </Link>
         </div>
-        <Link to="/products" className="ta-text-link">
-          All products <ArrowUpRight size={16} />
-        </Link>
-      </div>
-      <div className="ta-layout-category-grid">
-        {categories.map((category) => {
-          const family = data?.families.find((item) => item.slug === category.slug);
-          return (
-            <a
-              href={`/products?family=${category.slug}`}
-              key={category.slug}
-              data-testid={`home-category-${category.slug}`}
-            >
-              <div className="ta-category-image">
-                {family && <img src={family.image} alt={category.title} loading="lazy" />}
-              </div>
-              <div className="ta-category-caption">
-                <h3>{category.title}</h3>
-                <ArrowRight size={17} />
-              </div>
-              <p>{category.note}</p>
-            </a>
-          );
-        })}
-      </div>
-      {isError && (
-        <p role="alert">
-          Category images could not be loaded.{" "}
-          <button className="ta-text-link" onClick={() => void refetch()}>
-            Try again
-          </button>
+        <div className="ta-v2-category-grid">
+          {categories.map((category) => {
+            const family = (data?.families ?? families).find((item) => item.slug === category.slug);
+            return (
+              <a
+                href={`/products?family=${category.slug}`}
+                key={category.slug}
+                data-testid={`home-category-${category.slug}`}
+              >
+                <div className="ta-v2-category-image">
+                  {family && <img src={family.image} alt="" loading="lazy" decoding="async" />}
+                </div>
+                <div className="ta-v2-category-copy">
+                  <h3>{category.title}</h3>
+                  <p>{category.note}</p>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+        {isError && (
+          <p role="alert">
+            Category images could not be loaded.{" "}
+            <button type="button" className="ta-v2-link" onClick={() => void refetch()}>
+              Try again
+            </button>
+          </p>
+        )}
+        <p className="ta-v2-note">
+          {data?.products.some((product) => product.sample)
+            ? "Preview catalogue / Reference photography / Specifications and pricing to be confirmed"
+            : "Explore the collection to choose your product and finish."}
         </p>
-      )}
-      <p className="ta-layout-content-note">
-        {data?.products.some((product) => product.sample)
-          ? "Preview catalogue / Reference photography / Specifications and pricing to be confirmed"
-          : "Explore the collection to choose your product and finish."}
-      </p>
+      </div>
     </section>
   );
 }
@@ -159,34 +151,32 @@ function FeaturedProject() {
   const project = projects[0]!;
   return (
     <section
-      className="ta-layout-featured"
+      className="ta-v2-feature"
       data-home-section="featured-project"
       aria-labelledby="featured-project-title"
     >
-      <img
-        src={project.gallery[0]}
-        alt="An illustrative home theatre with timber acoustic treatment"
-        loading="lazy"
-      />
-      <div className="ta-featured-shade" />
-      <div className="ta-shell">
-        <div className="ta-banner-copy">
-          <p className="ta-micro ta-rust">Featured project / Home theatre</p>
+      <div className="ta-v2-shell ta-v2-feature-grid">
+        <div className="ta-v2-feature-image">
+          <img
+            src={project.gallery[0]}
+            alt="An illustrative home theatre with timber acoustic treatment"
+            loading="lazy"
+            decoding="async"
+          />
+          <span className="ta-v2-note">Illustrative project / Reference photography</span>
+        </div>
+        <div className="ta-v2-feature-copy">
+          <p className="ta-v2-label">Featured project / Home theatre</p>
           <h2 id="featured-project-title">
-            The listening
-            <br />
-            <em>retreat.</em>
+            The listening <em>retreat.</em>
           </h2>
           <p>
             Clearer dialogue. More balanced bass. A cinema concept built around the way a room
             sounds.
           </p>
-          <Link to="/projects/$slug" params={{ slug: project.slug }} className="ta-text-link">
-            View project <ArrowRight size={16} />
+          <Link to="/projects/$slug" params={{ slug: project.slug }} className="ta-v2-link">
+            View project
           </Link>
-          <span className="ta-layout-content-note">
-            Illustrative project / Reference photography
-          </span>
         </div>
       </div>
     </section>
@@ -196,46 +186,46 @@ function FeaturedProject() {
 function ProjectsAndSpaces() {
   return (
     <section
-      className="ta-layout-projects-spaces ta-shell"
+      className="ta-v2-shell ta-v2-projects-spaces"
       data-home-section="projects-and-spaces"
       aria-label="Projects and spaces"
     >
-      <div className="ta-more-projects">
-        <div className="ta-layout-small-heading">
+      <div className="ta-v2-projects">
+        <div className="ta-v2-subheading">
           <h2>More projects</h2>
-          <Link to="/projects" className="ta-text-link">
-            View all <ArrowUpRight size={14} />
+          <Link to="/projects" className="ta-v2-link">
+            View all
           </Link>
         </div>
-        <div className="ta-more-projects-grid">
+        <div className="ta-v2-project-grid">
           {projects.slice(1, 3).map((project) => (
             <Link to="/projects/$slug" params={{ slug: project.slug }} key={project.slug}>
-              <img src={project.gallery[0]} alt={project.title} loading="lazy" />
-              <div>
-                <h3>{project.title}</h3>
-                <ArrowRight size={16} />
+              <div className="ta-v2-project-image">
+                <img src={project.gallery[0]} alt="" loading="lazy" decoding="async" />
               </div>
-              <span className="ta-layout-content-note">Illustrative project</span>
+              <h3>{project.title}</h3>
+              <span className="ta-v2-note">Illustrative project</span>
             </Link>
           ))}
         </div>
       </div>
-      <div className="ta-explore-spaces" id="explore-spaces">
-        <div className="ta-layout-small-heading">
+      <div className="ta-v2-spaces" id="explore-spaces">
+        <div className="ta-v2-subheading">
           <h2>Explore spaces</h2>
-          <Link to="/build-a-room" className="ta-text-link">
-            Build a room <ArrowUpRight size={14} />
+          <Link to="/build-a-room" className="ta-v2-link">
+            Build a room
           </Link>
         </div>
-        <div className="ta-space-types">
+        <ul className="ta-v2-space-list">
           {homepageSpaces.map((space) => (
-            <a href={space.href} key={space.label}>
-              <space.icon size={29} strokeWidth={1.2} />
-              <h3>{space.label}</h3>
-              <ArrowRight size={15} />
-            </a>
+            <li key={space.label}>
+              <a href={space.href}>
+                <space.icon size={24} strokeWidth={1.5} aria-hidden="true" />
+                {space.label}
+              </a>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );
@@ -244,22 +234,21 @@ function ProjectsAndSpaces() {
 function Consultation() {
   return (
     <section
-      className="ta-layout-consultation"
+      className="ta-v2-consultation"
       data-home-section="consultation"
       aria-labelledby="consultation-title"
     >
-      <BrandContours />
-      <div className="ta-shell">
+      <BrandContours className="ta-v2-consultation-contours" />
+      <div className="ta-v2-shell">
         <div>
-          <p className="ta-micro ta-rust">Let's talk acoustics</p>
+          <p className="ta-v2-label">Let's talk acoustics</p>
           <h2 id="consultation-title">
-            Build your
-            <br className="ta-mobile-break" /> <em>acoustic space.</em>
+            Build your <em>acoustic space.</em>
           </h2>
           <p>Every room tells a different story. Our job is to help yours sound like it should.</p>
         </div>
-        <Link to="/contact" className="ta-button">
-          Book a consultation <ArrowRight size={17} />
+        <Link to="/contact" className="ta-v2-button">
+          Book a consultation
         </Link>
       </div>
     </section>
@@ -268,7 +257,7 @@ function Consultation() {
 
 export function HomeExperience() {
   return (
-    <div className="ta-home ta-home-layout">
+    <div className="ta-design-v2">
       <KineticHero />
       <TrustedPartners />
       <OurApproach />
