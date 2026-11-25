@@ -1,8 +1,11 @@
-import type { PointerEvent } from "react";
+import { useRef, useState, type PointerEvent } from "react";
 import { Link } from "@tanstack/react-router";
+import { Pause, Play } from "lucide-react";
 import { useReducedMotionPreference } from "@/hooks/use-reduced-motion";
 import { BrandContours } from "./BrandContours";
+import { LiveContourField } from "./LiveContourField";
 import { TimberWave } from "./TimberWave";
+import type { TimberPulse } from "./timber-wave";
 
 function moveArtwork(event: PointerEvent<HTMLDivElement>) {
   if (event.pointerType !== "mouse") return;
@@ -25,6 +28,9 @@ function resetArtwork(event: PointerEvent<HTMLDivElement>) {
 
 export function KineticHero() {
   const reduced = useReducedMotionPreference();
+  const [ripplesPaused, setRipplesPaused] = useState(false);
+  const pulse = useRef<TimberPulse>({ x: 1.22, strength: 0 });
+  const rippleAction = ripplesPaused ? "Resume background ripples" : "Pause background ripples";
 
   return (
     <section data-testid="hero" data-home-section="hero" aria-labelledby="ta-v2-title">
@@ -61,7 +67,23 @@ export function KineticHero() {
           onPointerLeave={resetArtwork}
         >
           <BrandContours className="ta-v2-cover-contours" />
-          <TimberWave reduced={reduced} />
+          {!reduced && <LiveContourField active={!ripplesPaused} pulse={pulse} />}
+          <TimberWave reduced={reduced} pulse={pulse} />
+          {!reduced && (
+            <button
+              type="button"
+              className="ta-v2-ripple-toggle"
+              onClick={() => setRipplesPaused((paused) => !paused)}
+              aria-label={rippleAction}
+              title={rippleAction}
+            >
+              {ripplesPaused ? (
+                <Play size={16} aria-hidden="true" />
+              ) : (
+                <Pause size={16} aria-hidden="true" />
+              )}
+            </button>
+          )}
           <div className="ta-v2-stamp" aria-hidden="true">
             <img src="/brand/timber-mark.svg" alt="" width="28" height="28" />
             <span>

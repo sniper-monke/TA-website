@@ -215,6 +215,26 @@
   opacity: 0.27;
   transform: rotate(-21deg);
   pointer-events: none;
+  transition: opacity 220ms ease;
+}
+
+.ta-v2-live-contours {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  mask-image: radial-gradient(ellipse 75% 120% at 74% 48%, #000 18%, #000c 51%, transparent 100%);
+  transition: opacity 220ms ease;
+}
+
+.ta-v2-live-contours[data-ready] {
+  opacity: 1;
+}
+
+.ta-v2-cover-art:has(.ta-v2-live-contours[data-ready]) .ta-v2-cover-contours {
+  opacity: 0;
 }
 
 .ta-v2-artwork {
@@ -253,7 +273,8 @@
 
 .ta-v2-stamp,
 .ta-v2-cover-edge,
-.ta-v2-wave-replay {
+.ta-v2-wave-replay,
+.ta-v2-ripple-toggle {
   position: absolute;
   z-index: 2;
   display: flex;
@@ -294,12 +315,30 @@
   font-size: 0.8125rem;
   font-weight: 700;
   line-height: 1.2;
+}
+
+.ta-v2-ripple-toggle {
+  top: 0.9rem;
+  left: 0.9rem;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  color: var(--v2-rust-text);
+}
+
+.ta-v2-cover-art:not(:has(.ta-v2-live-contours[data-ready])) .ta-v2-ripple-toggle {
+  visibility: hidden;
+}
+
+.ta-v2-wave-replay,
+.ta-v2-ripple-toggle {
   transition:
     background-color 220ms ease,
     border-color 220ms ease;
 }
 
-.ta-v2-wave-replay:hover {
+:is(.ta-v2-wave-replay, .ta-v2-ripple-toggle):hover {
   border-color: var(--v2-rust);
   background: #f5e5d8;
 }
@@ -838,31 +877,12 @@
     animation: ta-v2-static-artwork 1ms step-end 680ms both;
   }
 
-  .ta-v2-cover-art:has([data-wave-state="playing"]) .ta-v2-cover-contours {
-    animation: ta-v2-wave-rings 2.6s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
   @keyframes ta-v2-static-artwork {
     from {
       opacity: 0;
     }
     to {
       opacity: 1;
-    }
-  }
-
-  @keyframes ta-v2-wave-rings {
-    0% {
-      opacity: 0.14;
-      transform: rotate(-21deg) scale(0.89);
-    }
-    44% {
-      opacity: 0.45;
-      transform: rotate(-16deg) scale(1.05);
-    }
-    100% {
-      opacity: 0.27;
-      transform: rotate(-21deg) scale(1);
     }
   }
 }
@@ -934,6 +954,10 @@
     width: 63%;
   }
 
+  .ta-v2-live-contours {
+    mask-image: radial-gradient(ellipse 85% 105% at 70% 49%, #000 18%, #000b 62%, transparent);
+  }
+
   .ta-v2-artwork {
     inset: 2% 2% 8%;
   }
@@ -942,6 +966,11 @@
     top: 0.48rem;
     right: 0.5rem;
     padding: 0.32rem 0.57rem;
+  }
+
+  .ta-v2-ripple-toggle {
+    top: 0.42rem;
+    left: 0.47rem;
   }
 
   .ta-v2-cover-edge {
@@ -1079,7 +1108,13 @@
     transform: none;
   }
 
-  .ta-v2-wave-replay {
+  .ta-v2-wave-replay,
+  .ta-v2-ripple-toggle,
+  .ta-v2-live-contours {
     display: none;
+  }
+
+  .ta-v2-cover-art:has(.ta-v2-live-contours[data-ready]) .ta-v2-cover-contours {
+    opacity: 0.27;
   }
 }

@@ -1,10 +1,16 @@
-﻿import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { RotateCcw, SkipForward } from "lucide-react";
-import { playTimberWave } from "./timber-wave";
+import { playTimberWave, type TimberPulse } from "./timber-wave";
 
 type WaveState = "waiting" | "playing" | "settled";
 
-export function TimberWave({ reduced }: { reduced: boolean }) {
+export function TimberWave({
+  reduced,
+  pulse,
+}: {
+  reduced: boolean;
+  pulse: RefObject<TimberPulse>;
+}) {
   const imageRef = useRef<HTMLImageElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const finishRef = useRef<(() => void) | null>(null);
@@ -35,7 +41,7 @@ export function TimberWave({ reduced }: { reduced: boolean }) {
       try {
         await image.decode();
         if (disposed || finishRef.current !== finish) return;
-        stop = playTimberWave(canvas, image, finish);
+        stop = playTimberWave(canvas, image, pulse.current, finish);
         if (stop) setState("playing");
         else finish();
       } catch {
@@ -62,7 +68,7 @@ export function TimberWave({ reduced }: { reduced: boolean }) {
       stop?.();
       if (finishRef.current === finish) finishRef.current = null;
     };
-  }, [reduced, run]);
+  }, [reduced, pulse, run]);
 
   const playing = state === "playing";
 

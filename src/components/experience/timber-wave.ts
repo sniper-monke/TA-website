@@ -1,10 +1,11 @@
-﻿const duration = 2.6;
-const stagger = 0.52;
-const unfoldStart = 0.53;
-const unfoldDuration = 1.24;
+const duration = 2.55;
+const stagger = 0.49;
+const unfoldStart = 0.48;
+const unfoldDuration = 1.34;
 const sliceCount = 44;
 
 type Slice = { x: number; y: number; width: number; height: number };
+export type TimberPulse = { x: number; strength: number };
 
 const clamp = (value: number) => Math.max(0, Math.min(1, value));
 const mix = (from: number, to: number, progress: number) => from + (to - from) * progress;
@@ -43,11 +44,14 @@ function timberSlices(image: HTMLImageElement): Slice[] {
   }).filter(({ height }) => height > 0);
 }
 
-function drawPulse(ctx: CanvasRenderingContext2D, width: number, height: number, time: number) {
-  const travel = 1 - (1 - clamp(time / 1.55)) ** 2;
-  const front = width * mix(1.26, 0.04, travel);
+function drawPulse(
+  ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  { x: center, strength }: TimberPulse,
+) {
+  const front = width * center;
   const reach = width * 0.32;
-  const strength = 1 - smooth(clamp((time - 0.6) / 0.95));
   const from = Math.max(0, front - reach);
   const to = Math.min(width, front + reach);
   if (from >= to || strength === 0) return;
@@ -61,7 +65,7 @@ function drawPulse(ctx: CanvasRenderingContext2D, width: number, height: number,
 
   const amplitude = Math.min(height * 0.16, 46);
   for (let line = 0; line < 3; line++) {
-    ctx.globalAlpha = strength * (0.9 - line * 0.19);
+    ctx.globalAlpha = strength * (0.72 - line * 0.14);
     ctx.lineWidth = line === 0 ? 1.6 : 0.95;
     ctx.beginPath();
     for (let x = from; x <= to; x += 5) {
@@ -80,6 +84,7 @@ function drawPulse(ctx: CanvasRenderingContext2D, width: number, height: number,
 export function playTimberWave(
   canvas: HTMLCanvasElement,
   image: HTMLImageElement,
+  pulse: TimberPulse,
   onFinish: () => void,
 ) {
   const ctx = canvas.getContext("2d");
@@ -126,7 +131,12 @@ export function playTimberWave(
     const top = (height - imageHeight * scale) / 2;
     ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
     ctx.clearRect(0, 0, width, height);
-    drawPulse(ctx, width, height, time);
+
+    // The background takes its crest from the same timeline as the leading trace.
+    const sweep = 1 - (1 - clamp(time / 1.7)) ** 2;
+    pulse.x = mix(1.22, 0.04, sweep);
+    pulse.strength = smooth(clamp(time / 0.21)) * (1 - smooth(clamp((time - 0.58) / 1.1)));
+    drawPulse(ctx, width, height, pulse);
 
     const joined = Math.max(
       0,
@@ -154,22 +164,23 @@ export function playTimberWave(
       if (!slat) continue;
       const position = index / last;
       const localTime = time - index * delay;
-      const travel = 1 - (1 - clamp(localTime / 1.1)) ** 3;
+      const travel = 1 - (1 - clamp(localTime / 1.16)) ** 3;
       const unfold = smooth(clamp((localTime - unfoldStart) / unfoldDuration));
-      const phase = position * 9.8 + time * 7.2;
-      const pulse = Math.sin(phase) * (0.54 + 0.46 * Math.sin(position * Math.PI));
+      const phase = position * 10.4 + time * 6.6;
+      const crest = Math.sin(phase) * (0.48 + 0.52 * Math.sin(position * Math.PI));
+      const rebound = Math.sin(unfold * Math.PI * 2) * unfold * (1 - unfold);
       const finalX = left + (slat.x + slat.width / 2) * scale;
       const finalY = top + (slat.y + slat.height / 2) * scale;
-      const packedX = width * 0.51 + (finalX - width * 0.51) * 0.64;
+      const packedX = width * 0.51 + (finalX - width * 0.51) * 0.59;
       const x = mix(packedX, finalX, unfold) + (1 - travel) * width * 1.12;
-      const y = mix(height * 0.51 + pulse * amplitude, finalY, unfold);
+      const y = mix(height * 0.51 + crest * amplitude, finalY, unfold) + rebound * amplitude * 0.22;
       const slatWidth = slat.width * scale * mix(0.37, 1, unfold);
       const slatHeight = mix(
-        amplitude * (0.38 + Math.abs(pulse) * 1.58),
+        amplitude * (0.32 + Math.abs(crest) * 1.68),
         slat.height * scale,
         unfold,
       );
-      const angle = (1 - unfold) * (Math.cos(phase) * 0.48 - 0.19);
+      const angle = (1 - unfold) * (Math.cos(phase) * 0.52 - 0.21) + rebound * 0.09;
 
       ctx.save();
       ctx.translate(x, y);
@@ -191,5 +202,8 @@ export function playTimberWave(
   };
 
   frame = requestAnimationFrame(paint);
-  return () => cancelAnimationFrame(frame);
+  return () => {
+    cancelAnimationFrame(frame);
+    pulse.strength = 0;
+  };
 }
