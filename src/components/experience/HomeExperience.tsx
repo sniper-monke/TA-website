@@ -1,11 +1,12 @@
 ﻿import { Link } from "@tanstack/react-router";
 import { Headphones, Mic2, MonitorSpeaker, SlidersHorizontal } from "lucide-react";
+import { useState } from "react";
 import families from "@/data/reference-families.json";
 import projects from "@/data/reference-projects.json";
 import { trustedClients } from "@/data/site-content";
 import { useCatalogue } from "@/hooks/use-catalogue";
 import { BrandContours } from "./BrandContours";
-import { KineticHero } from "./KineticHero";
+import { KineticHero, ListeningStudy } from "./KineticHero";
 
 const categories = [
   { slug: "absorption", title: "Absorption", note: "Soften echo. Bring speech into focus." },
@@ -66,14 +67,16 @@ function OurApproach() {
         <h2 id="approach-title">
           Acoustics, materials and <em>design.</em>
         </h2>
-        <p>
-          Good acoustics starts with understanding the room. We bring together absorption, diffusion
-          and bass control to help you hear more clearly and feel more at ease.
-        </p>
-        <p>Thoughtful treatment. Honest materials. A finish that belongs in your space.</p>
-        <Link to="/story" className="ta-v2-link">
-          Our philosophy
-        </Link>
+        <div className="ta-v2-approach-description">
+          <p>
+            Good acoustics starts with understanding the room. We bring together absorption,
+            diffusion and bass control to help you hear more clearly and feel more at ease.
+          </p>
+          <p>Thoughtful treatment. Honest materials. A finish that belongs in your space.</p>
+          <Link to="/story" className="ta-v2-link">
+            Our philosophy
+          </Link>
+        </div>
       </div>
       <figure className="ta-v2-approach-figure">
         <img
@@ -90,6 +93,9 @@ function OurApproach() {
 
 function ProductCategories() {
   const { data, isError, refetch } = useCatalogue();
+  const [preview, setPreview] = useState(categories[0]!);
+  const availableFamilies = data?.families ?? families;
+  const previewImage = availableFamilies.find((family) => family.slug === preview.slug)?.image;
 
   return (
     <section
@@ -109,25 +115,36 @@ function ProductCategories() {
             All products
           </Link>
         </div>
-        <div className="ta-v2-category-grid">
-          {categories.map((category) => {
-            const family = (data?.families ?? families).find((item) => item.slug === category.slug);
-            return (
-              <a
-                href={`/products?family=${category.slug}`}
-                key={category.slug}
-                data-testid={`home-category-${category.slug}`}
-              >
-                <div className="ta-v2-category-image">
-                  {family && <img src={family.image} alt="" loading="lazy" decoding="async" />}
-                </div>
-                <div className="ta-v2-category-copy">
-                  <h3>{category.title}</h3>
-                  <p>{category.note}</p>
-                </div>
-              </a>
-            );
-          })}
+        <div className="ta-v2-category-index">
+          <div className="ta-v2-category-preview" aria-hidden="true" data-preview={preview.slug}>
+            {previewImage && (
+              <img key={preview.slug} src={previewImage} alt="" loading="lazy" decoding="async" />
+            )}
+            <span className="ta-v2-label">{preview.title}</span>
+          </div>
+          <div className="ta-v2-category-list">
+            {categories.map((category) => {
+              const family = availableFamilies.find((item) => item.slug === category.slug);
+              return (
+                <a
+                  href={`/products?family=${category.slug}`}
+                  key={category.slug}
+                  data-testid={`home-category-${category.slug}`}
+                  data-previewing={preview.slug === category.slug}
+                  onPointerEnter={() => setPreview(category)}
+                  onFocus={() => setPreview(category)}
+                >
+                  <div className="ta-v2-category-image">
+                    {family && <img src={family.image} alt="" loading="lazy" decoding="async" />}
+                  </div>
+                  <div className="ta-v2-category-copy">
+                    <h3>{category.title}</h3>
+                    <p>{category.note}</p>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
         </div>
         {isError && (
           <p role="alert">
@@ -155,16 +172,15 @@ function FeaturedProject() {
       data-home-section="featured-project"
       aria-labelledby="featured-project-title"
     >
-      <div className="ta-v2-shell ta-v2-feature-grid">
-        <div className="ta-v2-feature-image">
-          <img
-            src={project.gallery[0]}
-            alt="An illustrative home theatre with timber acoustic treatment"
-            loading="lazy"
-            decoding="async"
-          />
-          <span className="ta-v2-note">Illustrative project / Reference photography</span>
-        </div>
+      <div className="ta-v2-feature-image">
+        <img
+          src={project.gallery[0]}
+          alt="An illustrative home theatre with timber acoustic treatment"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <div className="ta-v2-shell ta-v2-feature-frame">
         <div className="ta-v2-feature-copy">
           <p className="ta-v2-label">Featured project / Home theatre</p>
           <h2 id="featured-project-title">
@@ -178,6 +194,7 @@ function FeaturedProject() {
             View project
           </Link>
         </div>
+        <span className="ta-v2-note">Illustrative project / Reference photography</span>
       </div>
     </section>
   );
@@ -259,11 +276,12 @@ export function HomeExperience() {
   return (
     <div className="ta-design-v2">
       <KineticHero />
-      <TrustedPartners />
       <OurApproach />
+      <ListeningStudy />
       <ProductCategories />
       <FeaturedProject />
       <ProjectsAndSpaces />
+      <TrustedPartners />
       <Consultation />
     </div>
   );

@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+﻿import { useState, type PointerEvent } from "react";
 import { Link } from "@tanstack/react-router";
 import { Layers3, Minus, Pause, Play, Plus } from "lucide-react";
 import { useReducedMotionPreference } from "@/hooks/use-reduced-motion";
@@ -12,7 +12,7 @@ const finishes = {
   ebony: { label: "Smoked ebony", colour: "#3b3a38" },
 } satisfies Record<TimberFinish, { label: string; colour: string }>;
 
-function ListeningStudy() {
+export function ListeningStudy() {
   const [finish, setFinish] = useState<TimberFinish>("oak");
   const [exploded, setExploded] = useState(false);
   const [paused, setPaused] = useState(false);
@@ -20,13 +20,15 @@ function ListeningStudy() {
   const active = !paused && !reduced;
 
   return (
-    <div className="ta-v2-study">
+    <section className="ta-v2-study" aria-labelledby="ta-v2-listening-label">
       <div className="ta-v2-shell ta-v2-study-grid">
         <figure className="ta-v2-material">
           <div className="ta-v2-material-stage" data-motion={active ? "live" : "paused"}>
             <BrandContours className="ta-v2-material-contours" />
             <div className="ta-v2-material-label">
-              <p className="ta-v2-label">TA / Listening spaces</p>
+              <p className="ta-v2-label" id="ta-v2-listening-label">
+                TA / Listening spaces
+              </p>
               <p>Timber. Texture. Stillness.</p>
             </div>
             <HeroListeningScene finish={finish} exploded={exploded} active={active} />
@@ -102,75 +104,94 @@ function ListeningStudy() {
           </div>
         </Link>
       </div>
-    </div>
+    </section>
   );
 }
 
+function moveArtwork(event: PointerEvent<HTMLDivElement>) {
+  if (event.pointerType !== "mouse") return;
+  const plate = event.currentTarget;
+  const bounds = plate.getBoundingClientRect();
+  plate.style.setProperty(
+    "--wave-x",
+    `${((event.clientX - bounds.left) / bounds.width - 0.5) * 24}px`,
+  );
+  plate.style.setProperty(
+    "--wave-y",
+    `${((event.clientY - bounds.top) / bounds.height - 0.5) * 14}px`,
+  );
+}
+
+function resetArtwork(event: PointerEvent<HTMLDivElement>) {
+  event.currentTarget.style.removeProperty("--wave-x");
+  event.currentTarget.style.removeProperty("--wave-y");
+}
+
 export function KineticHero() {
+  const reduced = useReducedMotionPreference();
+
   return (
     <section data-testid="hero" data-home-section="hero" aria-labelledby="ta-v2-title">
-      <div className="ta-v2-masthead">
-        <div className="ta-v2-shell">
-          <div className="ta-v2-meta ta-v2-label">
-            <span>Acoustic treatment, naturally</span>
-            <span>Timber Acoustics / India</span>
-          </div>
-          <div className="ta-v2-cover">
-            <div className="ta-v2-cover-copy">
-              <p className="ta-v2-kicker">Less echo. More clarity. Better balance.</p>
-              <h1 id="ta-v2-title" data-testid="hero-headline">
-                <span>Sound, in</span>{" "}
-                <span>
-                  better <em>shape.</em>
-                </span>
-              </h1>
-              <p className="ta-v2-intro">
-                Acoustic panels, diffusers and bass traps.
-                <br />
-                Thoughtful treatment for the way your room sounds.
-              </p>
-              <div className="ta-v2-hero-actions">
-                <Link to="/products" className="ta-v2-button" data-testid="hero-explore-button">
-                  Explore products
-                </Link>
-                <Link to="/contact" className="ta-v2-link" data-testid="hero-build-button">
-                  Book a consultation
-                </Link>
-              </div>
-            </div>
-            <div className="ta-v2-cover-art">
-              <div className="ta-v2-cover-image">
-                <img
-                  src="/images/timber-hero.webp"
-                  alt="Mustard lounge chair against a wall of curved timber slats"
-                  fetchPriority="high"
-                  width="2000"
-                  height="1197"
-                />
-              </div>
-              <BrandContours className="ta-v2-cover-contours" />
-              <div className="ta-v2-stamp" aria-hidden="true">
-                <img src="/brand/timber-mark.svg" alt="" width="28" height="28" />
-                <span>
-                  Made to
-                  <br />
-                  resonate.
-                </span>
-              </div>
-            </div>
-            <div className="ta-v2-cover-edge ta-v2-label" aria-hidden="true">
-              Absorb / Diffuse / Balance
-            </div>
-          </div>
-          <div className="ta-v2-hero-foot">
-            <span className="ta-v2-label">Acoustics with a natural soul.</span>
-            <a href="#our-approach" className="ta-v2-link">
-              Our approach
-            </a>
+      <div className="ta-v2-masthead ta-v2-shell">
+        <div className="ta-v2-meta ta-v2-label">
+          <span>Acoustic treatment, naturally</span>
+          <span>Timber Acoustics / India</span>
+        </div>
+        <h1 id="ta-v2-title" data-testid="hero-headline">
+          <span>Sound, in</span>{" "}
+          <span>
+            better <em>shape.</em>
+          </span>
+        </h1>
+        <div className="ta-v2-cover-copy">
+          <p className="ta-v2-kicker">Less echo. More clarity. Better balance.</p>
+          <p className="ta-v2-intro">
+            Acoustic panels, diffusers and bass traps.
+            <br />
+            Thoughtful treatment for the way your room sounds.
+          </p>
+          <div className="ta-v2-hero-actions">
+            <Link to="/products" className="ta-v2-button" data-testid="hero-explore-button">
+              Explore products
+            </Link>
+            <Link to="/contact" className="ta-v2-link" data-testid="hero-build-button">
+              Book a consultation
+            </Link>
           </div>
         </div>
+        <div
+          className="ta-v2-cover-art"
+          onPointerMove={reduced ? undefined : moveArtwork}
+          onPointerLeave={resetArtwork}
+        >
+          <BrandContours className="ta-v2-cover-contours" />
+          <img
+            className="ta-v2-cover-image"
+            src="/images/timber-wave.webp"
+            alt="An illustrative sound wave sculpted from timber fins"
+            fetchPriority="high"
+            width="1983"
+            height="793"
+          />
+          <div className="ta-v2-stamp" aria-hidden="true">
+            <img src="/brand/timber-mark.svg" alt="" width="28" height="28" />
+            <span>
+              Made to
+              <br />
+              resonate.
+            </span>
+          </div>
+          <div className="ta-v2-cover-edge ta-v2-label" aria-hidden="true">
+            Absorb / Diffuse / Balance
+          </div>
+        </div>
+        <div className="ta-v2-hero-foot">
+          <span className="ta-v2-label">Acoustics with a natural soul.</span>
+          <a href="#our-approach" className="ta-v2-link">
+            Our approach
+          </a>
+        </div>
       </div>
-      <ListeningStudy />
     </section>
   );
 }
