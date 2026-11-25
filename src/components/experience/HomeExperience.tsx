@@ -1,10 +1,11 @@
 ﻿import { Link } from "@tanstack/react-router";
 import { Headphones, Mic2, MonitorSpeaker, SlidersHorizontal } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import families from "@/data/reference-families.json";
 import projects from "@/data/reference-projects.json";
 import { trustedClients } from "@/data/site-content";
 import { useCatalogue } from "@/hooks/use-catalogue";
+import { useReducedMotionPreference } from "@/hooks/use-reduced-motion";
 import { BrandContours } from "./BrandContours";
 import { KineticHero, ListeningStudy } from "./KineticHero";
 
@@ -64,10 +65,10 @@ function OurApproach() {
     >
       <div className="ta-v2-approach-copy">
         <p className="ta-v2-label ta-v2-accent">Our approach</p>
-        <h2 id="approach-title">
+        <h2 id="approach-title" data-home-reveal="copy">
           Acoustics, materials and <em>design.</em>
         </h2>
-        <div className="ta-v2-approach-description">
+        <div className="ta-v2-approach-description" data-home-reveal="copy">
           <p>
             Good acoustics starts with understanding the room. We bring together absorption,
             diffusion and bass control to help you hear more clearly and feel more at ease.
@@ -78,7 +79,7 @@ function OurApproach() {
           </Link>
         </div>
       </div>
-      <figure className="ta-v2-approach-figure">
+      <figure className="ta-v2-approach-figure" data-home-reveal="photo">
         <img
           src="/images/timber-detail.webp"
           alt="Close-up of timber slats and acoustic backing"
@@ -95,7 +96,6 @@ function ProductCategories() {
   const { data, isError, refetch } = useCatalogue();
   const [preview, setPreview] = useState(categories[0]!);
   const availableFamilies = data?.families ?? families;
-  const previewImage = availableFamilies.find((family) => family.slug === preview.slug)?.image;
 
   return (
     <section
@@ -104,7 +104,7 @@ function ProductCategories() {
       aria-labelledby="categories-title"
     >
       <div className="ta-v2-shell">
-        <div className="ta-v2-heading">
+        <div className="ta-v2-heading" data-home-reveal="copy">
           <div>
             <p className="ta-v2-label ta-v2-accent">Our range</p>
             <h2 id="categories-title">
@@ -117,9 +117,21 @@ function ProductCategories() {
         </div>
         <div className="ta-v2-category-index">
           <div className="ta-v2-category-preview" aria-hidden="true" data-preview={preview.slug}>
-            {previewImage && (
-              <img key={preview.slug} src={previewImage} alt="" loading="lazy" decoding="async" />
-            )}
+            {categories.map(({ slug }) => {
+              const image = availableFamilies.find((family) => family.slug === slug)?.image;
+              return (
+                image && (
+                  <img
+                    key={slug}
+                    src={image}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    data-active={preview.slug === slug}
+                  />
+                )
+              );
+            })}
             <span className="ta-v2-label">{preview.title}</span>
           </div>
           <div className="ta-v2-category-list">
@@ -172,7 +184,7 @@ function FeaturedProject() {
       data-home-section="featured-project"
       aria-labelledby="featured-project-title"
     >
-      <div className="ta-v2-feature-image">
+      <div className="ta-v2-feature-image" data-home-reveal="photo">
         <img
           src={project.gallery[0]}
           alt="An illustrative home theatre with timber acoustic treatment"
@@ -181,7 +193,7 @@ function FeaturedProject() {
         />
       </div>
       <div className="ta-v2-shell ta-v2-feature-frame">
-        <div className="ta-v2-feature-copy">
+        <div className="ta-v2-feature-copy" data-home-reveal="copy">
           <p className="ta-v2-label">Featured project / Home theatre</p>
           <h2 id="featured-project-title">
             The listening <em>retreat.</em>
@@ -208,7 +220,7 @@ function ProjectsAndSpaces() {
       aria-label="Projects and spaces"
     >
       <div className="ta-v2-projects">
-        <div className="ta-v2-subheading">
+        <div className="ta-v2-subheading" data-home-reveal="copy">
           <h2>More projects</h2>
           <Link to="/projects" className="ta-v2-link">
             View all
@@ -217,7 +229,7 @@ function ProjectsAndSpaces() {
         <div className="ta-v2-project-grid">
           {projects.slice(1, 3).map((project) => (
             <Link to="/projects/$slug" params={{ slug: project.slug }} key={project.slug}>
-              <div className="ta-v2-project-image">
+              <div className="ta-v2-project-image" data-home-reveal="photo">
                 <img src={project.gallery[0]} alt="" loading="lazy" decoding="async" />
               </div>
               <h3>{project.title}</h3>
@@ -233,7 +245,7 @@ function ProjectsAndSpaces() {
             Build a room
           </Link>
         </div>
-        <ul className="ta-v2-space-list">
+        <ul className="ta-v2-space-list" data-home-reveal="copy">
           {homepageSpaces.map((space) => (
             <li key={space.label}>
               <a href={space.href}>
@@ -257,7 +269,7 @@ function Consultation() {
     >
       <BrandContours className="ta-v2-consultation-contours" />
       <div className="ta-v2-shell">
-        <div>
+        <div data-home-reveal="copy">
           <p className="ta-v2-label">Let's talk acoustics</p>
           <h2 id="consultation-title">
             Build your <em>acoustic space.</em>
@@ -273,8 +285,49 @@ function Consultation() {
 }
 
 export function HomeExperience() {
+  const home = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotionPreference();
+
+  useEffect(() => {
+    if (reduced || typeof IntersectionObserver === "undefined" || !home.current) return;
+    const animations = new Set<Animation>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const { isIntersecting, target } of entries) {
+          if (!isIntersecting) continue;
+          observer.unobserve(target);
+          if (typeof target.animate !== "function" || target.contains(document.activeElement))
+            continue;
+          const photo = target.getAttribute("data-home-reveal") === "photo";
+          const animation = target.animate(
+            photo
+              ? [
+                  { clipPath: "inset(7% 0 0)", transform: "scale(0.985)" },
+                  { clipPath: "inset(0)", transform: "scale(1)" },
+                ]
+              : [
+                  { opacity: 0.62, transform: "translateY(16px)" },
+                  { opacity: 1, transform: "translateY(0)" },
+                ],
+            { duration: photo ? 820 : 660, easing: "cubic-bezier(.22,1,.36,1)" },
+          );
+          animations.add(animation);
+          animation.addEventListener("finish", () => animations.delete(animation), { once: true });
+        }
+      },
+      { threshold: 0.12 },
+    );
+    home.current
+      .querySelectorAll("[data-home-reveal]")
+      .forEach((element) => observer.observe(element));
+    return () => {
+      observer.disconnect();
+      animations.forEach((animation) => animation.cancel());
+    };
+  }, [reduced]);
+
   return (
-    <div className="ta-design-v2">
+    <div className="ta-design-v2" ref={home}>
       <KineticHero />
       <OurApproach />
       <ListeningStudy />

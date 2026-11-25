@@ -4,6 +4,7 @@ import { Layers3, Minus, Pause, Play, Plus } from "lucide-react";
 import { useReducedMotionPreference } from "@/hooks/use-reduced-motion";
 import { BrandContours } from "./BrandContours";
 import { HeroListeningScene } from "./HeroListeningScene";
+import { TimberWave } from "./TimberWave";
 import type { TimberFinish } from "./MaterialStudy";
 
 const finishes = {
@@ -23,7 +24,11 @@ export function ListeningStudy() {
     <section className="ta-v2-study" aria-labelledby="ta-v2-listening-label">
       <div className="ta-v2-shell ta-v2-study-grid">
         <figure className="ta-v2-material">
-          <div className="ta-v2-material-stage" data-motion={active ? "live" : "paused"}>
+          <div
+            className="ta-v2-material-stage"
+            data-motion={active ? "live" : "paused"}
+            data-home-reveal="photo"
+          >
             <BrandContours className="ta-v2-material-contours" />
             <div className="ta-v2-material-label">
               <p className="ta-v2-label" id="ta-v2-listening-label">
@@ -165,14 +170,7 @@ export function KineticHero() {
           onPointerLeave={resetArtwork}
         >
           <BrandContours className="ta-v2-cover-contours" />
-          <img
-            className="ta-v2-cover-image"
-            src="/images/timber-wave.webp"
-            alt="An illustrative sound wave sculpted from timber fins"
-            fetchPriority="high"
-            width="1983"
-            height="793"
-          />
+          <TimberWave reduced={reduced} />
           <div className="ta-v2-stamp" aria-hidden="true">
             <img src="/brand/timber-mark.svg" alt="" width="28" height="28" />
             <span>
