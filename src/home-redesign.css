@@ -745,6 +745,210 @@
   min-height: clamp(16rem, 34vw, 34rem);
 }
 
+.timber-home-artists {
+  --artist-highlight: color-mix(in srgb, var(--home-signal) 72%, var(--home-beige));
+  --artist-rule: color-mix(in srgb, var(--home-beige) 36%, transparent);
+  --artist-play-state: paused;
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  min-height: 0;
+  padding-block: clamp(3.5rem, 7vw, 7rem);
+  color: var(--home-beige);
+  background: var(--home-ink);
+}
+
+.timber-home-artists[data-motion="playing"] {
+  --artist-play-state: running;
+}
+
+.timber-home-artist-contours {
+  position: absolute;
+  z-index: -1;
+  inset-block-start: -15rem;
+  inset-inline-end: -10rem;
+  width: 44rem;
+  opacity: 0.24;
+  mask-image: radial-gradient(ellipse, #000 12%, transparent 72%);
+  pointer-events: none;
+}
+
+.timber-home-artist-contours .ta-contour-line {
+  animation-play-state: var(--artist-play-state);
+}
+
+.timber-home-artists .timber-home-chapter-heading {
+  margin-block-end: clamp(1.5rem, 3.4vw, 4rem);
+}
+
+.ta-experience .timber-home .timber-home-artists h2 {
+  font-size: clamp(2.5rem, 6.35vw, 6.05rem);
+  line-height: 1;
+}
+
+.timber-home-artists h2 em {
+  color: var(--artist-highlight);
+  white-space: nowrap;
+}
+
+.timber-home-artist-controls {
+  display: flex;
+  flex: none;
+  gap: 0.5rem;
+}
+
+.timber-home .timber-home-artist-controls button {
+  display: grid;
+  width: clamp(2.75rem, 4vw, 3.25rem);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid var(--artist-rule);
+  border-radius: 50%;
+  background: transparent;
+  transition:
+    background-color 180ms,
+    color 180ms,
+    border-color 180ms;
+}
+
+.timber-home
+  .timber-home-artist-controls
+  :is(.timber-home-artist-next, button:hover):not([aria-disabled="true"]) {
+  border-color: var(--home-beige);
+  color: var(--home-ink);
+  background: var(--home-beige);
+}
+
+.timber-home .timber-home-artist-controls button:focus-visible {
+  outline-color: var(--home-beige);
+}
+
+.timber-home-artist-controls button[aria-disabled="true"] {
+  opacity: 0.43;
+  cursor: default;
+}
+
+.timber-home-artist-rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 22.5%;
+  gap: clamp(0.75rem, 1.3vw, 1.1rem);
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  list-style: none;
+}
+
+.timber-home-artist-rail:focus-visible {
+  outline: 2px solid var(--home-beige);
+  outline-offset: 5px;
+}
+
+.timber-home-artist-rail > li {
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.timber-home-artist-rail > li:nth-child(even) {
+  padding-block-start: clamp(0.9rem, 2vw, 1.6rem);
+}
+
+.timber-home-artist-rail figure {
+  margin: 0;
+}
+
+.timber-home-artist-photo {
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border-radius: clamp(0.28rem, 0.5vw, 0.5rem);
+  background: var(--home-charcoal);
+}
+
+.timber-home-artist-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 40%;
+  transform-origin: 50% 40%;
+  animation: timber-home-artist-idle 9s ease-in-out infinite alternate var(--artist-play-state);
+  transition: scale 480ms var(--home-ease);
+}
+
+.timber-home-artist-rail > li:nth-child(even) img {
+  animation-delay: -4.5s;
+}
+
+@keyframes timber-home-artist-idle {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.045);
+  }
+}
+
+.timber-home-artist-rail figcaption {
+  padding-block-start: clamp(0.65rem, 1.2vw, 0.98rem);
+  font:
+    700 clamp(1rem, 1.7vw, 1.5rem) / 1.18 Raleway,
+    sans-serif;
+  letter-spacing: -0.025em;
+}
+
+.timber-home-artist-progress {
+  height: 1px;
+  margin-block-start: clamp(1.5rem, 2.6vw, 2.2rem);
+  background: var(--artist-rule);
+}
+
+.timber-home-artist-progress > span {
+  display: block;
+  height: 100%;
+  background: var(--artist-highlight);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .timber-home-artist-rail li:hover img {
+    scale: 1.025;
+  }
+}
+
+@media (max-width: 900px) {
+  .timber-home-artist-rail {
+    grid-auto-columns: 30%;
+  }
+}
+
+@media (max-width: 600px) {
+  .timber-home-artists .timber-home-chapter-heading {
+    display: grid;
+    justify-content: start;
+    row-gap: 1.2rem;
+  }
+
+  .timber-home-artist-contours {
+    inset-block-start: -12rem;
+    inset-inline-end: -15rem;
+    width: 38rem;
+  }
+
+  .timber-home-artist-rail {
+    grid-auto-columns: 76%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timber-home-artist-rail {
+    scroll-behavior: auto;
+  }
+}
+
 .timber-home-trust {
   background: var(--home-white);
 }

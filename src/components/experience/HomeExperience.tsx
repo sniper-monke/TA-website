@@ -4,6 +4,7 @@ import { ArrowUpRight, ChevronRight } from "lucide-react";
 import { useReducedMotionPreference } from "@/hooks/use-reduced-motion";
 import { imageFallback } from "@/lib/image-fallback";
 import { HomeAcousticStudy } from "./HomeAcousticStudy";
+import { HomeArtists } from "./HomeArtists";
 import { HomeHero } from "./HomeHero";
 import { useHomeScroll } from "./use-home-scroll";
 import {
@@ -207,6 +208,7 @@ export function HomeExperience() {
       <HomeAcousticStudy />
       <LatestAdditions />
       <Spaces />
+      <HomeArtists reducedMotion={reduced} />
       <CustomerTrust />
       <section
         className="timber-home-chapter timber-home-contact"
